@@ -3,34 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IELTS with Vy | Premium Preparation</title>
   <script src="https://cdn.tailwindcss.com"></script>
   
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
+          colors: {
+            dark: {
+              base: '#080a1a', 
+              surface: '#0f1228'
+            }
+          },
           animation: {
-            'blob': 'blob 15s infinite alternate',
-            'float': 'float 6s ease-in-out infinite',
-            'float-delayed': 'float 6s ease-in-out 3s infinite',
-            'aurora': 'aurora 20s linear infinite',
-            'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'blob': 'blob 25s infinite alternate ease-in-out',
+            'glow-pulse': 'glow-pulse 3s ease-in-out infinite alternate',
+            'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+            'spin-slow': 'spin 8s linear infinite',
+            'float-1': 'float-y 6s ease-in-out infinite',
+            'float-2': 'float-y 7s ease-in-out 1s infinite reverse',
+            'float-3': 'float-y 5s ease-in-out 2s infinite',
+            'underline-grow': 'underline-grow 0.3s forwards ease-out',
           },
           keyframes: {
             blob: {
               '0%': { transform: 'translate(0px, 0px) scale(1)' },
-              '33%': { transform: 'translate(50px, -50px) scale(1.1)' },
-              '66%': { transform: 'translate(-40px, 40px) scale(0.95)' },
+              '33%': { transform: 'translate(40px, -60px) scale(1.1)' },
+              '66%': { transform: 'translate(-40px, 40px) scale(0.9)' },
               '100%': { transform: 'translate(0px, 0px) scale(1)' },
             },
-            float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-20px)' },
+            'glow-pulse': {
+              '0%': { boxShadow: '0 0 10px rgba(168,85,247,0.2)' },
+              '100%': { boxShadow: '0 0 30px rgba(168,85,247,0.7)' }
             },
-            aurora: {
-              '0%': { backgroundPosition: '0% 50%' },
-              '50%': { backgroundPosition: '100% 50%' },
-              '100%': { backgroundPosition: '0% 50%' },
+            shake: {
+              '10%, 90%': { transform: 'translate3d(-2px, 0, 0)' },
+              '20%, 80%': { transform: 'translate3d(4px, 0, 0)' },
+              '30%, 50%, 70%': { transform: 'translate3d(-6px, 0, 0)' },
+              '40%, 60%': { transform: 'translate3d(6px, 0, 0)' }
+            },
+            'float-y': {
+              '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+              '50%': { transform: 'translateY(-15px) rotate(2deg)' },
+            },
+            'underline-grow': {
+              '0%': { width: '0%' },
+              '100%': { width: '100%' }
             }
           }
         }
@@ -41,380 +61,559 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    
-    .aurora-bg {
-      background: linear-gradient(-45deg, #f3e8ff, #fdf4ff, #e0e7ff, #fae8ff);
-      background-size: 400% 400%;
-      animation: aurora 20s ease infinite;
+    body { 
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #050818; 
+      color: #cbd5e1; /* slate-300 */
+      overflow-x: hidden;
     }
 
-    /* Kính lỏng Apple Style */
-    .apple-glass {
-      background: rgba(255, 255, 255, 0.45);
-      backdrop-filter: blur(32px);
-      -webkit-backdrop-filter: blur(32px);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 
-        0 20px 40px -10px rgba(147, 51, 234, 0.1),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
-        inset 0 -1px 0 0 rgba(255, 255, 255, 0.3);
-    }
-    
-    .apple-glass-nav {
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+    /* LAYER 3: Subtle Noise Texture */
+    .bg-noise {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      mix-blend-mode: overlay;
+      pointer-events: none;
     }
 
-    .apple-glass-dark {
-      background: rgba(20, 15, 38, 0.65);
+    /* LAYER 4: Thin Grid Lines */
+    .bg-grid {
+      background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    /* II. GLASS SYSTEM */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow:
+        0 0 0 1px rgba(139, 92, 246, 0.1),
+        0 20px 60px -10px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .glass-nav {
+      background: rgba(5, 8, 24, 0.7);
+      backdrop-filter: blur(20px) saturate(200%);
+      -webkit-backdrop-filter: blur(20px) saturate(200%);
+      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .glass-bright {
+      background: rgba(15, 18, 40, 0.92);
       backdrop-filter: blur(40px);
       -webkit-backdrop-filter: blur(40px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.25);
       box-shadow: 
-        0 30px 60px -15px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+        0 0 60px -15px rgba(139, 92, 246, 0.3),
+        inset 0 1px 0 rgba(255,255,255,0.08);
     }
 
-    .bg-grid-pattern {
-      background-image: radial-gradient(rgba(147, 51, 234, 0.15) 1px, transparent 1px);
-      background-size: 24px 24px;
-    }
-
-    /* ==============================================================
-       HIỆU ỨNG KÍNH ÓNG ÁNH (DYNAMIC GLARE) KHI LIA CHUỘT / NGHIÊNG MÁY
-       ============================================================== */
+    /* GLARE EFFECT */
     .glare-glass {
       position: relative;
       overflow: hidden;
-      /* Mặc định tâm ánh sáng ở giữa */
       --x: 50%;
       --y: 50%;
       --glare-opacity: 0;
     }
-
-    /* Lớp ánh sáng phủ lên trên */
     .glare-glass::after {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      /* Ánh sáng tỏa tròn dạng kính */
       background: radial-gradient(
         circle at var(--x) var(--y), 
-        rgba(255, 255, 255, 0.9) 0%, 
-        rgba(255, 255, 255, 0.1) 40%, 
-        transparent 70%
+        rgba(167, 139, 250, 0.25) 0%, 
+        transparent 65%
       );
       opacity: var(--glare-opacity);
-      transition: opacity 0.5s ease; /* Chỉ animate opacity, không animate X/Y để chuột chạy mượt */
-      pointer-events: none; /* Tránh bị chặn khi click các nút bên trong */
+      transition: opacity 0.5s ease;
+      pointer-events: none;
       z-index: 20;
-      mix-blend-mode: overlay; /* Hòa trộn tạo cảm giác bóng loáng chân thực */
+      mix-blend-mode: screen;
+    }
+    .glare-glass:hover {
+      --glare-opacity: 1;
     }
 
-    /* Khi hover hoặc khi có sự kiện nghiêng máy (thêm class active) */
-    .glare-glass:hover,
-    .glare-glass.is-tilting {
-      --glare-opacity: 0.6;
+    /* Cursor Glow */
+    #cursor-glow {
+      position: fixed;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(167, 139, 250, 0.15) 0%, transparent 70%);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      z-index: 2;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    /* Riêng đối với Dark Glass (Phần học phí), ánh sáng cần dịu hơn và pha màu tím nhẹ */
-    .apple-glass-dark.glare-glass::after {
-      background: radial-gradient(
-        circle at var(--x) var(--y), 
-        rgba(255, 255, 255, 0.5) 0%, 
-        rgba(192, 132, 252, 0.1) 40%, 
-        transparent 70%
-      );
-      mix-blend-mode: color-dodge;
+    /* Magnetic & Tilt Elements Setup */
+    .btn-magnetic, .tilt-card {
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    /* Scroll Reveal Classes */
+    .reveal-mask {
+      clip-path: inset(100% 0 0 0);
+      transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-mask.is-revealed {
+      clip-path: inset(0% 0 0 0);
+    }
+    
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .fade-up.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Scroll Progress Bar */
+    #scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px; width: 0%;
+      background: linear-gradient(to right, #7c3aed, #ec4899);
+      box-shadow: 0 0 10px #a855f7;
+      z-index: 100;
+    }
+
+    /* Active Nav Link */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute;
+      bottom: -4px; left: 0;
+      height: 2px; width: 0%;
+      background: #a855f7;
+      transition: width 0.3s ease;
+    }
+    .nav-link.active { color: #a855f7; }
+    .nav-link.active::after { width: 100%; }
+
+    /* Typing Cursor */
+    .typing-cursor {
+      display: inline-block;
+      width: 3px; height: 1em;
+      background-color: #a855f7;
+      margin-left: 2px;
+      vertical-align: middle;
+      animation: blink 0.8s step-end infinite;
+    }
+    .typing-cursor.hide { display: none; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* Input Valid/Invalid styling */
+    .input-field {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    .input-field:focus {
+      border-color: #a855f7;
+      box-shadow: 0 0 0 3px rgba(168,85,247,0.2);
+    }
+    .input-invalid {
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.2) !important;
+    }
+    .input-valid {
+      border-color: #22c55e !important;
+    }
+
+    /* Accordion */
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .accordion-icon { transition: transform 0.3s ease; }
+    .accordion-btn.expanded .accordion-icon { transform: rotate(180deg); }
+
+    /* Form Checkmark & Spinner */
+    .spinner {
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top: 3px solid white;
+      width: 20px; height: 20px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* Toast */
+    #toast {
+      transform: translateY(150px);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #toast.show { transform: translateY(0); }
+
+    /* Confetti particle */
+    .confetti {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 50;
+      animation: pop 1s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+    }
+    @keyframes pop {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
     }
   </style>
-  <title>IELTS with Vy | Premium Preparation</title>
 </head>
 
-<body class="aurora-bg text-slate-800 antialiased selection:bg-purple-300 selection:text-purple-900 min-h-screen relative overflow-x-hidden">
+<body class="selection:bg-purple-500/30 selection:text-purple-200">
 
-  <div class="fixed inset-0 w-full h-full bg-grid-pattern pointer-events-none z-0 opacity-50"></div>
-  
-  <div class="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
-    <div class="absolute -top-20 -left-20 w-[500px] h-[500px] bg-gradient-to-br from-purple-400 to-fuchsia-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 animate-blob"></div>
-    <div class="absolute top-[20%] -right-40 w-[600px] h-[600px] bg-gradient-to-bl from-pink-300 to-purple-400 rounded-full mix-blend-multiply filter blur-[120px] opacity-30 animate-blob" style="animation-delay: 2s;"></div>
-    <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-gradient-to-tr from-indigo-300 to-purple-300 rounded-full mix-blend-multiply filter blur-[90px] opacity-40 animate-blob" style="animation-delay: 4s;"></div>
-    
-    <div class="hidden lg:block absolute top-[15%] right-[45%] w-24 h-24 rounded-3xl apple-glass rotate-12 animate-float opacity-60"></div>
-    <div class="hidden lg:block absolute bottom-[25%] left-[5%] w-32 h-32 rounded-full apple-glass rotate-45 animate-float-delayed opacity-50"></div>
+  <div class="fixed inset-0 w-full h-full pointer-events-none z-[-4] overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-[800px] h-[800px] bg-[#8b5cf6] rounded-full blur-[180px] opacity-[0.18] animate-blob"></div>
+    <div class="absolute top-10 -right-40 w-[700px] h-[700px] bg-[#ec4899] rounded-full blur-[180px] opacity-[0.12] animate-blob" style="animation-delay: -5s;"></div>
+    <div class="absolute -bottom-60 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-[#6366f1] rounded-full blur-[180px] opacity-[0.15] animate-blob" style="animation-delay: -10s;"></div>
   </div>
 
-  <header class="fixed top-4 left-0 right-0 z-50 w-full px-4 sm:px-6 flex justify-center transition-all">
-    <div class="w-full max-w-5xl apple-glass-nav rounded-full px-2 py-2 flex items-center justify-between shadow-lg shadow-purple-900/5">
-      <div class="flex items-center gap-3 pl-2 sm:pl-4">
-        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-purple-600 to-fuchsia-500 text-sm font-extrabold text-white shadow-md shadow-purple-500/40">
+  <canvas id="particle-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-[-3]"></canvas>
+
+  <div class="fixed inset-0 w-full h-full bg-noise z-[-2]"></div>
+
+  <div class="fixed inset-0 w-full h-full bg-grid z-[-1]"></div>
+
+  <div id="cursor-glow" class="hidden lg:block"></div>
+
+  <div id="scroll-progress"></div>
+
+  <header class="glass-nav fixed top-0 left-0 right-0 z-50 w-full">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-purple-600 to-fuchsia-500 text-sm font-extrabold text-white shadow-lg shadow-purple-500/40">
           PV
         </div>
-        <div class="hidden sm:block">
-          <div class="font-extrabold tracking-tight text-slate-900 leading-tight">IELTS with Vy</div>
-          <div class="text-[10px] uppercase tracking-wider font-bold text-purple-600">IDP Referral Agent</div>
+        <div>
+          <div class="font-extrabold tracking-tight text-white text-sm sm:text-base">IELTS with Vy</div>
+          <div class="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-purple-400">IDP Referral Agent</div>
         </div>
       </div>
       
-      <a href="#dangky" class="md:hidden rounded-full bg-slate-900 px-5 py-2.5 text-xs font-bold text-white shadow-md">
+      <a href="#dangky" class="md:hidden rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-500 px-4 py-2 text-xs font-bold text-white shadow-md btn-magnetic">
         Đăng ký
       </a>
 
-      <nav class="hidden md:flex items-center gap-6 lg:gap-8 pr-2 font-semibold text-sm">
-        <a href="#khoahoc" class="text-slate-600 transition-colors hover:text-purple-600">Lộ trình học</a>
-        <a href="#hocphi" class="text-slate-600 transition-colors hover:text-purple-600">Học phí</a>
-        <a href="https://zalo.me/0962821015" target="_blank" class="text-slate-600 transition-colors hover:text-purple-600">Zalo Support</a>
-        <a href="#dangky" class="rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-500 px-6 py-2.5 text-white transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/40">
+      <nav class="hidden md:flex items-center gap-6 lg:gap-8 font-semibold text-sm">
+        <a href="#khoahoc" class="nav-link text-slate-300 hover:text-white transition-colors" data-section="khoahoc">Lộ trình học</a>
+        <a href="#hocphi" class="nav-link text-slate-300 hover:text-white transition-colors" data-section="hocphi">Học phí</a>
+        <a href="https://zalo.me/0962821015" target="_blank" class="nav-link text-slate-300 hover:text-white transition-colors">Zalo Support</a>
+        <a href="#dangky" class="btn-magnetic rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-500 px-6 py-2.5 text-white shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 transition-shadow">
           Tư vấn xếp lớp
         </a>
       </nav>
     </div>
   </header>
 
-  <main class="relative z-10">
-    <section class="pt-36 pb-16 sm:pt-44 sm:pb-24 lg:pt-52 lg:pb-32">
-      <div class="mx-auto grid max-w-7xl gap-12 lg:gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
+  <main class="relative z-10 pt-28 pb-16 sm:pt-40 sm:pb-24 lg:pt-48 lg:pb-32">
+    
+    <section class="mx-auto grid max-w-7xl gap-12 lg:gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
+      
+      <div class="max-w-2xl relative z-20">
+        <div class="fade-up mb-8 inline-flex items-center gap-2 sm:gap-3 rounded-full glass-card px-4 py-2 text-xs sm:text-sm font-bold text-purple-300">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-500"></span>
+          </span>
+          Khai giảng khóa tháng 4/2026
+        </div>
         
-        <div class="max-w-2xl relative z-20">
-          <div class="mb-8 inline-flex items-center gap-2 sm:gap-3 rounded-full apple-glass px-4 py-2 text-xs sm:text-sm font-bold text-purple-800 animate-float">
-            <span class="relative flex h-2.5 w-2.5">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-            </span>
-            Khai giảng khóa tháng 4/2026
+        <h1 class="text-[2.75rem] sm:text-6xl font-extrabold tracking-tight text-white lg:text-[4.5rem] leading-[1.15] sm:leading-[1.1] min-h-[140px] sm:min-h-[160px]">
+          <span id="type-target-1"></span><br>
+          <span id="type-target-2" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-300 to-fuchsia-300 relative inline-block mt-2"></span>
+          <span id="typing-cursor" class="typing-cursor"></span>
+        </h1>
+        
+        <p class="fade-up mt-6 text-lg sm:text-xl leading-relaxed text-slate-400 font-medium max-w-lg" style="transition-delay: 200ms;">
+          8.5 IELTS | 1520 SAT | Hơn 3 năm kinh nghiệm.<br> Lộ trình cá nhân hóa, chữa bài chuyên sâu từng tiêu chí giúp học viên vượt target.
+        </p>
+
+        <div class="fade-up mt-8 flex flex-wrap gap-4" style="transition-delay: 300ms;">
+          <div class="glass-card px-4 py-2 rounded-xl flex items-center gap-2">
+            <span class="text-xl font-black text-white stat-number" data-target="60">0</span>
+            <span class="text-xl font-black text-purple-400">+</span>
+            <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Học viên</span>
           </div>
+          <div class="glass-card px-4 py-2 rounded-xl flex items-center gap-2">
+            <span class="text-xl font-black text-white stat-number-float" data-target="8.5">0.0</span>
+            <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Band</span>
+          </div>
+          <div class="glass-card px-4 py-2 rounded-xl flex items-center gap-2">
+            <span class="text-xl font-black text-white stat-number" data-target="3">0</span>
+            <span class="text-xl font-black text-pink-400">+</span>
+            <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Năm K.N</span>
+          </div>
+        </div>
+        
+        <div class="fade-up mt-10 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4" style="transition-delay: 400ms;">
+          <a href="#dangky" class="btn-magnetic w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-500 px-8 py-4 text-base font-bold text-white shadow-xl shadow-purple-900/20">
+            Nhận tư vấn lộ trình
+          </a>
           
-          <h1 class="text-[2.75rem] sm:text-6xl font-extrabold tracking-tight text-slate-900 lg:text-[4.5rem] leading-[1.15] sm:leading-[1.1]">
-            Tăng band IELTS <br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-fuchsia-500 relative inline-block pb-3 mt-2">
-              thực chất & vững chắc.
-              <svg class="absolute w-full h-3 sm:h-4 bottom-0 left-0 text-purple-400/40 animate-pulse-slow" viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0,0 C30,12 70,12 100,0 L100,12 L0,12 Z" fill="currentColor"></path></svg>
-            </span>
-          </h1>
-          <p class="mt-6 text-lg sm:text-xl leading-relaxed text-slate-600 font-medium max-w-lg">
-            8.5 IELTS | 1520 SAT | Hơn 3 năm kinh nghiệm.<br> Lộ trình cá nhân hóa, chữa bài chuyên sâu từng tiêu chí giúp học viên vượt target.
-          </p>
-          
-          <div class="mt-10 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4">
-            <a href="#dangky" class="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-slate-900 px-8 py-4 text-base font-bold text-white shadow-xl shadow-slate-900/20 transition-all hover:scale-105 hover:bg-purple-600">
-              Nhận tư vấn lộ trình
-            </a>
-            
-            <div class="apple-glass rounded-full px-5 py-2.5 sm:ml-2 flex items-center gap-3 w-full sm:w-auto relative overflow-hidden">
-              <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0 overflow-hidden p-1.5 shadow-sm">
-                <svg class="w-full h-full text-purple-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-              </div>
-              <div class="text-xs font-bold text-slate-700 leading-tight">
-                Đối tác Vàng<br><span class="text-purple-700 font-extrabold text-sm">IDP Vietnam</span>
-              </div>
+          <div class="glass-card rounded-full px-5 py-2.5 sm:ml-2 flex items-center gap-3 w-full sm:w-auto">
+            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0 overflow-hidden p-2 shadow-inner border border-white/5">
+              <svg class="w-full h-full text-purple-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <div class="text-xs font-bold text-slate-300 leading-tight">
+              Đối tác Vàng<br><span class="text-purple-400 font-extrabold text-sm">IDP Vietnam</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fade-up relative w-full aspect-[4/5] lg:aspect-auto lg:h-[650px] mt-10 lg:mt-0 z-10 flex justify-center items-center" style="transition-delay: 200ms;">
+        
+        <div class="absolute inset-0 glass-card glare-glass tilt-card rounded-[2.5rem] sm:rounded-[3.5rem] p-4">
+          <div class="w-full h-full rounded-[2rem] sm:rounded-[3rem] bg-[#0a0d24]/50 overflow-hidden relative border border-white/10 shadow-inner">
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-purple-400/60 font-bold p-8 text-center bg-gradient-to-b from-transparent to-purple-900/20">
+              <svg class="w-16 h-16 mb-4 text-purple-500/50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+              [ Vùng hiển thị Ảnh chụp ]
             </div>
           </div>
         </div>
 
-        <div class="relative w-full aspect-[4/5] lg:aspect-auto lg:h-[650px] mt-10 lg:mt-0 z-10 flex justify-center items-center">
-          
-          <div class="absolute inset-0 apple-glass glare-glass rounded-[2.5rem] sm:rounded-[3.5rem] p-4 transition-transform duration-700 hover:scale-[1.02]">
-            <div class="w-full h-full rounded-[2rem] sm:rounded-[3rem] bg-white/40 overflow-hidden relative border border-white/60 shadow-inner">
-              <div class="absolute inset-0 flex flex-col items-center justify-center text-purple-500/80 font-bold p-8 text-center bg-gradient-to-b from-transparent to-purple-100/30">
-                <svg class="w-16 h-16 mb-4 text-purple-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                [ Vùng hiển thị Ảnh chụp ]
-              </div>
-            </div>
+        <div class="absolute -top-4 -right-4 sm:-right-8 glass-card rounded-2xl p-4 shadow-2xl animate-float-1 z-20 animate-glow-pulse">
+          <div class="flex flex-col items-center justify-center">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Overall</span>
+            <span class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">8.5 IELTS</span>
           </div>
-
-          <div class="absolute -bottom-6 -left-2 sm:-left-8 apple-glass rounded-[1.5rem] sm:rounded-[2rem] p-4 sm:p-5 shadow-2xl animate-float-delayed z-20">
-            <div class="flex items-center gap-4">
-              <div class="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-[1rem] sm:rounded-[1.25rem] bg-gradient-to-br from-green-400 to-emerald-500 text-white shadow-lg shrink-0">
-                <svg class="h-6 w-6 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              </div>
-              <div>
-                <div class="text-sm sm:text-base font-extrabold text-slate-900 uppercase tracking-wider">Đã kiểm chứng</div>
-                <div class="text-xs sm:text-sm font-bold text-slate-500 mt-1">60+ học viên đạt 6.5 - 8.0</div>
-              </div>
-            </div>
-          </div>
-          
         </div>
+
+        <div class="absolute top-[40%] -left-6 sm:-left-12 glass-card rounded-2xl p-4 shadow-2xl animate-float-2 z-20 animate-glow-pulse" style="animation-delay: -2s;">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-pink-500/20 border border-pink-500/30 flex items-center justify-center">
+              <svg class="w-4 h-4 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+            </div>
+            <div>
+              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Writing</div>
+              <div class="text-lg font-black text-white">7.0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute -bottom-6 right-10 sm:right-16 glass-card rounded-2xl p-4 shadow-2xl animate-float-3 z-20 animate-glow-pulse" style="animation-delay: -4s;">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center">
+              <svg class="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            </div>
+            <div>
+              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Reading</div>
+              <div class="text-lg font-black text-white">8.0</div>
+            </div>
+          </div>
+        </div>
+        
       </div>
     </section>
 
     <section id="khoahoc" class="py-16 sm:py-24 relative z-20">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
-          <h2 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">Lộ trình học <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-fuchsia-500">tinh gọn</span></h2>
-          <p class="mt-6 text-lg text-slate-600 font-medium px-2">Hai nhóm lớp thiết kế chuyên biệt. Loại bỏ kiến thức dư thừa, tập trung tối đa vào hiệu quả thực tế trên từng band điểm.</p>
+          <h2 class="reveal-mask text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+            Lộ trình học <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">tinh gọn</span>
+          </h2>
+          <p class="fade-up mt-6 text-lg text-slate-400 font-medium px-2">Hai nhóm lớp thiết kế chuyên biệt. Loại bỏ kiến thức dư thừa, tập trung tối đa vào hiệu quả thực tế trên từng band điểm.</p>
         </div>
 
         <div class="grid lg:grid-cols-2 gap-8 sm:gap-10">
-          <div class="group apple-glass glare-glass rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/10">
-            <div class="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-0 mb-8 relative z-10">
+          
+          <div class="fade-up glass-card glare-glass tilt-card rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 relative z-10" style="transition-delay: 100ms;">
+            <div class="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-0 mb-8">
               <div>
-                <div class="inline-flex items-center rounded-full bg-blue-100/70 border border-blue-200/50 px-4 py-1.5 text-xs font-extrabold text-blue-800 uppercase tracking-widest mb-4">Foundation</div>
-                <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Lớp Moderate</h3>
-                <p class="mt-2 text-lg text-blue-600 font-extrabold">Target: 4.0 - 6.5</p>
+                <div class="inline-flex items-center rounded-full bg-purple-500/10 border border-purple-500/20 px-4 py-1.5 text-xs font-extrabold text-purple-300 uppercase tracking-widest mb-4">Foundation</div>
+                <h3 class="text-3xl sm:text-4xl font-extrabold text-white">Lớp Moderate</h3>
+                <p class="mt-2 text-lg text-purple-400 font-extrabold">Target: 4.0 - 6.5</p>
               </div>
-              <div class="w-full sm:w-auto text-left sm:text-right bg-white/60 border border-white px-5 py-3 rounded-2xl flex sm:block justify-between items-center shadow-sm">
-                <div class="text-sm font-extrabold text-slate-900">T5 & T7</div>
-                <div class="text-xs font-bold text-slate-500 sm:mt-1">20:00 - 21:30</div>
+              <div class="w-full sm:w-auto text-left sm:text-right bg-white/5 border border-white/10 px-5 py-3 rounded-2xl flex sm:block justify-between items-center">
+                <div class="text-sm font-extrabold text-slate-200">T5 & T7</div>
+                <div class="text-xs font-bold text-slate-400 sm:mt-1">20:00 - 21:30</div>
               </div>
             </div>
             
-            <p class="text-base text-slate-700 mb-8 font-medium leading-relaxed relative z-10">Dành cho học viên muốn củng cố nền tảng, học cách tiếp cận đề bài bản nhất trong 3 tháng.</p>
+            <p class="text-base text-slate-300 mb-8 font-medium leading-relaxed">Dành cho học viên muốn củng cố nền tảng, học cách tiếp cận đề bài bản nhất trong 3 tháng.</p>
             
-            <ul class="space-y-4 text-base text-slate-800 font-semibold mb-10 relative z-10">
+            <ul class="space-y-4 text-base text-slate-300 font-semibold mb-10">
               <li class="flex gap-4 items-start">
-                <div class="mt-1 h-6 w-6 shrink-0 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shadow-inner"><div class="w-2 h-2 rounded-full bg-blue-500"></div></div> 
+                <div class="mt-1 h-6 w-6 shrink-0 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 border border-purple-500/30"><div class="w-2 h-2 rounded-full bg-purple-400"></div></div> 
                 Tiếp cận 4 kỹ năng nhờ phương pháp tích hợp.
               </li>
               <li class="flex gap-4 items-start">
-                <div class="mt-1 h-6 w-6 shrink-0 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shadow-inner"><div class="w-2 h-2 rounded-full bg-blue-500"></div></div> 
+                <div class="mt-1 h-6 w-6 shrink-0 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 border border-purple-500/30"><div class="w-2 h-2 rounded-full bg-purple-400"></div></div> 
                 Luyện Speaking & Writing song song, liên kết topic.
               </li>
             </ul>
 
-            <div class="space-y-3 pt-6 border-t border-slate-200/60 relative z-10">
-              <a href="https://docs.google.com/document/d/1Ju_IHjogwd_Zu7qL93J2pUE_rfsRQLQYEfKbQTjdcXk/edit?tab=t.0" target="_blank" class="group/link flex items-center gap-4 text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors bg-white/80 rounded-2xl p-3 border border-white shadow-sm hover:shadow-md">
-                <div class="bg-blue-50 rounded-xl p-2 text-blue-500">
-                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            <div class="pt-2 border-t border-white/10">
+              <button class="accordion-btn w-full flex items-center justify-between text-left py-4 text-sm font-bold text-slate-200 hover:text-purple-300 transition-colors focus:outline-none">
+                <span>Tài liệu & Lộ trình chi tiết</span>
+                <svg class="accordion-icon h-5 w-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </button>
+              <div class="accordion-content">
+                <div class="space-y-3 pb-4">
+                  <a href="https://docs.google.com/document/d/1Ju_IHjogwd_Zu7qL93J2pUE_rfsRQLQYEfKbQTjdcXk/edit?tab=t.0" target="_blank" class="flex items-center gap-4 text-sm font-medium text-slate-300 hover:text-white transition-colors bg-white/5 rounded-2xl p-3 border border-white/5 hover:border-purple-500/30 group">
+                    <div class="bg-purple-500/20 rounded-xl p-2 text-purple-400">
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    </div>
+                    <span>Syllabus lộ trình</span>
+                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                  </a>
+                  <a href="https://drive.google.com/file/d/1YiQ5YXYMDIoLDSLSUbJ2mfpOz2qD6oO5/view?usp=drivesdk" target="_blank" class="flex items-center gap-4 text-sm font-medium text-slate-300 hover:text-white transition-colors bg-white/5 rounded-2xl p-3 border border-white/5 hover:border-purple-500/30 group">
+                    <div class="bg-purple-500/20 rounded-xl p-2 text-purple-400">
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <span>Recording mẫu lớp Moderate</span>
+                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                  </a>
                 </div>
-                <span>Xem chi tiết Syllabus</span>
-                <svg class="h-4 w-4 ml-auto transition-transform group-hover/link:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-              </a>
-              <a href="https://drive.google.com/file/d/1YiQ5YXYMDIoLDSLSUbJ2mfpOz2qD6oO5/view?usp=drivesdk" target="_blank" class="group/link flex items-center gap-4 text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors bg-white/80 rounded-2xl p-3 border border-white shadow-sm hover:shadow-md">
-                <div class="bg-blue-50 rounded-xl p-2 text-blue-500">
-                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <span>Xem Record mẫu lớp Moderate</span>
-                <svg class="h-4 w-4 ml-auto transition-transform group-hover/link:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-              </a>
+              </div>
             </div>
           </div>
 
-          <div class="group apple-glass glare-glass rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/20 relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-fuchsia-100/40 to-purple-100/40 -z-10"></div>
-            
-            <div class="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-0 mb-8 relative z-10">
+          <div class="fade-up glass-card glare-glass tilt-card rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 relative z-10" style="transition-delay: 250ms;">
+            <div class="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-0 mb-8">
               <div>
-                <div class="inline-flex items-center rounded-full bg-purple-100/70 border border-purple-200/50 px-4 py-1.5 text-xs font-extrabold text-purple-800 uppercase tracking-widest mb-4">Practice Intensive</div>
-                <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Lớp Giải Đề</h3>
-                <p class="mt-2 text-lg text-purple-600 font-extrabold">Target: 6.5 - 8.5</p>
+                <div class="inline-flex items-center rounded-full bg-pink-500/10 border border-pink-500/20 px-4 py-1.5 text-xs font-extrabold text-pink-300 uppercase tracking-widest mb-4">Practice Intensive</div>
+                <h3 class="text-3xl sm:text-4xl font-extrabold text-white">Lớp Giải Đề</h3>
+                <p class="mt-2 text-lg text-pink-400 font-extrabold">Target: 6.5 - 8.5</p>
               </div>
-              <div class="w-full sm:w-auto text-left sm:text-right bg-white/60 border border-white px-5 py-3 rounded-2xl flex sm:block justify-between items-center shadow-sm">
-                <div class="text-sm font-extrabold text-slate-900">Thứ 6 & CN</div>
-                <div class="text-xs font-bold text-slate-500 sm:mt-1">20:00 - 21:30</div>
+              <div class="w-full sm:w-auto text-left sm:text-right bg-white/5 border border-white/10 px-5 py-3 rounded-2xl flex sm:block justify-between items-center">
+                <div class="text-sm font-extrabold text-slate-200">Thứ 6 & CN</div>
+                <div class="text-xs font-bold text-slate-400 sm:mt-1">20:00 - 21:30</div>
               </div>
             </div>
             
-            <p class="text-base text-slate-700 mb-8 font-medium leading-relaxed relative z-10">Boost band cấp tốc. Dành cho các bạn đã có nền khá vững, luyện đề chuyên sâu kết hợp chữa bài chi tiết.</p>
+            <p class="text-base text-slate-300 mb-8 font-medium leading-relaxed">Boost band cấp tốc. Dành cho các bạn đã có nền khá vững, luyện đề chuyên sâu kết hợp chữa bài chi tiết.</p>
             
-            <ul class="space-y-4 text-base text-slate-800 font-semibold mb-10 relative z-10">
+            <ul class="space-y-4 text-base text-slate-300 font-semibold mb-10">
               <li class="flex gap-4 items-start">
-                <div class="mt-1 h-6 w-6 shrink-0 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 shadow-inner"><div class="w-2 h-2 rounded-full bg-purple-500"></div></div> 
+                <div class="mt-1 h-6 w-6 shrink-0 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400 border border-pink-500/30"><div class="w-2 h-2 rounded-full bg-pink-400"></div></div> 
                 Cập nhật đề mới nhất & xu hướng ra đề liên tục.
               </li>
               <li class="flex gap-4 items-start">
-                <div class="mt-1 h-6 w-6 shrink-0 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 shadow-inner"><div class="w-2 h-2 rounded-full bg-purple-500"></div></div> 
+                <div class="mt-1 h-6 w-6 shrink-0 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400 border border-pink-500/30"><div class="w-2 h-2 rounded-full bg-pink-400"></div></div> 
                 Phân tích kỹ tiêu chí chấm điểm, chiến thuật phòng thi.
               </li>
             </ul>
 
-            <div class="space-y-3 pt-6 border-t border-purple-200/40 relative z-10">
-               <div class="flex items-center gap-4 text-sm font-bold text-slate-400 bg-white/40 rounded-2xl p-3 border border-white/50 cursor-not-allowed">
-                <div class="bg-slate-100 rounded-xl p-2 text-slate-400">
-                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <div class="pt-2 border-t border-white/10">
+              <button class="accordion-btn w-full flex items-center justify-between text-left py-4 text-sm font-bold text-slate-200 hover:text-pink-300 transition-colors focus:outline-none">
+                <span>Tài liệu & Lộ trình chi tiết</span>
+                <svg class="accordion-icon h-5 w-5 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </button>
+              <div class="accordion-content">
+                <div class="space-y-3 pb-4">
+                  <div class="flex items-center gap-4 text-sm font-medium text-slate-400 bg-white/5 rounded-2xl p-3 border border-white/5 cursor-not-allowed">
+                    <div class="bg-white/10 rounded-xl p-2 text-slate-500">
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <span>Lộ trình cấp tốc (Tài liệu nội bộ)</span>
+                  </div>
+                  <a href="https://drive.google.com/file/d/1LouiEDNH-1PACWZKbEdpIK7pH7na-rf_/view?usp=drivesdk" target="_blank" class="flex items-center gap-4 text-sm font-medium text-slate-300 hover:text-white transition-colors bg-white/5 rounded-2xl p-3 border border-white/5 hover:border-pink-500/30 group">
+                    <div class="bg-pink-500/20 rounded-xl p-2 text-pink-400">
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <span>Xem Record mẫu lớp Giải đề</span>
+                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                  </a>
                 </div>
-                <span>Lộ trình cấp tốc (Tài liệu nội bộ)</span>
               </div>
-              <a href="https://drive.google.com/file/d/1LouiEDNH-1PACWZKbEdpIK7pH7na-rf_/view?usp=drivesdk" target="_blank" class="group/link flex items-center gap-4 text-sm font-bold text-purple-900 hover:text-purple-600 transition-colors bg-white/80 rounded-2xl p-3 border border-white shadow-sm hover:shadow-md">
-                <div class="bg-purple-100 rounded-xl p-2 text-purple-600">
-                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <span>Xem Record mẫu lớp Giải đề</span>
-                <svg class="h-4 w-4 ml-auto transition-transform group-hover/link:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-              </a>
             </div>
           </div>
+          
         </div>
       </div>
     </section>
 
     <section id="hocphi" class="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 py-10 sm:py-20 relative z-20">
-      <div class="apple-glass-dark glare-glass rounded-3xl sm:rounded-[3.5rem] lg:rounded-[4rem] overflow-hidden relative">
+      <div class="fade-up glass-card rounded-3xl sm:rounded-[3.5rem] lg:rounded-[4rem] overflow-hidden relative border border-white/10 shadow-2xl">
         
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
-        <div class="absolute top-0 right-0 w-96 h-96 bg-purple-600 rounded-full mix-blend-screen filter blur-[100px] opacity-20 pointer-events-none"></div>
-        <div class="absolute bottom-0 left-0 w-96 h-96 bg-fuchsia-600 rounded-full mix-blend-screen filter blur-[100px] opacity-20 pointer-events-none"></div>
-        
-        <div class="grid lg:grid-cols-[1.1fr_0.9fr] relative z-10 p-2 sm:p-4 pointer-events-none">
+        <div class="grid lg:grid-cols-[1.1fr_0.9fr] relative z-10">
           
-          <div class="p-6 sm:p-10 lg:p-16 flex flex-col justify-center pointer-events-auto">
-            <h2 class="text-4xl sm:text-5xl font-extrabold text-white mb-6 lg:mb-8 tracking-tight leading-tight">Đầu tư xứng đáng cho <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-300">kết quả thật.</span></h2>
+          <div class="p-6 sm:p-10 lg:p-16 flex flex-col justify-center">
+            <h2 class="reveal-mask text-4xl sm:text-5xl font-extrabold text-white mb-6 lg:mb-8 tracking-tight leading-tight">Đầu tư xứng đáng cho <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-300">kết quả thật.</span></h2>
             
-            <div class="flex flex-row items-end gap-4 mb-8 apple-glass rounded-[2rem] p-6 w-full sm:w-max border-white/20">
+            <div class="flex flex-row items-end gap-4 mb-8 bg-white/5 rounded-[2rem] p-6 w-full sm:w-max border border-white/10 shadow-inner">
               <span class="text-5xl sm:text-6xl font-black text-white tracking-tighter">2.900k</span>
               <div class="flex flex-col pb-1 sm:pb-2">
-                <span class="text-slate-400 line-through text-xs sm:text-sm font-bold uppercase tracking-widest">3.900.000đ</span>
-                <span class="text-purple-200 text-sm sm:text-base font-extrabold uppercase tracking-widest">/ tháng</span>
+                <span class="text-slate-500 line-through text-xs sm:text-sm font-bold uppercase tracking-widest">3.900.000đ</span>
+                <span class="text-purple-300 text-sm sm:text-base font-extrabold uppercase tracking-widest">/ tháng</span>
               </div>
             </div>
             
-            <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-10 font-medium max-w-md">
+            <p class="text-slate-400 text-base sm:text-lg leading-relaxed mb-10 font-medium max-w-md">
               Học phí được thanh toán theo từng tháng. Giúp học viên hoàn toàn an tâm về chất lượng đào tạo đồng đều 🤍.
             </p>
             
-            <div id="lienhe" class="mt-auto pt-6 border-t border-white/10">
+            <div class="mt-auto pt-6 border-t border-white/10">
               <div class="flex flex-col sm:flex-row gap-4">
-                <a href="https://zalo.me/0962821015" target="_blank" class="flex items-center justify-center sm:justify-start gap-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-2xl px-5 py-4 text-white transition-all backdrop-blur-md relative z-30">
-                  <svg class="h-6 w-6 text-[#0068FF] shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21.543 8.358A10.82 10.82 0 0012 2C6.477 2 2 5.922 2 10.76c0 2.502 1.258 4.752 3.253 6.347-.282 1.348-.962 2.825-2.898 3.86a.276.276 0 00.126.516c3.218 0 5.435-1.464 6.643-2.528A11.39 11.39 0 0012 19.52c5.523 0 10-3.922 10-8.76 0-1.02-.2-2.002-.457-2.402z"/></svg>
+                <a href="https://zalo.me/0962821015" target="_blank" class="btn-magnetic flex items-center justify-center sm:justify-start gap-3 glass-card rounded-2xl px-5 py-4 text-white hover:bg-white/5 transition-all">
+                  <svg class="h-6 w-6 text-blue-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21.543 8.358A10.82 10.82 0 0012 2C6.477 2 2 5.922 2 10.76c0 2.502 1.258 4.752 3.253 6.347-.282 1.348-.962 2.825-2.898 3.86a.276.276 0 00.126.516c3.218 0 5.435-1.464 6.643-2.528A11.39 11.39 0 0012 19.52c5.523 0 10-3.922 10-8.76 0-1.02-.2-2.002-.457-2.402z"/></svg>
                   <span class="font-bold text-base">Zalo: 0962821015</span>
                 </a>
-                <a href="https://www.facebook.com/search/top?q=Phuong%20Vy%20Celeste" target="_blank" class="flex items-center justify-center sm:justify-start gap-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-2xl px-5 py-4 text-white transition-all backdrop-blur-md relative z-30">
-                  <svg class="h-6 w-6 text-[#0866FF] shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <a href="https://www.facebook.com/search/top?q=Phuong%20Vy%20Celeste" target="_blank" class="btn-magnetic flex items-center justify-center sm:justify-start gap-3 glass-card rounded-2xl px-5 py-4 text-white hover:bg-white/5 transition-all">
+                  <svg class="h-6 w-6 text-blue-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                   <span class="font-bold text-base">Phuong Vy Celeste</span>
                 </a>
               </div>
             </div>
           </div>
 
-          <div id="dangky" class="apple-glass !bg-white/95 p-8 sm:p-12 lg:p-14 rounded-[2rem] sm:rounded-[3rem] shadow-2xl flex flex-col justify-center relative pointer-events-auto">
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2">Đăng ký xếp lớp</h3>
-            <p class="text-sm font-semibold text-slate-500 mb-8">Pzy sẽ liên hệ tư vấn lộ trình và bài test đầu vào cho bạn.</p>
+          <div id="dangky" class="glass-bright glare-glass p-8 sm:p-12 lg:p-14 rounded-[2rem] sm:rounded-[3rem] flex flex-col justify-center m-2 sm:m-4 relative z-20">
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">Đăng ký xếp lớp</h3>
+            <p class="text-sm font-semibold text-slate-400 mb-8">Pzy sẽ liên hệ tư vấn lộ trình và bài test đầu vào cho bạn.</p>
             
-            <form class="space-y-4 sm:space-y-5">
+            <form id="signup-form" class="space-y-4 sm:space-y-5" novalidate>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                <div class="space-y-1.5">
-                  <label class="text-xs font-bold text-slate-700 ml-1 uppercase tracking-wider">Họ và tên</label>
-                  <input type="text" class="w-full rounded-2xl border-0 bg-slate-100/50 px-5 py-4 text-sm font-bold text-slate-800 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-purple-500 shadow-inner" required>
+                <div class="space-y-1.5 relative">
+                  <label class="text-xs font-bold text-slate-400 ml-1 uppercase tracking-wider">Họ và tên</label>
+                  <input type="text" id="name" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold outline-none" required>
+                  <svg class="validation-icon hidden absolute right-4 top-[38px] w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 </div>
-                <div class="space-y-1.5">
-                  <label class="text-xs font-bold text-slate-700 ml-1 uppercase tracking-wider">SĐT / Zalo</label>
-                  <input type="tel" class="w-full rounded-2xl border-0 bg-slate-100/50 px-5 py-4 text-sm font-bold text-slate-800 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-purple-500 shadow-inner" required>
+                <div class="space-y-1.5 relative">
+                  <label class="text-xs font-bold text-slate-400 ml-1 uppercase tracking-wider">SĐT / Zalo</label>
+                  <input type="tel" id="phone" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold outline-none" required pattern="[0-9]{9,11}">
+                  <svg class="validation-icon hidden absolute right-4 top-[38px] w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 </div>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                 <div class="space-y-1.5">
-                  <label class="text-xs font-bold text-slate-700 ml-1 uppercase tracking-wider">Band mục tiêu</label>
-                  <select class="w-full rounded-2xl border-0 bg-slate-100/50 px-5 py-4 text-sm font-bold text-slate-800 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-purple-500 shadow-inner appearance-none cursor-pointer">
-                    <option value="6.5">6.5+</option>
-                    <option value="7.0">7.0+</option>
-                    <option value="8.0">8.0+</option>
+                  <label class="text-xs font-bold text-slate-400 ml-1 uppercase tracking-wider">Band mục tiêu</label>
+                  <select class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold outline-none appearance-none cursor-pointer">
+                    <option value="6.5" class="bg-dark-surface text-white">6.5+</option>
+                    <option value="7.0" class="bg-dark-surface text-white">7.0+</option>
+                    <option value="8.0" class="bg-dark-surface text-white">8.0+</option>
                   </select>
                 </div>
                 <div class="space-y-1.5">
-                  <label class="text-xs font-bold text-slate-700 ml-1 uppercase tracking-wider">Thời gian thi dự kiến</label>
-                  <input type="text" placeholder="VD: T10/2026" class="w-full rounded-2xl border-0 bg-slate-100/50 px-5 py-4 text-sm font-bold text-slate-800 placeholder-slate-400 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-purple-500 shadow-inner">
+                  <label class="text-xs font-bold text-slate-400 ml-1 uppercase tracking-wider">Thời gian thi dự kiến</label>
+                  <input type="text" placeholder="VD: T10/2026" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold outline-none placeholder-slate-600">
                 </div>
               </div>
               <div class="space-y-1.5">
-                <label class="text-xs font-bold text-slate-700 ml-1 uppercase tracking-wider">Ghi chú thêm</label>
-                <textarea placeholder="Trình độ hiện tại, lớp mong muốn..." rows="2" class="w-full rounded-2xl border-0 bg-slate-100/50 px-5 py-4 text-sm font-bold text-slate-800 placeholder-slate-400 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-purple-500 shadow-inner resize-none sm:h-24 h-20"></textarea>
+                <label class="text-xs font-bold text-slate-400 ml-1 uppercase tracking-wider">Ghi chú thêm</label>
+                <textarea placeholder="Trình độ hiện tại, lớp mong muốn..." rows="2" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold outline-none placeholder-slate-600 resize-none sm:h-24 h-20"></textarea>
               </div>
               
-              <button type="submit" class="w-full rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-500 py-4.5 mt-2 text-base font-extrabold text-white transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-500/40 flex items-center justify-center h-14">
-                Gửi thông tin đăng ký
+              <button type="submit" id="submit-btn" class="btn-magnetic w-full rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-500 py-4.5 mt-2 text-base font-extrabold text-white transition-all shadow-lg shadow-purple-900/40 hover:shadow-purple-500/50 flex items-center justify-center h-14 relative overflow-hidden">
+                <span id="btn-text">Gửi thông tin đăng ký</span>
+                <div id="btn-spinner" class="spinner hidden"></div>
+                <svg id="btn-check" class="hidden w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
               </button>
             </form>
           </div>
@@ -422,7 +621,7 @@
       </div>
     </section>
 
-    <footer class="mt-8 border-t border-white/40 bg-white/20 backdrop-blur-xl py-8 text-center text-sm font-bold text-slate-600">
+    <footer class="mt-8 border-t border-white/10 bg-dark-base/50 backdrop-blur-xl py-8 text-center text-sm font-bold text-slate-500">
       <div class="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p>&copy; 2026 Pzy IELTS. All rights reserved.</p>
         <div class="flex items-center gap-4">
@@ -434,80 +633,406 @@
     </footer>
   </main>
 
+  <div id="toast" class="fixed bottom-6 right-6 z-[100] glass-bright px-6 py-4 rounded-2xl flex items-center gap-3 shadow-2xl">
+    <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <div class="text-sm font-bold text-white">Đã gửi! Pzy sẽ liên hệ sớm nhé 🎉</div>
+  </div>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const glassElements = document.querySelectorAll('.glare-glass');
+      const isMobile = window.matchMedia('(pointer: coarse)').matches;
 
-      // 1. XỬ LÝ LIA CHUỘT TRÊN DESKTOP
-      glassElements.forEach(el => {
-        el.addEventListener('mousemove', (e) => {
+      // ==========================================
+      // LAYER 2: CANVAS PARTICLES
+      // ==========================================
+      const canvas = document.getElementById('particle-canvas');
+      const ctx = canvas.getContext('2d');
+      let width, height, particles = [];
+      const particleCount = isMobile ? 60 : 120;
+      let mouse = { x: -1000, y: -1000 };
+      let isVisible = true;
+      let animationFrameId;
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+
+      class Particle {
+        constructor(x, y, isBurst = false) {
+          this.x = x || Math.random() * width;
+          this.y = y || Math.random() * height;
+          this.vx = (Math.random() - 0.5) * (isBurst ? 4 : 0.8);
+          this.vy = (Math.random() - 0.5) * (isBurst ? 4 : 0.8);
+          this.radius = Math.random() * 1.3 + 1.2;
+          this.baseAlpha = Math.random() * 0.5 + 0.3;
+          this.alpha = this.baseAlpha;
+          this.isBurst = isBurst;
+          this.life = isBurst ? 1.0 : null;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+
+          if (this.isBurst) {
+            this.life -= 0.015;
+            this.alpha = this.baseAlpha * this.life;
+            if (this.life <= 0) return false;
+          } else {
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+
+            // Mouse repel
+            const dx = mouse.x - this.x;
+            const dy = mouse.y - this.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+              const force = (120 - dist) / 120;
+              this.vx -= (dx / dist) * force * 0.1;
+              this.vy -= (dy / dist) * force * 0.1;
+            }
+            
+            // Speed limit & friction to return to normal
+            const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+            if (speed > 1.5) {
+              this.vx *= 0.95; this.vy *= 0.95;
+            } else if (speed < 0.2) {
+              this.vx *= 1.01; this.vy *= 1.01;
+            }
+          }
+          return true;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(167, 139, 250, ${this.alpha})`;
+          ctx.fill();
+        }
+      }
+
+      function initParticles() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+      }
+
+      function animateParticles() {
+        if (!isVisible) return;
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          if (!p.update()) { particles.splice(i, 1); continue; }
+          p.draw();
+
+          if (!p.isBurst) {
+            for (let j = i - 1; j >= 0; j--) {
+              const p2 = particles[j];
+              if (p2.isBurst) continue;
+              const dx = p.x - p2.x;
+              const dy = p.y - p2.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              
+              if (dist < 140) {
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p2.x, p2.y);
+                const opacity = (1 - dist / 140) * 0.35;
+                ctx.strokeStyle = `rgba(139, 92, 246, ${opacity})`;
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+              }
+            }
+          }
+        }
+        animationFrameId = requestAnimationFrame(animateParticles);
+      }
+
+      window.addEventListener('resize', () => { resize(); initParticles(); });
+      window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+      window.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
+      window.addEventListener('click', e => {
+        for (let i = 0; i < 10; i++) particles.push(new Particle(e.clientX, e.clientY, true));
+      });
+      document.addEventListener('visibilitychange', () => {
+        isVisible = !document.hidden;
+        if (isVisible) animateParticles();
+        else cancelAnimationFrame(animationFrameId);
+      });
+
+      resize(); initParticles(); animateParticles();
+
+      // ==========================================
+      // CURSOR GLOW FOLLOWER
+      // ==========================================
+      const cursorGlow = document.getElementById('cursor-glow');
+      let cgX = window.innerWidth / 2, cgY = window.innerHeight / 2;
+      let targetCgX = cgX, targetCgY = cgY;
+      
+      if (!isMobile) {
+        window.addEventListener('mousemove', e => {
+          targetCgX = e.clientX; targetCgY = e.clientY;
+          cursorGlow.style.opacity = 1;
+        });
+        function animateCursorGlow() {
+          cgX += (targetCgX - cgX) * 0.08;
+          cgY += (targetCgY - cgY) * 0.08;
+          cursorGlow.style.left = `${cgX}px`;
+          cursorGlow.style.top = `${cgY}px`;
+          requestAnimationFrame(animateCursorGlow);
+        }
+        animateCursorGlow();
+      }
+
+      // ==========================================
+      // SCROLL PROGRESS BAR & NAV HIGHLIGHT
+      // ==========================================
+      const progressBar = document.getElementById('scroll-progress');
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = `${(winScroll / height) * 100}%`;
+      });
+
+      const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('data-section') === entry.target.id) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      }, { threshold: 0.5 });
+      sections.forEach(sec => navObserver.observe(sec));
+
+      // ==========================================
+      // TYPING EFFECT
+      // ==========================================
+      const str1 = "Tăng band IELTS ";
+      const str2 = "thực chất & vững chắc.";
+      const target1 = document.getElementById('type-target-1');
+      const target2 = document.getElementById('type-target-2');
+      const cursor = document.getElementById('typing-cursor');
+      let tIdx1 = 0, tIdx2 = 0;
+
+      function typeStr2() {
+        if (tIdx2 < str2.length) {
+          target2.textContent += str2.charAt(tIdx2);
+          tIdx2++;
+          setTimeout(typeStr2, 30);
+        } else {
+          setTimeout(() => cursor.classList.add('hide'), 2400); // hide after 3 blinks
+        }
+      }
+      function typeStr1() {
+        if (tIdx1 < str1.length) {
+          target1.textContent += str1.charAt(tIdx1);
+          tIdx1++;
+          setTimeout(typeStr1, 30);
+        } else {
+          typeStr2();
+        }
+      }
+      setTimeout(typeStr1, 300);
+
+      // ==========================================
+      // SCROLL REVEAL & STAT COUNTERS
+      // ==========================================
+      const revealObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            obs.unobserve(entry.target);
+            
+            // Check if contains stat numbers
+            const nums = entry.target.querySelectorAll('.stat-number, .stat-number-float');
+            nums.forEach(num => {
+              const target = parseFloat(num.getAttribute('data-target'));
+              const isFloat = num.classList.contains('stat-number-float');
+              const duration = 2000;
+              let start = null;
+              
+              function step(timestamp) {
+                if (!start) start = timestamp;
+                const progress = Math.min((timestamp - start) / duration, 1);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const current = easeOut * target;
+                
+                num.textContent = isFloat ? current.toFixed(1) : Math.floor(current);
+                if (progress < 1) requestAnimationFrame(step);
+              }
+              requestAnimationFrame(step);
+            });
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.reveal-mask, .fade-up').forEach(el => revealObserver.observe(el));
+
+      // ==========================================
+      // 3D TILT & MAGNETIC BUTTONS (Desktop only)
+      // ==========================================
+      if (!isMobile) {
+        // Tilt Cards
+        document.querySelectorAll('.tilt-card').forEach(card => {
+          card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -8;
+            const rotateY = ((x - centerX) / centerX) * 8;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+          });
+          card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+            card.style.transition = 'transform 0.6s ease-out';
+          });
+          card.addEventListener('mouseenter', () => {
+            card.style.transition = 'none';
+          });
+        });
+
+        // Magnetic Buttons
+        document.querySelectorAll('.btn-magnetic').forEach(btn => {
+          btn.addEventListener('mousemove', e => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+          });
+          btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translate(0px, 0px)';
+            btn.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+          });
+          btn.addEventListener('mouseenter', () => {
+            btn.style.transition = 'none';
+          });
+        });
+      }
+
+      // GLARE EFFECT UPDATE
+      document.querySelectorAll('.glare-glass').forEach(el => {
+        el.addEventListener('mousemove', e => {
           const rect = el.getBoundingClientRect();
-          // Tính toán phần trăm vị trí chuột so với chiều rộng/cao của thẻ
           const x = ((e.clientX - rect.left) / rect.width) * 100;
           const y = ((e.clientY - rect.top) / rect.height) * 100;
-          
-          // Cập nhật biến CSS để dịch chuyển gradient ánh sáng
           el.style.setProperty('--x', `${x}%`);
           el.style.setProperty('--y', `${y}%`);
         });
+      });
 
-        // Tắt lớp sáng khi chuột rời đi
-        el.addEventListener('mouseleave', () => {
-          // Trả về giữa thẻ nhưng giữ độ mờ thấp (do CSS hover tự ngắt opacity)
-          el.style.setProperty('--x', `50%`);
-          el.style.setProperty('--y', `50%`);
+      // ==========================================
+      // ACCORDION
+      // ==========================================
+      document.querySelectorAll('.accordion-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const content = btn.nextElementSibling;
+          btn.classList.toggle('expanded');
+          if (btn.classList.contains('expanded')) {
+            content.style.maxHeight = content.scrollHeight + "px";
+          } else {
+            content.style.maxHeight = "0px";
+          }
         });
       });
 
-      // 2. XỬ LÝ CẢM BIẾN NGHIÊNG (GYROSCOPE) TRÊN MOBILE
-      let isGyroscopeActive = false;
-
-      const handleOrientation = (event) => {
-        let gamma = event.gamma; // Trái/Phải [-90 to 90]
-        let beta = event.beta;   // Lên/Xuống [-180 to 180]
-
-        // Giới hạn góc nghiêng để ánh sáng không chạy tuột ra ngoài quá nhanh
-        if (gamma === null || beta === null) return;
-        
-        // Công thức chuẩn hóa góc nghiêng sang hệ % (Từ 0% đến 100%)
-        // Giả sử người dùng cầm điện thoại nghiêng 30 độ là tự nhiên nhất
-        let xPercent = Math.min(Math.max((gamma + 45) / 90 * 100, 0), 100);
-        let yPercent = Math.min(Math.max((beta - 30 + 45) / 90 * 100, 0), 100);
-
-        glassElements.forEach(el => {
-          el.classList.add('is-tilting');
-          el.style.setProperty('--x', `${xPercent}%`);
-          el.style.setProperty('--y', `${yPercent}%`);
+      // ==========================================
+      // FORM VALIDATION & SUBMIT
+      // ==========================================
+      const form = document.getElementById('signup-form');
+      const inputs = form.querySelectorAll('.input-field[required]');
+      
+      inputs.forEach(input => {
+        input.addEventListener('blur', () => {
+          const icon = input.parentElement.querySelector('.validation-icon');
+          if (input.checkValidity() && input.value.trim() !== '') {
+            input.classList.remove('input-invalid');
+            input.classList.add('input-valid');
+            if(icon) icon.classList.remove('hidden');
+          } else {
+            input.classList.remove('input-valid');
+            input.classList.add('input-invalid');
+            if(icon) icon.classList.add('hidden');
+            // Shake animation
+            input.classList.remove('animate-shake');
+            void input.offsetWidth; // trigger reflow
+            input.classList.add('animate-shake');
+          }
         });
-      };
+      });
 
-      // Yêu cầu quyền trên iOS 13+ khi người dùng tap vào màn hình lần đầu
-      const requestDeviceOrientation = () => {
-        if (isGyroscopeActive) return;
-
-        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-          DeviceOrientationEvent.requestPermission()
-            .then(permissionState => {
-              if (permissionState === 'granted') {
-                window.addEventListener('deviceorientation', handleOrientation);
-                isGyroscopeActive = true;
-              }
-            })
-            .catch(console.error);
-        } else {
-          // Android và iOS cũ tự động chạy không cần xin quyền
-          window.addEventListener('deviceorientation', handleOrientation);
-          isGyroscopeActive = true;
-        }
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
         
-        // Gỡ bỏ sự kiện click sau khi đã kích hoạt thành công
-        document.removeEventListener('click', requestDeviceOrientation);
-        document.removeEventListener('touchstart', requestDeviceOrientation);
-      };
+        // Check all
+        let isValid = true;
+        inputs.forEach(input => {
+          if (!input.checkValidity() || input.value.trim() === '') {
+            isValid = false;
+            input.classList.add('input-invalid', 'animate-shake');
+          }
+        });
 
-      // Đón lõng lần chạm đầu tiên của người dùng để xin quyền trên iOS
-      document.addEventListener('click', requestDeviceOrientation);
-      document.addEventListener('touchstart', requestDeviceOrientation, { passive: true });
+        if (!isValid) return;
+
+        // Valid -> Submit sequence
+        const btn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const spinner = document.getElementById('btn-spinner');
+        const check = document.getElementById('btn-check');
+
+        btnText.classList.add('hidden');
+        spinner.classList.remove('hidden');
+
+        setTimeout(() => {
+          spinner.classList.add('hidden');
+          check.classList.remove('hidden');
+          
+          // Confetti
+          const rect = btn.getBoundingClientRect();
+          for(let i=0; i<20; i++) {
+            const conf = document.createElement('div');
+            conf.className = 'confetti';
+            conf.style.backgroundColor = ['#a855f7', '#ec4899', '#3b82f6', '#10b981'][Math.floor(Math.random()*4)];
+            conf.style.left = `${rect.left + rect.width/2}px`;
+            conf.style.top = `${rect.top + rect.height/2}px`;
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = 50 + Math.random() * 100;
+            conf.style.setProperty('--dx', `${Math.cos(angle) * velocity}px`);
+            conf.style.setProperty('--dy', `${Math.sin(angle) * velocity - 50}px`);
+            document.body.appendChild(conf);
+            setTimeout(() => conf.remove(), 1000);
+          }
+
+          // Show Toast
+          const toast = document.getElementById('toast');
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 4000);
+
+          // Reset after 3s
+          setTimeout(() => {
+            check.classList.add('hidden');
+            btnText.classList.remove('hidden');
+            form.reset();
+            inputs.forEach(i => {
+              i.classList.remove('input-valid');
+              const ic = i.parentElement.querySelector('.validation-icon');
+              if(ic) ic.classList.add('hidden');
+            });
+          }, 3000);
+
+        }, 1500);
+      });
     });
   </script>
 </body>
