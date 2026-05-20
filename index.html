@@ -527,6 +527,7 @@
 
       <nav class="hidden md:flex items-center gap-8 font-semibold text-sm">
         <a href="#khoahoc" class="nav-link" data-section="khoahoc">Lộ trình học</a>
+        <a href="#lophoc" class="nav-link" data-section="lophoc">Trên lớp</a>
         <a href="#hocphi" class="nav-link" data-section="hocphi">Học phí</a>
         <a href="https://zalo.me/0962821015" target="_blank" class="nav-link">Zalo Support</a>
         <a href="#dangky" class="btn-magnetic rounded-full px-6 py-2.5 text-white transition-transform" style="background: var(--accent);">
@@ -536,7 +537,7 @@
     </div>
   </header>
 
-  <main class="relative z-10 pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-48 lg:pb-32">
+  <main class="relative z-10 pt-28 sm:pt-36 lg:pt-48">
     
     <!-- HERO -->
     <section class="mx-auto grid max-w-7xl gap-12 lg:gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8 mb-24 lg:mb-40">
@@ -599,9 +600,8 @@
       <!-- Hero image card — NO tilt, glare only -->
       <div class="reveal-card relative w-full aspect-[4/5] lg:aspect-auto lg:h-[640px] mt-10 lg:mt-0 z-10 flex justify-center items-center" style="transition-delay: 240ms;">
         <div class="absolute inset-0 glass glare rounded-[2.5rem] p-3 sm:p-4">
-          <div class="w-full h-full rounded-[2rem] overflow-hidden relative flex flex-col items-center justify-center font-bold p-8 text-center" style="background: var(--input-fill); border: 1px solid var(--input-border); color: var(--text-muted);">
-            <svg class="w-12 h-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-            [ Image Placeholder ]
+          <div class="w-full h-full rounded-[2rem] overflow-hidden relative" style="background: var(--input-fill); border: 1px solid var(--input-border);">
+            <img src="assets/vy-hero.jpg" alt="Cô Vy — IELTS 8.5, SAT 1520" loading="eager" decoding="async" class="w-full h-full object-cover" style="object-position: center 18%;">
           </div>
         </div>
 
@@ -756,6 +756,88 @@
           </div>
           
         </div>
+      </div>
+    </section>
+
+    <!-- CLASS MOMENT — placeholder section for a short fun clip (user will drop in later) -->
+    <section id="lophoc" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-20">
+      <div class="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-center">
+        
+        <div class="max-w-md">
+          <div class="reveal-card label mb-5">Một mảnh trên lớp</div>
+          <h2 class="reveal-clip text-h2" style="transition-delay: 60ms;">
+            Học nghiêm túc.<br>
+            <span class="text-gradient">Vui&nbsp;thật&nbsp;sự.</span>
+          </h2>
+          <p class="reveal-card body-lg mt-6" style="transition-delay: 180ms;">
+            Pzy tin rằng lớp học không khí thoải mái sẽ giúp học viên tự tin nói, dám sai và tiến bộ&nbsp;nhanh hơn. Một lát cắt 60 giây ngắn ngủi trên&nbsp;lớp.
+          </p>
+
+          <div class="reveal-card mt-8 flex flex-wrap gap-2.5" style="transition-delay: 300ms;">
+            <span class="glass-sm rounded-full px-3.5 py-1.5 text-xs font-bold" style="color: var(--text-primary);">~60 giây</span>
+            <span class="glass-sm rounded-full px-3.5 py-1.5 text-xs font-bold" style="color: var(--text-primary);">Speaking trực tiếp</span>
+            <span class="glass-sm rounded-full px-3.5 py-1.5 text-xs font-bold" style="color: var(--text-primary);">Tiếng cười thật</span>
+          </div>
+        </div>
+
+        <!-- Video slot — empty glass card waiting for the clip -->
+        <div class="reveal-card relative" style="transition-delay: 240ms;">
+          <div class="relative glass glare rounded-[2rem] p-3 sm:p-4 overflow-hidden">
+            <!-- 16:9 placeholder -->
+            <div class="relative w-full rounded-[1.5rem] overflow-hidden" style="aspect-ratio: 16 / 9; background: var(--input-fill); border: 1px solid var(--input-border);">
+              
+              <!-- Subtle diagonal pinstripe so the empty box reads as "intentional placeholder" not "broken image" -->
+              <div class="absolute inset-0 opacity-60" style="background-image: repeating-linear-gradient(45deg, transparent 0, transparent 14px, var(--input-fill-strong) 14px, var(--input-fill-strong) 15px);" aria-hidden="true"></div>
+
+              <!-- Centered play button + caption -->
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-5 text-center px-6">
+                <div class="relative">
+                  <div class="absolute inset-0 rounded-full animate-ping" style="background: var(--accent); opacity: 0.18;"></div>
+                  <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center glass-sm">
+                    <svg class="w-7 h-7 sm:w-8 sm:h-8 translate-x-[2px]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <defs>
+                        <linearGradient id="play-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%"   style="stop-color: var(--accent);"/>
+                          <stop offset="100%" style="stop-color: var(--accent-2);"/>
+                        </linearGradient>
+                      </defs>
+                      <path d="M8 5.5v13a1 1 0 0 0 1.55.83l10-6.5a1 1 0 0 0 0-1.66l-10-6.5A1 1 0 0 0 8 5.5z" fill="url(#play-grad)"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-2">
+                  <div class="label">Clip lớp học · Đang cập nhật</div>
+                  <p class="text-sm font-semibold" style="color: var(--text-muted); max-width: 28ch;">
+                    Cô Vy sẽ thả 1 clip ngắn vào đây sớm thôi.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating meta chips, same vocabulary as hero -->
+          <div class="absolute -top-4 -left-3 sm:-top-5 sm:-left-5 glass-sm rounded-2xl px-4 py-3 animate-float-1 z-20 hidden sm:flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: var(--input-fill); border: 1px solid var(--input-border);">
+              <svg class="w-4 h-4" style="color: var(--accent);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            </div>
+            <div>
+              <div class="label">Hành lang</div>
+              <div class="text-sm font-extrabold mt-0.5" style="color: var(--text-primary);">Recording</div>
+            </div>
+          </div>
+
+          <div class="absolute -bottom-5 right-6 sm:right-10 glass-sm rounded-2xl px-4 py-3 animate-float-3 z-20 hidden sm:flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: var(--input-fill); border: 1px solid var(--input-border);">
+              <svg class="w-4 h-4" style="color: var(--accent-2);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h6m-6 4h10M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>
+            </div>
+            <div>
+              <div class="label">Mood</div>
+              <div class="text-sm font-extrabold mt-0.5" style="color: var(--text-primary);">Vui &amp; chill</div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
