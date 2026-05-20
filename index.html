@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark">
   <title>IELTS with Vy | Premium Preparation</title>
   <script src="https://cdn.tailwindcss.com"></script>
   
@@ -15,19 +16,12 @@
       theme: {
         extend: {
           animation: {
-            'blob': 'blob 28s infinite alternate cubic-bezier(0.4, 0, 0.2, 1)',
             'float-1': 'float 5s ease-in-out infinite',
             'float-2': 'float 7s ease-in-out 1.5s infinite',
             'float-3': 'float 6s ease-in-out 3s infinite',
             'shake': 'shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both',
           },
           keyframes: {
-            blob: {
-              '0%': { transform: 'translate(0px, 0px) scale(1)' },
-              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-              '66%': { transform: 'translate(-20px, 20px) scale(0.95)' },
-              '100%': { transform: 'translate(0px, 0px) scale(1)' },
-            },
             float: {
               '0%, 100%': { transform: 'translateY(0)' },
               '50%': { transform: 'translateY(-12px)' },
@@ -44,77 +38,98 @@
   </script>
 
   <style>
-    /* I. SYSTEM: LIGHT / DARK MODE */
+    /* ════════════════════════════════════════════
+       I. DESIGN TOKENS — Light mode default
+       ════════════════════════════════════════════ */
     :root {
+      color-scheme: light;
       --bg-base: #f5f4f8;
-      --bg-surface: #ede9f4;
       --text-primary: #0f0e13;
       --text-secondary: #4b4a57;
       --text-muted: #8e8d9a;
-      --glass-fill: rgba(255, 255, 255, 0.55);
-      --glass-border: rgba(255, 255, 255, 0.80);
+      --glass-fill: rgba(255, 255, 255, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.85);
       --glass-shadow: rgba(80, 60, 120, 0.10);
-      --glass-inset-top: rgba(255, 255, 255, 0.90);
+      --glass-inset-top: rgba(255, 255, 255, 0.95);
       --glass-inset-bot: rgba(0, 0, 0, 0.04);
       --nav-fill: rgba(245, 244, 248, 0.72);
       --nav-border: rgba(255, 255, 255, 0.70);
-      --input-fill: rgba(0, 0, 0, 0.04);
-      --input-border: rgba(0, 0, 0, 0.10);
+      --input-fill: rgba(0, 0, 0, 0.035);
+      --input-fill-strong: rgba(0, 0, 0, 0.06);
+      --input-border: rgba(0, 0, 0, 0.09);
       --accent: #7c3aed;
       --accent-light: #a855f7;
       --accent-2: #db2777;
-      --particle-color: 120, 80, 200;
-      --blob-1: rgba(167, 120, 240, 0.18);
-      --blob-2: rgba(219, 39, 119, 0.10);
-      --blob-3: rgba(99, 102, 241, 0.12);
-      --noise-opacity: 0.018;
-      --grid-color: rgba(100, 80, 160, 0.06);
+      --accent-rgb: 124, 58, 237;
+      --form-tint: rgba(124, 58, 237, 0.025);
+      
+      /* Voronoi background gradient stops */
+      --vor-0: #c4b5fd;
+      --vor-1: #ede9fe;
+      --vor-2: #faf9ff;
+      --vor-opacity: 0.55;
+      --vor-vignette: rgba(245, 244, 248, 0.4);
     }
 
+    /* Dark mode — automatically follows OS */
     @media (prefers-color-scheme: dark) {
       :root {
+        color-scheme: dark;
         --bg-base: #07091a;
-        --bg-surface: #0d1028;
         --text-primary: #f1f0f5;
-        --text-secondary: #a8a5b8;
-        --text-muted: #5c5a70;
-        --glass-fill: rgba(255, 255, 255, 0.042);
-        --glass-border: rgba(255, 255, 255, 0.090);
-        --glass-shadow: rgba(0, 0, 0, 0.50);
+        --text-secondary: #b4b1c4;
+        --text-muted: #6b6880;
+        --glass-fill: rgba(255, 255, 255, 0.045);
+        --glass-border: rgba(255, 255, 255, 0.095);
+        --glass-shadow: rgba(0, 0, 0, 0.55);
         --glass-inset-top: rgba(255, 255, 255, 0.12);
-        --glass-inset-bot: rgba(0, 0, 0, 0.25);
-        --nav-fill: rgba(7, 9, 26, 0.75);
+        --glass-inset-bot: rgba(0, 0, 0, 0.30);
+        --nav-fill: rgba(7, 9, 26, 0.72);
         --nav-border: rgba(255, 255, 255, 0.07);
-        --input-fill: rgba(255, 255, 255, 0.055);
-        --input-border: rgba(255, 255, 255, 0.10);
+        --input-fill: rgba(255, 255, 255, 0.045);
+        --input-fill-strong: rgba(255, 255, 255, 0.07);
+        --input-border: rgba(255, 255, 255, 0.09);
         --accent: #a78bfa;
         --accent-light: #c4b5fd;
         --accent-2: #f472b6;
-        --particle-color: 167, 139, 250;
-        --blob-1: rgba(139, 92, 246, 0.14);
-        --blob-2: rgba(236, 72, 153, 0.09);
-        --blob-3: rgba(99, 102, 241, 0.11);
-        --noise-opacity: 0.028;
-        --grid-color: rgba(128, 128, 128, 0.04);
+        --accent-rgb: 167, 139, 250;
+        --form-tint: rgba(167, 139, 250, 0.035);
+        
+        --vor-0: #5b21b6;
+        --vor-1: #1e1b4b;
+        --vor-2: #07091a;
+        --vor-opacity: 0.75;
+        --vor-vignette: rgba(7, 9, 26, 0.55);
       }
     }
 
-    /* BASE TYPOGRAPHY & SETUP */
+    /* ════════════════════════════════════════════
+       II. BASE TYPOGRAPHY
+       Critical fixes for Vietnamese diacritics
+       ════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; }
+    
     body { 
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       background-color: var(--bg-base);
       color: var(--text-secondary);
-      font-feature-settings: "kern" 1, "liga" 1;
+      font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ccmp" 1;
       text-rendering: optimizeLegibility;
-      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      margin: 0;
     }
 
+    /* H1 — extra padding so Vietnamese diacritics don't clip */
     .text-h1 {
       font-size: clamp(2.8rem, 5.5vw, 5rem);
       font-weight: 800;
       letter-spacing: -0.03em;
       color: var(--text-primary);
+      line-height: 1.18;
+      padding-top: 0.08em;
+      padding-bottom: 0.08em;
     }
 
     .text-h2 {
@@ -122,150 +137,239 @@
       font-weight: 800;
       letter-spacing: -0.025em;
       color: var(--text-primary);
+      line-height: 1.18;
+      padding-bottom: 0.06em;
     }
 
     .text-h3 {
-      font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
       font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--text-primary);
+      line-height: 1.25;
+      padding-bottom: 0.04em;
     }
 
     .body-lg {
       font-size: 1.125rem;
       font-weight: 500;
-      line-height: 1.75;
+      line-height: 1.7;
       color: var(--text-secondary);
-      max-width: 65ch;
+      max-width: 60ch;
     }
 
     .body-sm {
       font-size: 0.9375rem;
       font-weight: 500;
       line-height: 1.65;
-      color: var(--text-muted);
+      color: var(--text-secondary);
       max-width: 65ch;
     }
 
     .label {
       font-size: 0.6875rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.10em;
       text-transform: uppercase;
       color: var(--text-muted);
     }
 
+    /* Gradient text — fixed for Vietnamese diacritics
+       Key fixes: display:inline-block, padding-bottom for descenders/marks,
+       padding-top for combining accents above caps, explicit line-height */
     .text-gradient {
       background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
       background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      display: inline-block;
+      line-height: 1.25;
+      padding-top: 0.10em;
+      padding-bottom: 0.12em;
+      font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ccmp" 1;
     }
 
-    /* II. TRUE APPLE LIQUID GLASS */
+    /* ════════════════════════════════════════════
+       III. VORONOI SVG BACKGROUND
+       Pure SVG filter, no canvas, no JS animation
+       Adapts to light/dark via CSS variables
+       ════════════════════════════════════════════ */
+    .voronoi-bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -3;
+      opacity: var(--vor-opacity);
+      pointer-events: none;
+    }
+
+    .voronoi-vignette {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      pointer-events: none;
+      background: radial-gradient(
+        ellipse 80% 60% at 50% 50%,
+        transparent 0%,
+        var(--vor-vignette) 100%
+      );
+    }
+
+    /* SVG gradient stop colors driven by CSS vars */
+    .vor-stop-0 { stop-color: var(--vor-0); }
+    .vor-stop-1 { stop-color: var(--vor-1); }
+    .vor-stop-2 { stop-color: var(--vor-2); }
+
+    /* ════════════════════════════════════════════
+       IV. TRUE APPLE LIQUID GLASS
+       — Top-edge specular ::before (static)
+       — Mouse swipe shimmer ::after (linear, not radial)
+       ════════════════════════════════════════════ */
+    .glass, .glass-sm, .glass-nav {
+      position: relative;
+      isolation: isolate;
+    }
+
     .glass {
       background: var(--glass-fill);
-      backdrop-filter: blur(18px) saturate(1.6) brightness(1.04);
-      -webkit-backdrop-filter: blur(18px) saturate(1.6) brightness(1.04);
+      backdrop-filter: blur(22px) saturate(1.7) brightness(1.02);
+      -webkit-backdrop-filter: blur(22px) saturate(1.7) brightness(1.02);
       border: 1px solid var(--glass-border);
       box-shadow:
         inset 0 1px 0 var(--glass-inset-top),
         inset 0 -1px 0 var(--glass-inset-bot),
-        0 2px 1px rgba(0,0,0,0.04),
-        0 12px 40px -8px var(--glass-shadow);
+        0 1px 1px rgba(0,0,0,0.03),
+        0 16px 50px -10px var(--glass-shadow);
     }
 
     .glass-sm {
       background: var(--glass-fill);
-      backdrop-filter: blur(12px) saturate(1.4);
-      -webkit-backdrop-filter: blur(12px) saturate(1.4);
+      backdrop-filter: blur(14px) saturate(1.5);
+      -webkit-backdrop-filter: blur(14px) saturate(1.5);
       border: 1px solid var(--glass-border);
       box-shadow:
         inset 0 1px 0 var(--glass-inset-top),
-        0 4px 16px -2px var(--glass-shadow);
+        inset 0 -1px 0 var(--glass-inset-bot),
+        0 4px 20px -4px var(--glass-shadow);
     }
 
     .glass-nav {
       background: var(--nav-fill);
-      backdrop-filter: blur(24px) saturate(1.8);
-      -webkit-backdrop-filter: blur(24px) saturate(1.8);
+      backdrop-filter: blur(28px) saturate(1.9);
+      -webkit-backdrop-filter: blur(28px) saturate(1.9);
       border-bottom: 1px solid var(--nav-border);
       box-shadow: 0 1px 0 var(--glass-inset-top);
       height: 64px;
     }
     @media (max-width: 768px) { .glass-nav { height: 56px; } }
 
-    /* Glare Surface */
+    /* STATIC SPECULAR — thin bright line at top edge (real glass refraction) */
+    .glass::before, .glass-sm::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.22) 0%,
+        rgba(255, 255, 255, 0.04) 8%,
+        transparent 20%
+      );
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.9;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .glass::before, .glass-sm::before {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.14) 0%,
+          rgba(255, 255, 255, 0.03) 10%,
+          transparent 22%
+        );
+      }
+    }
+
+    /* MOUSE SHIMMER — diagonal sweep, not a circular spotlight */
     .glare {
-      position: relative;
       overflow: hidden;
-      --x: 50%;
-      --y: 50%;
-      --glare-opacity: 0;
+      --glare-pos: 50%;
     }
     .glare::after {
       content: '';
       position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at var(--x) var(--y), rgba(255,255,255,1) 0%, transparent 65%);
-      opacity: var(--glare-opacity);
-      mix-blend-mode: overlay;
+      inset: -1px;
+      border-radius: inherit;
+      background: linear-gradient(
+        115deg,
+        transparent 35%,
+        rgba(255, 255, 255, 0.06) calc(var(--glare-pos) - 12%),
+        rgba(255, 255, 255, 0.16) var(--glare-pos),
+        rgba(255, 255, 255, 0.06) calc(var(--glare-pos) + 12%),
+        transparent 65%
+      );
+      opacity: 0;
       transition: opacity 0.5s ease;
       pointer-events: none;
-      z-index: 10;
+      z-index: 2;
+      mix-blend-mode: plus-lighter;
     }
-    .glare:hover { --glare-opacity: 0.45; }
+    .glare:hover::after { opacity: 1; }
 
-    /* III. BACKGROUND LAYERS */
-    .bg-noise {
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      opacity: var(--noise-opacity);
-      mix-blend-mode: overlay;
-      pointer-events: none;
-    }
-
-    .bg-grid {
-      background-image: 
-        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
+    @media (prefers-color-scheme: dark) {
+      .glare::after {
+        background: linear-gradient(
+          115deg,
+          transparent 35%,
+          rgba(255, 255, 255, 0.04) calc(var(--glare-pos) - 12%),
+          rgba(255, 255, 255, 0.12) var(--glare-pos),
+          rgba(255, 255, 255, 0.04) calc(var(--glare-pos) + 12%),
+          transparent 65%
+        );
+      }
     }
 
-    /* V. INTERACTIONS */
+    /* Ensure content sits ABOVE the pseudo elements */
+    .glass > *, .glass-sm > * { position: relative; z-index: 3; }
+
+    /* Subtle card hover — no 3D tilt, just gentle scale */
+    .card-hover {
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .card-hover:hover { transform: translateY(-4px); }
+
+    /* ════════════════════════════════════════════
+       V. INTERACTIONS
+       ════════════════════════════════════════════ */
     #cursor-glow {
       position: fixed;
-      width: 300px; height: 300px;
+      width: 360px; height: 360px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(var(--particle-color), 0.10) 0%, transparent 70%);
-      mix-blend-mode: normal;
+      background: radial-gradient(circle, rgba(var(--accent-rgb), 0.08) 0%, transparent 65%);
       pointer-events: none;
       z-index: 1;
       transform: translate(-50%, -50%);
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.4s ease;
     }
 
-    .tilt-3d {
-      transform-style: preserve-3d;
-      will-change: transform;
-    }
+    .btn-magnetic { will-change: transform; }
 
-    .btn-magnetic {
-      will-change: transform;
-    }
-
-    /* Scroll Reveal */
     .reveal-clip {
       clip-path: inset(100% 0 0 0);
       transition: clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .reveal-clip.is-revealed {
-      clip-path: inset(0% 0 0 0);
-    }
+    .reveal-clip.is-revealed { clip-path: inset(0% 0 0 0); }
+
     .reveal-card {
       opacity: 0;
-      transform: translateY(32px);
+      transform: translateY(28px);
       transition: opacity 0.8s ease-out, transform 0.8s ease-out;
     }
     .reveal-card.is-revealed {
@@ -276,12 +380,16 @@
     #scroll-progress {
       position: fixed;
       top: 0; left: 0;
-      height: 3px; width: 0%;
+      height: 2px; width: 0%;
       background: linear-gradient(to right, var(--accent), var(--accent-2));
       z-index: 100;
     }
 
-    .nav-link { position: relative; color: var(--text-secondary); transition: color 0.3s ease; }
+    .nav-link { 
+      position: relative; 
+      color: var(--text-secondary); 
+      transition: color 0.3s ease;
+    }
     .nav-link:hover { color: var(--text-primary); }
     .nav-link::after {
       content: ''; position: absolute;
@@ -290,36 +398,48 @@
       background: currentColor;
       transition: width 0.3s ease;
     }
+    .nav-link.active { color: var(--text-primary); }
     .nav-link.active::after { width: 100%; }
 
     .typing-cursor {
       display: inline-block;
-      width: 2px; height: 1em;
+      width: 2px; height: 0.9em;
       background-color: currentColor;
       margin-left: 4px;
-      vertical-align: middle;
-      animation: blink 0.8s step-end infinite;
+      vertical-align: -0.05em;
+      animation: blink 0.85s step-end infinite;
     }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-    /* Form Fields */
+    /* Form fields */
     .input-field {
       background: var(--input-fill);
       border: 1px solid var(--input-border);
       color: var(--text-primary);
-      transition: all 0.3s ease;
+      transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
+    .input-field::placeholder { color: var(--text-muted); }
+    .input-field:hover { background: var(--input-fill-strong); }
     .input-field:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--blob-1);
+      background: var(--input-fill-strong);
+      border-color: rgba(var(--accent-rgb), 0.45);
+      box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08);
     }
     .input-invalid {
-      border-color: #ef4444 !important;
-      box-shadow: 0 0 0 3px rgba(239,68,68,0.15) !important;
+      border-color: rgba(239, 68, 68, 0.5) !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10) !important;
     }
     .input-valid {
-      border-color: #22c55e !important;
+      border-color: rgba(34, 197, 94, 0.5) !important;
+    }
+
+    /* Native select arrow */
+    select.input-field {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238e8d9a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1.25rem center;
+      padding-right: 2.5rem;
     }
 
     /* Accordion */
@@ -338,46 +458,70 @@
     }
     #toast.show { transform: translateY(0); }
 
-    /* Prefers Reduced Motion */
+    /* Reduced motion */
     @media (prefers-reduced-motion: reduce) { 
-      * { 
+      *, *::before, *::after { 
         animation-duration: 0.01ms !important; 
+        animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important; 
       }
+      .voronoi-bg animate { display: none; }
     }
   </style>
 </head>
 
 <body>
 
-  <canvas id="particle-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-[-3]"></canvas>
+  <!-- VORONOI CELLS BACKGROUND — SVG filter, pure CSS animation -->
+  <svg class="voronoi-bg" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <filter id="bg-filter" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+        <feTurbulence 
+          type="turbulence" 
+          baseFrequency="0.011 0.007"
+          numOctaves="3"
+          seed="7"
+          result="turb">
+          <animate attributeName="baseFrequency"
+            values="0.011 0.007; 0.014 0.010; 0.009 0.006; 0.011 0.007"
+            dur="42s" repeatCount="indefinite"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="turb"
+          scale="180" xChannelSelector="R" yChannelSelector="G"
+          result="displaced"/>
+        <feColorMatrix type="saturate" values="1.4"/>
+        <feGaussianBlur stdDeviation="1" />
+      </filter>
+      
+      <radialGradient id="vor-source" cx="42%" cy="38%" r="75%">
+        <stop offset="0%"   class="vor-stop-0"/>
+        <stop offset="45%"  class="vor-stop-1"/>
+        <stop offset="100%" class="vor-stop-2"/>
+      </radialGradient>
+    </defs>
+    
+    <rect width="100%" height="100%" filter="url(#bg-filter)" fill="url(#vor-source)"/>
+  </svg>
 
-  <div class="fixed inset-0 w-full h-full bg-noise z-[-2]"></div>
-
-  <div class="fixed inset-0 w-full h-full bg-grid z-[-1]"></div>
-
-  <div class="fixed inset-0 w-full h-full pointer-events-none z-[-4] overflow-hidden">
-    <div class="absolute -top-32 -left-32 w-[700px] h-[700px] rounded-full blur-[160px] animate-blob" style="background: var(--blob-1);"></div>
-    <div class="absolute -top-10 -right-32 w-[800px] h-[800px] rounded-full blur-[160px] animate-blob" style="background: var(--blob-2); animation-delay: -8s;"></div>
-    <div class="absolute -bottom-60 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full blur-[160px] animate-blob" style="background: var(--blob-3); animation-delay: -16s;"></div>
-  </div>
+  <!-- Vignette to soften edges -->
+  <div class="voronoi-vignette"></div>
 
   <div id="cursor-glow"></div>
   <div id="scroll-progress"></div>
 
   <header class="glass-nav fixed top-0 left-0 right-0 z-50 w-full flex items-center justify-center">
-    <div class="w-full max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-full">
       <div class="flex items-center gap-3">
-        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] text-sm font-extrabold text-white">
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-extrabold text-white" style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);">
           PV
         </div>
         <div>
-          <div class="font-extrabold tracking-tight text-[var(--text-primary)] text-sm sm:text-base leading-tight">IELTS with Vy</div>
+          <div class="font-extrabold tracking-tight text-sm sm:text-base leading-tight" style="color: var(--text-primary);">IELTS with Vy</div>
           <div class="label" style="color: var(--accent-light);">IDP Referral Agent</div>
         </div>
       </div>
       
-      <a href="#dangky" class="md:hidden rounded-full bg-[var(--accent)] px-5 py-2 text-xs font-bold text-white btn-magnetic">
+      <a href="#dangky" class="md:hidden rounded-full px-5 py-2 text-xs font-bold text-white btn-magnetic" style="background: var(--accent);">
         Đăng ký
       </a>
 
@@ -385,7 +529,7 @@
         <a href="#khoahoc" class="nav-link" data-section="khoahoc">Lộ trình học</a>
         <a href="#hocphi" class="nav-link" data-section="hocphi">Học phí</a>
         <a href="https://zalo.me/0962821015" target="_blank" class="nav-link">Zalo Support</a>
-        <a href="#dangky" class="btn-magnetic rounded-full bg-[var(--accent)] px-6 py-2.5 text-white shadow-sm transition-transform">
+        <a href="#dangky" class="btn-magnetic rounded-full px-6 py-2.5 text-white transition-transform" style="background: var(--accent);">
           Tư vấn xếp lớp
         </a>
       </nav>
@@ -394,218 +538,217 @@
 
   <main class="relative z-10 pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-48 lg:pb-32">
     
-    <section class="mx-auto grid max-w-7xl gap-12 lg:gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8 mb-24 lg:mb-40">
+    <!-- HERO -->
+    <section class="mx-auto grid max-w-7xl gap-12 lg:gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8 mb-24 lg:mb-40">
       <div class="max-w-2xl relative z-20">
-        <div class="reveal-card glass-sm inline-flex items-center gap-3 rounded-xl px-4 py-2 text-xs font-bold text-[var(--text-primary)] mb-8">
+        <div class="reveal-card glass-sm inline-flex items-center gap-3 rounded-full px-4 py-2 text-xs font-bold mb-8" style="color: var(--text-primary);">
           <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent)]"></span>
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background: var(--accent);"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2" style="background: var(--accent);"></span>
           </span>
           Khai giảng khóa tháng 4/2026
         </div>
         
         <h1 class="text-h1">
-          <span class="inline">
-            <span id="type-line-1"></span><br>
-            <span id="type-line-2" class="text-gradient">&nbsp;</span>
-            <span id="typing-cursor" class="typing-cursor"></span>
-          </span>
+          <span id="type-line-1"></span><br>
+          <span id="type-line-2" class="text-gradient">&nbsp;</span><span id="typing-cursor" class="typing-cursor"></span>
         </h1>
         
         <p class="reveal-card body-lg mt-6" style="transition-delay: 120ms;">
-          8.5 IELTS | 1520 SAT | Hơn 3 năm kinh nghiệm.<br> Lộ trình cá nhân hóa, chữa bài chuyên sâu từng tiêu chí giúp học viên vượt&nbsp;target.
+          8.5 IELTS&nbsp;·&nbsp;1520 SAT&nbsp;·&nbsp;Hơn 3 năm kinh nghiệm.<br>
+          Lộ trình cá nhân hóa, chữa bài chuyên sâu từng tiêu chí giúp học viên vượt&nbsp;target.
         </p>
 
-        <div class="reveal-card mt-8 flex flex-wrap gap-4" style="transition-delay: 240ms;">
-          <div class="glass-sm px-5 py-2.5 rounded-xl flex flex-col justify-center">
-            <div class="flex items-baseline gap-1">
-              <span class="text-2xl font-black text-[var(--text-primary)] stat-number" data-target="60">0</span>
+        <div class="reveal-card mt-8 flex flex-wrap gap-3" style="transition-delay: 240ms;">
+          <div class="glass-sm px-5 py-3 rounded-2xl flex flex-col">
+            <div class="flex items-baseline gap-0.5">
+              <span class="text-2xl font-black stat-number" data-target="60" style="color: var(--text-primary);">0</span>
               <span class="text-xl font-black" style="color: var(--accent-light);">+</span>
             </div>
-            <span class="label">Học viên</span>
+            <span class="label mt-0.5">Học viên</span>
           </div>
-          <div class="glass-sm px-5 py-2.5 rounded-xl flex flex-col justify-center">
-            <div class="flex items-baseline gap-1">
-              <span class="text-2xl font-black text-[var(--text-primary)] stat-number-float" data-target="8.5">0.0</span>
-            </div>
-            <span class="label">Band</span>
+          <div class="glass-sm px-5 py-3 rounded-2xl flex flex-col">
+            <span class="text-2xl font-black stat-number-float" data-target="8.5" style="color: var(--text-primary);">0.0</span>
+            <span class="label mt-0.5">Band</span>
           </div>
-          <div class="glass-sm px-5 py-2.5 rounded-xl flex flex-col justify-center">
-            <div class="flex items-baseline gap-1">
-              <span class="text-2xl font-black text-[var(--text-primary)] stat-number" data-target="3">0</span>
-              <span class="text-xl font-black text-[var(--accent-2)]">+</span>
+          <div class="glass-sm px-5 py-3 rounded-2xl flex flex-col">
+            <div class="flex items-baseline gap-0.5">
+              <span class="text-2xl font-black stat-number" data-target="3" style="color: var(--text-primary);">0</span>
+              <span class="text-xl font-black" style="color: var(--accent-2);">+</span>
             </div>
-            <span class="label">Năm K.N</span>
+            <span class="label mt-0.5">Năm K.N</span>
           </div>
         </div>
         
         <div class="reveal-card mt-10 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4" style="transition-delay: 360ms;">
-          <a href="#dangky" class="btn-magnetic w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-[var(--text-primary)] text-[var(--bg-base)] px-8 py-4 text-base font-bold transition-transform">
+          <a href="#dangky" class="btn-magnetic w-full sm:w-auto inline-flex items-center justify-center rounded-full px-8 py-4 text-base font-bold transition-transform" style="background: var(--text-primary); color: var(--bg-base);">
             Nhận tư vấn lộ trình
           </a>
           
-          <div class="glass-sm rounded-full px-5 py-2 sm:ml-2 flex items-center gap-3 w-full sm:w-auto">
-            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0">
-              <svg class="w-8 h-8" style="color: var(--accent);" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <div class="glass-sm rounded-full pl-3 pr-5 py-2 sm:ml-2 flex items-center gap-3 w-full sm:w-auto">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7" style="color: var(--accent);" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </div>
-            <div class="text-[0.8125rem] font-bold text-[var(--text-secondary)] leading-tight">
+            <div class="text-[0.8125rem] font-bold leading-tight" style="color: var(--text-secondary);">
               Đối tác Vàng<br><span class="font-extrabold" style="color: var(--accent-light);">IDP Vietnam</span>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Hero image card — NO tilt, glare only -->
       <div class="reveal-card relative w-full aspect-[4/5] lg:aspect-auto lg:h-[640px] mt-10 lg:mt-0 z-10 flex justify-center items-center" style="transition-delay: 240ms;">
-        <div class="absolute inset-0 glass glare tilt-3d rounded-[2.5rem] p-3 sm:p-4">
-          <div class="w-full h-full rounded-[2rem] bg-[var(--input-fill)] overflow-hidden relative border border-[var(--input-border)]">
-            <div class="absolute inset-0 flex flex-col items-center justify-center font-bold p-8 text-center text-[var(--text-muted)]">
-              <svg class="w-12 h-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-              [ Image Placeholder ]
-            </div>
+        <div class="absolute inset-0 glass glare rounded-[2.5rem] p-3 sm:p-4">
+          <div class="w-full h-full rounded-[2rem] overflow-hidden relative flex flex-col items-center justify-center font-bold p-8 text-center" style="background: var(--input-fill); border: 1px solid var(--input-border); color: var(--text-muted);">
+            <svg class="w-12 h-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            [ Image Placeholder ]
           </div>
         </div>
 
         <div class="absolute -top-4 -right-4 sm:-right-6 glass-sm rounded-2xl p-4 animate-float-1 z-20">
           <div class="flex flex-col items-center justify-center">
             <span class="label">Overall</span>
-            <span class="text-xl font-black text-gradient">8.5 IELTS</span>
+            <span class="text-xl font-black text-gradient mt-1">8.5 IELTS</span>
           </div>
         </div>
 
         <div class="absolute top-[40%] -left-4 sm:-left-8 glass-sm rounded-2xl p-4 animate-float-2 z-20">
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full border flex items-center justify-center" style="border-color: var(--glass-border); background: var(--input-fill);">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center" style="background: var(--input-fill); border: 1px solid var(--input-border);">
               <svg class="w-4 h-4" style="color: var(--accent-2);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
             </div>
             <div>
               <div class="label">Writing</div>
-              <div class="text-base font-black text-[var(--text-primary)]">7.0</div>
+              <div class="text-base font-black mt-0.5" style="color: var(--text-primary);">7.0</div>
             </div>
           </div>
         </div>
 
         <div class="absolute -bottom-6 right-8 sm:right-12 glass-sm rounded-2xl p-4 animate-float-3 z-20">
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full border flex items-center justify-center" style="border-color: var(--glass-border); background: var(--input-fill);">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center" style="background: var(--input-fill); border: 1px solid var(--input-border);">
               <svg class="w-4 h-4" style="color: var(--accent);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
             </div>
             <div>
               <div class="label">Reading</div>
-              <div class="text-base font-black text-[var(--text-primary)]">8.0</div>
+              <div class="text-base font-black mt-0.5" style="color: var(--text-primary);">8.0</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- COURSES -->
     <section id="khoahoc" class="py-16 sm:py-24 relative z-20">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
+        <div class="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
           <h2 class="reveal-clip text-h2">
             Lộ trình học <span class="text-gradient">tinh&nbsp;gọn</span>
           </h2>
           <p class="reveal-card body-lg mx-auto mt-6">Hai nhóm lớp thiết kế chuyên biệt. Loại bỏ kiến thức dư thừa, tập trung tối đa vào hiệu quả thực tế trên từng band&nbsp;điểm.</p>
         </div>
 
-        <div class="grid lg:grid-cols-2 gap-8 sm:gap-10">
+        <div class="grid lg:grid-cols-2 gap-8">
           
-          <div class="reveal-card glass glare tilt-3d rounded-[2.5rem] p-8 sm:p-10 relative z-10" style="transition-delay: 120ms;">
+          <!-- Moderate -->
+          <div class="reveal-card glass glare card-hover rounded-[2rem] p-8 sm:p-10 relative z-10" style="transition-delay: 120ms;">
             <div class="flex flex-col sm:flex-row justify-between items-start gap-5 mb-8">
               <div>
-                <div class="inline-flex items-center rounded-lg px-3 py-1 label mb-4" style="background: var(--input-fill); border: 1px solid var(--input-border);">Foundation</div>
+                <div class="inline-flex items-center rounded-md px-2.5 py-1 label mb-4" style="background: var(--input-fill); border: 1px solid var(--input-border);">Foundation</div>
                 <h3 class="text-h3">Lớp Moderate</h3>
-                <p class="mt-2 text-base font-bold" style="color: var(--accent-light);">Target: 4.0 - 6.5</p>
+                <p class="mt-2 text-sm font-bold" style="color: var(--accent-light);">Target: 4.0 – 6.5</p>
               </div>
-              <div class="w-full sm:w-auto text-left sm:text-right px-4 py-3 rounded-2xl flex sm:block justify-between items-center" style="background: var(--input-fill); border: 1px solid var(--input-border);">
-                <div class="text-sm font-extrabold text-[var(--text-primary)]">T5 & T7</div>
-                <div class="text-xs font-semibold text-[var(--text-muted)] sm:mt-1">20:00 - 21:30</div>
+              <div class="w-full sm:w-auto text-left sm:text-right px-4 py-3 rounded-xl flex sm:block justify-between items-center" style="background: var(--input-fill); border: 1px solid var(--input-border);">
+                <div class="text-sm font-extrabold" style="color: var(--text-primary);">T5 & T7</div>
+                <div class="text-xs font-semibold sm:mt-0.5" style="color: var(--text-muted);">20:00 – 21:30</div>
               </div>
             </div>
             
             <p class="body-sm mb-8">Dành cho học viên muốn củng cố nền tảng, học cách tiếp cận đề bài bản nhất trong 3&nbsp;tháng.</p>
             
-            <ul class="space-y-4 body-sm mb-10">
-              <li class="flex gap-4 items-start">
-                <div class="mt-1 h-[6px] w-[6px] rounded-full shrink-0" style="background: var(--accent);"></div> 
+            <ul class="space-y-3 body-sm mb-8">
+              <li class="flex gap-3 items-start">
+                <div class="mt-[9px] h-1 w-1 rounded-full shrink-0" style="background: var(--accent); opacity: 0.7;"></div> 
                 Tiếp cận 4 kỹ năng nhờ phương pháp tích hợp.
               </li>
-              <li class="flex gap-4 items-start">
-                <div class="mt-1 h-[6px] w-[6px] rounded-full shrink-0" style="background: var(--accent);"></div> 
+              <li class="flex gap-3 items-start">
+                <div class="mt-[9px] h-1 w-1 rounded-full shrink-0" style="background: var(--accent); opacity: 0.7;"></div> 
                 Luyện Speaking & Writing song song, liên kết topic.
               </li>
             </ul>
 
             <div class="pt-2" style="border-top: 1px solid var(--input-border);">
-              <button class="accordion-btn w-full flex items-center justify-between text-left py-4 text-sm font-bold text-[var(--text-primary)] transition-colors focus:outline-none">
+              <button class="accordion-btn w-full flex items-center justify-between text-left py-4 text-sm font-bold transition-colors focus:outline-none" style="color: var(--text-primary);">
                 <span>Tài liệu & Lộ trình chi tiết</span>
-                <svg class="accordion-icon h-5 w-5 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                <svg class="accordion-icon h-5 w-5" style="color: var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </button>
               <div class="accordion-content">
-                <div class="space-y-3 pb-4">
-                  <a href="https://docs.google.com/document/d/1Ju_IHjogwd_Zu7qL93J2pUE_rfsRQLQYEfKbQTjdcXk/edit?tab=t.0" target="_blank" class="flex items-center gap-4 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-2xl p-3 group" style="background: var(--input-fill);">
-                    <div class="rounded-xl p-2" style="background: var(--input-fill); color: var(--accent);">
+                <div class="space-y-2.5 pb-4">
+                  <a href="https://docs.google.com/document/d/1Ju_IHjogwd_Zu7qL93J2pUE_rfsRQLQYEfKbQTjdcXk/edit?tab=t.0" target="_blank" class="flex items-center gap-4 text-sm font-medium transition-colors rounded-xl p-3 group" style="background: var(--input-fill); color: var(--text-secondary);">
+                    <div class="rounded-lg p-2" style="background: var(--input-fill-strong); color: var(--accent);">
                       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                     </div>
                     <span>Syllabus lộ trình</span>
-                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1" style="color: var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                   </a>
-                  <a href="https://drive.google.com/file/d/1YiQ5YXYMDIoLDSLSUbJ2mfpOz2qD6oO5/view?usp=drivesdk" target="_blank" class="flex items-center gap-4 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-2xl p-3 group" style="background: var(--input-fill);">
-                    <div class="rounded-xl p-2" style="background: var(--input-fill); color: var(--accent);">
+                  <a href="https://drive.google.com/file/d/1YiQ5YXYMDIoLDSLSUbJ2mfpOz2qD6oO5/view?usp=drivesdk" target="_blank" class="flex items-center gap-4 text-sm font-medium transition-colors rounded-xl p-3 group" style="background: var(--input-fill); color: var(--text-secondary);">
+                    <div class="rounded-lg p-2" style="background: var(--input-fill-strong); color: var(--accent);">
                       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <span>Recording mẫu lớp Moderate</span>
-                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1" style="color: var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                   </a>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="reveal-card glass glare tilt-3d rounded-[2.5rem] p-8 sm:p-10 relative z-10" style="transition-delay: 240ms;">
+          <!-- Giai De -->
+          <div class="reveal-card glass glare card-hover rounded-[2rem] p-8 sm:p-10 relative z-10" style="transition-delay: 240ms;">
             <div class="flex flex-col sm:flex-row justify-between items-start gap-5 mb-8">
               <div>
-                <div class="inline-flex items-center rounded-lg px-3 py-1 label mb-4" style="background: var(--input-fill); border: 1px solid var(--input-border);">Practice Intensive</div>
+                <div class="inline-flex items-center rounded-md px-2.5 py-1 label mb-4" style="background: var(--input-fill); border: 1px solid var(--input-border);">Practice Intensive</div>
                 <h3 class="text-h3">Lớp Giải Đề</h3>
-                <p class="mt-2 text-base font-bold" style="color: var(--accent-2);">Target: 6.5 - 8.5</p>
+                <p class="mt-2 text-sm font-bold" style="color: var(--accent-2);">Target: 6.5 – 8.5</p>
               </div>
-              <div class="w-full sm:w-auto text-left sm:text-right px-4 py-3 rounded-2xl flex sm:block justify-between items-center" style="background: var(--input-fill); border: 1px solid var(--input-border);">
-                <div class="text-sm font-extrabold text-[var(--text-primary)]">Thứ 6 & CN</div>
-                <div class="text-xs font-semibold text-[var(--text-muted)] sm:mt-1">20:00 - 21:30</div>
+              <div class="w-full sm:w-auto text-left sm:text-right px-4 py-3 rounded-xl flex sm:block justify-between items-center" style="background: var(--input-fill); border: 1px solid var(--input-border);">
+                <div class="text-sm font-extrabold" style="color: var(--text-primary);">Thứ 6 & CN</div>
+                <div class="text-xs font-semibold sm:mt-0.5" style="color: var(--text-muted);">20:00 – 21:30</div>
               </div>
             </div>
             
             <p class="body-sm mb-8">Boost band cấp tốc. Dành cho các bạn đã có nền khá vững, luyện đề chuyên sâu kết hợp chữa bài chi&nbsp;tiết.</p>
             
-            <ul class="space-y-4 body-sm mb-10">
-              <li class="flex gap-4 items-start">
-                <div class="mt-1 h-[6px] w-[6px] rounded-full shrink-0" style="background: var(--accent-2);"></div> 
+            <ul class="space-y-3 body-sm mb-8">
+              <li class="flex gap-3 items-start">
+                <div class="mt-[9px] h-1 w-1 rounded-full shrink-0" style="background: var(--accent-2); opacity: 0.7;"></div> 
                 Cập nhật đề mới nhất & xu hướng ra đề liên tục.
               </li>
-              <li class="flex gap-4 items-start">
-                <div class="mt-1 h-[6px] w-[6px] rounded-full shrink-0" style="background: var(--accent-2);"></div> 
+              <li class="flex gap-3 items-start">
+                <div class="mt-[9px] h-1 w-1 rounded-full shrink-0" style="background: var(--accent-2); opacity: 0.7;"></div> 
                 Phân tích kỹ tiêu chí chấm điểm, chiến thuật phòng thi.
               </li>
             </ul>
 
             <div class="pt-2" style="border-top: 1px solid var(--input-border);">
-              <button class="accordion-btn w-full flex items-center justify-between text-left py-4 text-sm font-bold text-[var(--text-primary)] transition-colors focus:outline-none">
+              <button class="accordion-btn w-full flex items-center justify-between text-left py-4 text-sm font-bold transition-colors focus:outline-none" style="color: var(--text-primary);">
                 <span>Tài liệu & Lộ trình chi tiết</span>
-                <svg class="accordion-icon h-5 w-5 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                <svg class="accordion-icon h-5 w-5" style="color: var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </button>
               <div class="accordion-content">
-                <div class="space-y-3 pb-4">
-                  <div class="flex items-center gap-4 text-sm font-medium text-[var(--text-muted)] rounded-2xl p-3 cursor-not-allowed" style="background: var(--input-fill);">
-                    <div class="rounded-xl p-2" style="background: var(--input-fill); color: var(--text-muted);">
+                <div class="space-y-2.5 pb-4">
+                  <div class="flex items-center gap-4 text-sm font-medium rounded-xl p-3 cursor-not-allowed" style="background: var(--input-fill); color: var(--text-muted);">
+                    <div class="rounded-lg p-2" style="background: var(--input-fill-strong); color: var(--text-muted);">
                       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                     </div>
                     <span>Lộ trình cấp tốc (Tài liệu nội bộ)</span>
                   </div>
-                  <a href="https://drive.google.com/file/d/1LouiEDNH-1PACWZKbEdpIK7pH7na-rf_/view?usp=drivesdk" target="_blank" class="flex items-center gap-4 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-2xl p-3 group" style="background: var(--input-fill);">
-                    <div class="rounded-xl p-2" style="background: var(--input-fill); color: var(--accent-2);">
+                  <a href="https://drive.google.com/file/d/1LouiEDNH-1PACWZKbEdpIK7pH7na-rf_/view?usp=drivesdk" target="_blank" class="flex items-center gap-4 text-sm font-medium transition-colors rounded-xl p-3 group" style="background: var(--input-fill); color: var(--text-secondary);">
+                    <div class="rounded-lg p-2" style="background: var(--input-fill-strong); color: var(--accent-2);">
                       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <span>Xem Record mẫu lớp Giải đề</span>
-                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1" style="color: var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                   </a>
                 </div>
               </div>
@@ -616,226 +759,114 @@
       </div>
     </section>
 
+    <!-- PRICING + FORM — single unified glass card, no harsh seam -->
     <section id="hocphi" class="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 py-10 sm:py-20 relative z-20">
-      <div class="reveal-card glass rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden grid lg:grid-cols-[1fr_1fr]">
-        
-        <div class="p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
-          <h2 class="text-h2 mb-8">Đầu tư xứng đáng cho <br><span class="text-gradient">kết quả&nbsp;thật.</span></h2>
+      <div class="reveal-card glass rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden">
+        <div class="grid lg:grid-cols-[1fr_1fr] relative">
           
-          <div class="flex flex-row items-baseline gap-3 mb-8 w-full sm:w-max">
-            <span class="text-5xl sm:text-6xl font-black text-[var(--text-primary)] tracking-tighter">2.900k</span>
-            <div class="flex flex-col">
-              <span class="line-through text-xs sm:text-sm font-bold uppercase tracking-widest text-[var(--text-muted)]">3.900.000đ</span>
-              <span class="text-sm sm:text-base font-extrabold uppercase tracking-widest" style="color: var(--accent);">/ tháng</span>
-            </div>
-          </div>
-          
-          <p class="body-lg mb-10 max-w-md">
-            Học phí được thanh toán theo từng tháng. Giúp học viên hoàn toàn an tâm về chất lượng đào tạo đồng&nbsp;đều.
-          </p>
-          
-          <div class="mt-auto pt-8" style="border-top: 1px solid var(--input-border);">
-            <div class="flex flex-col sm:flex-row gap-4">
-              <a href="https://zalo.me/0962821015" target="_blank" class="btn-magnetic flex items-center justify-center sm:justify-start gap-3 rounded-2xl px-5 py-4 transition-all" style="background: var(--input-fill);">
-                <svg class="h-6 w-6 text-blue-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21.543 8.358A10.82 10.82 0 0012 2C6.477 2 2 5.922 2 10.76c0 2.502 1.258 4.752 3.253 6.347-.282 1.348-.962 2.825-2.898 3.86a.276.276 0 00.126.516c3.218 0 5.435-1.464 6.643-2.528A11.39 11.39 0 0012 19.52c5.523 0 10-3.922 10-8.76 0-1.02-.2-2.002-.457-2.402z"/></svg>
-                <span class="font-bold text-base text-[var(--text-primary)]">Zalo: 0962821015</span>
-              </a>
-              <a href="https://www.facebook.com/search/top?q=Phuong%20Vy%20Celeste" target="_blank" class="btn-magnetic flex items-center justify-center sm:justify-start gap-3 rounded-2xl px-5 py-4 transition-all" style="background: var(--input-fill);">
-                <svg class="h-6 w-6 text-blue-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                <span class="font-bold text-base text-[var(--text-primary)]">Phuong Vy Celeste</span>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div id="dangky" class="p-8 sm:p-12 lg:p-16 flex flex-col justify-center" style="background: rgba(0,0,0,0.08);">
-          <h3 class="text-h3 mb-2">Đăng ký xếp lớp</h3>
-          <p class="body-sm mb-8">Pzy sẽ liên hệ tư vấn lộ trình và bài test đầu vào cho bạn.</p>
-          
-          <form id="signup-form" class="space-y-4 sm:space-y-5" novalidate>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-              <div class="space-y-2 relative">
-                <label class="label ml-1">Họ và tên</label>
-                <input type="text" id="name" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold" required>
-                <svg class="validation-icon hidden absolute right-4 top-[40px] w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          <!-- Left: pricing -->
+          <div class="p-8 sm:p-12 lg:p-16 flex flex-col justify-center relative z-10">
+            <h2 class="text-h2 mb-8">Đầu tư xứng đáng cho <br><span class="text-gradient">kết quả&nbsp;thật.</span></h2>
+            
+            <div class="flex flex-row items-baseline gap-3 mb-8 w-full sm:w-max">
+              <span class="text-5xl sm:text-6xl font-black tracking-tighter" style="color: var(--text-primary);">2.900k</span>
+              <div class="flex flex-col">
+                <span class="line-through text-xs font-bold uppercase tracking-widest" style="color: var(--text-muted);">3.900.000đ</span>
+                <span class="text-sm font-extrabold uppercase tracking-widest" style="color: var(--accent);">/ tháng</span>
               </div>
-              <div class="space-y-2 relative">
-                <label class="label ml-1">SĐT / Zalo</label>
-                <input type="tel" id="phone" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold" required pattern="[0-9]{9,11}">
-                <svg class="validation-icon hidden absolute right-4 top-[40px] w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              </div>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-              <div class="space-y-2">
-                <label class="label ml-1">Band mục tiêu</label>
-                <select class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold appearance-none cursor-pointer">
-                  <option value="6.5">6.5+</option>
-                  <option value="7.0">7.0+</option>
-                  <option value="8.0">8.0+</option>
-                </select>
-              </div>
-              <div class="space-y-2">
-                <label class="label ml-1">Thời gian thi dự kiến</label>
-                <input type="text" placeholder="VD: T10/2026" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold">
-              </div>
-            </div>
-            <div class="space-y-2">
-              <label class="label ml-1">Ghi chú thêm</label>
-              <textarea placeholder="Trình độ hiện tại, lớp mong muốn..." rows="2" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold resize-none sm:h-24 h-20"></textarea>
             </div>
             
-            <button type="submit" id="submit-btn" class="btn-magnetic w-full rounded-2xl py-4 mt-4 text-base font-extrabold text-white transition-transform flex items-center justify-center h-14 relative overflow-hidden" style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);">
-              <span id="btn-text">Gửi thông tin đăng ký</span>
-              <div id="btn-spinner" class="hidden w-5 h-5 border-2 rounded-full animate-spin" style="border-color: rgba(255,255,255,0.3); border-top-color: white;"></div>
-              <svg id="btn-check" class="hidden w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-            </button>
-          </form>
+            <p class="body-lg mb-10 max-w-md">
+              Học phí được thanh toán theo từng tháng. Giúp học viên hoàn toàn an tâm về chất lượng đào tạo đồng&nbsp;đều.
+            </p>
+            
+            <div class="mt-auto pt-8" style="border-top: 1px solid var(--input-border);">
+              <div class="flex flex-col sm:flex-row gap-3">
+                <a href="https://zalo.me/0962821015" target="_blank" class="btn-magnetic flex items-center justify-center sm:justify-start gap-3 rounded-2xl px-5 py-3.5 transition-all" style="background: var(--input-fill); border: 1px solid var(--input-border);">
+                  <svg class="h-5 w-5 shrink-0" style="color: #0068ff;" fill="currentColor" viewBox="0 0 24 24"><path d="M21.543 8.358A10.82 10.82 0 0012 2C6.477 2 2 5.922 2 10.76c0 2.502 1.258 4.752 3.253 6.347-.282 1.348-.962 2.825-2.898 3.86a.276.276 0 00.126.516c3.218 0 5.435-1.464 6.643-2.528A11.39 11.39 0 0012 19.52c5.523 0 10-3.922 10-8.76 0-1.02-.2-2.002-.457-2.402z"/></svg>
+                  <span class="font-bold text-sm" style="color: var(--text-primary);">Zalo: 0962821015</span>
+                </a>
+                <a href="https://www.facebook.com/search/top?q=Phuong%20Vy%20Celeste" target="_blank" class="btn-magnetic flex items-center justify-center sm:justify-start gap-3 rounded-2xl px-5 py-3.5 transition-all" style="background: var(--input-fill); border: 1px solid var(--input-border);">
+                  <svg class="h-5 w-5 shrink-0" style="color: #0866ff;" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  <span class="font-bold text-sm" style="color: var(--text-primary);">Phuong Vy Celeste</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: form. Soft tint that fades in from left — no harsh seam -->
+          <div id="dangky" class="p-8 sm:p-12 lg:p-16 flex flex-col justify-center relative z-10" style="background: linear-gradient(to right, transparent 0%, var(--form-tint) 12%);">
+            <h3 class="text-h3 mb-2">Đăng ký xếp lớp</h3>
+            <p class="body-sm mb-8">Pzy sẽ liên hệ tư vấn lộ trình và bài test đầu vào cho bạn.</p>
+            
+            <form id="signup-form" class="space-y-5" novalidate>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div class="space-y-2 relative">
+                  <label class="label">Họ và tên</label>
+                  <input type="text" id="name" class="input-field w-full rounded-xl px-4 py-3.5 text-sm font-semibold" required>
+                  <svg class="validation-icon hidden absolute right-4 top-[40px] w-5 h-5" style="color: #22c55e;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div class="space-y-2 relative">
+                  <label class="label">SĐT / Zalo</label>
+                  <input type="tel" id="phone" class="input-field w-full rounded-xl px-4 py-3.5 text-sm font-semibold" required pattern="[0-9]{9,11}">
+                  <svg class="validation-icon hidden absolute right-4 top-[40px] w-5 h-5" style="color: #22c55e;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div class="space-y-2">
+                  <label class="label">Band mục tiêu</label>
+                  <select class="input-field w-full rounded-xl px-4 py-3.5 text-sm font-semibold appearance-none cursor-pointer">
+                    <option value="6.5">6.5+</option>
+                    <option value="7.0">7.0+</option>
+                    <option value="8.0">8.0+</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label class="label">Thời gian thi dự kiến</label>
+                  <input type="text" placeholder="VD: T10/2026" class="input-field w-full rounded-xl px-4 py-3.5 text-sm font-semibold">
+                </div>
+              </div>
+              <div class="space-y-2">
+                <label class="label">Ghi chú thêm</label>
+                <textarea placeholder="Trình độ hiện tại, lớp mong muốn..." rows="2" class="input-field w-full rounded-xl px-4 py-3.5 text-sm font-semibold resize-none h-20"></textarea>
+              </div>
+              
+              <button type="submit" id="submit-btn" class="btn-magnetic w-full rounded-xl py-4 mt-2 text-base font-extrabold text-white transition-transform flex items-center justify-center h-14 relative overflow-hidden" style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);">
+                <span id="btn-text">Gửi thông tin đăng ký</span>
+                <div id="btn-spinner" class="hidden w-5 h-5 border-2 rounded-full animate-spin" style="border-color: rgba(255,255,255,0.3); border-top-color: white;"></div>
+                <svg id="btn-check" class="hidden w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
 
-    <footer class="glass-nav border-t-0 mt-8 py-8 flex items-center">
+    <footer class="glass-nav border-t-0 mt-8 py-8 flex items-center" style="height: auto;">
       <div class="mx-auto w-full max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-sm font-bold text-[var(--text-muted)]">&copy; 2026 Pzy IELTS. All rights reserved.</p>
-        <div class="flex items-center gap-4 text-sm font-bold text-[var(--text-muted)]">
-          <span class="w-[6px] h-[6px] rounded-full" style="background: var(--accent);"></span>
+        <p class="text-sm font-bold" style="color: var(--text-muted);">&copy; 2026 Pzy IELTS. All rights reserved.</p>
+        <div class="flex items-center gap-3 text-sm font-bold" style="color: var(--text-muted);">
+          <span class="w-1.5 h-1.5 rounded-full" style="background: var(--accent);"></span>
           <span class="tracking-wide">Hệ thống chấm chữa chuẩn Academic</span>
-          <span class="w-[6px] h-[6px] rounded-full" style="background: var(--accent-2);"></span>
+          <span class="w-1.5 h-1.5 rounded-full" style="background: var(--accent-2);"></span>
         </div>
       </div>
     </footer>
   </main>
 
-  <div id="toast" class="fixed bottom-6 right-6 z-[100] glass-sm px-6 py-4 rounded-2xl flex items-center gap-3">
-    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(34, 197, 94, 0.2); color: #4ade80;">
-      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+  <div id="toast" class="fixed bottom-6 right-6 z-[100] glass-sm px-5 py-3.5 rounded-xl flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(34, 197, 94, 0.15); color: #22c55e;">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
     </div>
-    <div class="text-sm font-bold text-[var(--text-primary)]">Đã gửi! Pzy sẽ liên hệ sớm nhé 🎉</div>
+    <div class="text-sm font-bold" style="color: var(--text-primary);">Đã gửi! Pzy sẽ liên hệ sớm nhé 🎉</div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const isMobile = window.matchMedia('(pointer: coarse)').matches;
-      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
       // ==========================================
-      // CANVAS PARTICLES
-      // ==========================================
-      const canvas = document.getElementById('particle-canvas');
-      const ctx = canvas.getContext('2d');
-      let width, height, particles = [];
-      const particleCount = isMobile ? (isDark ? 55 : 30) : (isDark ? 120 : 70);
-      let mouse = { x: -1000, y: -1000 };
-      let isVisible = true;
-      let animationFrameId;
-
-      let rawColor = getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim() || "120, 80, 200";
-
-      function resize() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      }
-
-      class Particle {
-        constructor(x, y, isBurst = false) {
-          this.x = x || Math.random() * width;
-          this.y = y || Math.random() * height;
-          this.vx = (Math.random() - 0.5) * (isBurst ? 4 : 0.8);
-          this.vy = (Math.random() - 0.5) * (isBurst ? 4 : 0.8);
-          this.radius = Math.random() * 1.3 + 1.2;
-          this.baseAlpha = Math.random() * 0.5 + 0.3;
-          this.alpha = this.baseAlpha;
-          this.isBurst = isBurst;
-          this.life = isBurst ? 1.0 : null;
-        }
-        update() {
-          this.x += this.vx;
-          this.y += this.vy;
-
-          if (this.isBurst) {
-            this.life -= 0.015;
-            this.alpha = this.baseAlpha * this.life;
-            if (this.life <= 0) return false;
-          } else {
-            if (this.x < 0 || this.x > width) this.vx *= -1;
-            if (this.y < 0 || this.y > height) this.vy *= -1;
-
-            const dx = mouse.x - this.x;
-            const dy = mouse.y - this.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 100) {
-              const force = (100 - dist) / 100;
-              this.vx -= (dx / dist) * force * 0.06;
-              this.vy -= (dy / dist) * force * 0.06;
-            }
-            
-            const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-            if (speed > 1.5) { this.vx *= 0.95; this.vy *= 0.95; } 
-            else if (speed < 0.2) { this.vx *= 1.01; this.vy *= 1.01; }
-          }
-          return true;
-        }
-        draw() {
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${rawColor}, ${this.alpha})`;
-          ctx.fill();
-        }
-      }
-
-      function initParticles() {
-        particles = [];
-        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
-      }
-
-      function animateParticles() {
-        if (!isVisible) return;
-        ctx.clearRect(0, 0, width, height);
-
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i];
-          if (!p.update()) { particles.splice(i, 1); continue; }
-          p.draw();
-
-          if (!p.isBurst) {
-            for (let j = i - 1; j >= 0; j--) {
-              const p2 = particles[j];
-              if (p2.isBurst) continue;
-              const dx = p.x - p2.x;
-              const dy = p.y - p2.y;
-              const dist = Math.sqrt(dx * dx + dy * dy);
-              
-              if (dist < 130) {
-                ctx.beginPath();
-                ctx.moveTo(p.x, p.y);
-                ctx.lineTo(p2.x, p2.y);
-                const opacity = (1 - dist / 130) * 0.35;
-                ctx.strokeStyle = `rgba(${rawColor}, ${opacity})`;
-                ctx.lineWidth = 0.8;
-                ctx.stroke();
-              }
-            }
-          }
-        }
-        animationFrameId = requestAnimationFrame(animateParticles);
-      }
-
-      window.addEventListener('resize', () => { resize(); initParticles(); });
-      window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-      window.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
-      window.addEventListener('click', e => {
-        for (let i = 0; i < 10; i++) particles.push(new Particle(e.clientX, e.clientY, true));
-      });
-      document.addEventListener('visibilitychange', () => {
-        isVisible = !document.hidden;
-        if (isVisible) animateParticles();
-        else cancelAnimationFrame(animationFrameId);
-      });
-
-      resize(); initParticles(); animateParticles();
-
-      // ==========================================
-      // CURSOR GLOW 
+      // CURSOR GLOW (desktop only, follows lazily)
       // ==========================================
       const cursorGlow = document.getElementById('cursor-glow');
       let cgX = window.innerWidth / 2, cgY = window.innerHeight / 2;
@@ -857,43 +888,30 @@
       }
 
       // ==========================================
-      // GLARE, TILT & MAGNETIC
+      // GLARE — linear sweep based on cursor X
+      // (NOT a circular spotlight; respects card geometry)
       // ==========================================
       if (!isMobile) {
         document.querySelectorAll('.glare').forEach(el => {
           el.addEventListener('mousemove', e => {
             const rect = el.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-            el.style.setProperty('--x', `${x}%`);
-            el.style.setProperty('--y', `${y}%`);
+            el.style.setProperty('--glare-pos', `${Math.max(15, Math.min(85, x))}%`);
           });
         });
+      }
 
-        document.querySelectorAll('.tilt-3d').forEach(card => {
-          card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -6;
-            const rotateY = ((x - centerX) / centerX) * 6;
-            card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-          });
-          card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
-            card.style.transition = 'transform 0.7s cubic-bezier(0.34,1.56,0.64,1)';
-          });
-          card.addEventListener('mouseenter', () => { card.style.transition = 'none'; });
-        });
-
+      // ==========================================
+      // MAGNETIC BUTTONS (desktop only)
+      // ==========================================
+      if (!isMobile) {
         document.querySelectorAll('.btn-magnetic').forEach(btn => {
           btn.addEventListener('mousemove', e => {
             const rect = btn.getBoundingClientRect();
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
-            const factor = 8 / (rect.width / 2);
+            const maxOffset = 6;
+            const factor = maxOffset / Math.max(rect.width, 80);
             btn.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
           });
           btn.addEventListener('mouseleave', () => {
@@ -905,7 +923,7 @@
       }
 
       // ==========================================
-      // SCROLL SYSTEM
+      // SCROLL PROGRESS + NAV ACTIVE
       // ==========================================
       const progressBar = document.getElementById('scroll-progress');
       const navLinks = document.querySelectorAll('.nav-link');
@@ -928,11 +946,11 @@
             });
           }
         });
-      }, { threshold: 0.5 });
+      }, { threshold: 0.4 });
       sections.forEach(sec => navObserver.observe(sec));
 
       // ==========================================
-      // REVEAL & COUNTERS
+      // REVEAL + STAT COUNTERS
       // ==========================================
       const revealObserver = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
@@ -963,7 +981,7 @@
       document.querySelectorAll('.reveal-clip, .reveal-card').forEach(el => revealObserver.observe(el));
 
       // ==========================================
-      // TYPING
+      // TYPING EFFECT
       // ==========================================
       const str1 = "Tăng band IELTS ";
       const str2 = "thực chất & vững chắc.";
@@ -977,21 +995,21 @@
         if (tIdx2 < str2.length) {
           target2.textContent += str2.charAt(tIdx2);
           tIdx2++;
-          setTimeout(typeStr2, 32);
+          setTimeout(typeStr2, 34);
         } else {
-          setTimeout(() => cursor.style.display = 'none', 2400);
+          setTimeout(() => cursor.style.display = 'none', 2500);
         }
       }
       function typeStr1() {
         if (tIdx1 < str1.length) {
           target1.textContent += str1.charAt(tIdx1);
           tIdx1++;
-          setTimeout(typeStr1, 32);
+          setTimeout(typeStr1, 34);
         } else {
           typeStr2();
         }
       }
-      setTimeout(typeStr1, 300);
+      setTimeout(typeStr1, 400);
 
       // ==========================================
       // ACCORDION
@@ -1021,7 +1039,7 @@
             input.classList.remove('input-invalid');
             input.classList.add('input-valid');
             if(icon) icon.classList.remove('hidden');
-          } else {
+          } else if (input.value.trim() !== '') {
             input.classList.remove('input-valid');
             input.classList.add('input-invalid');
             if(icon) icon.classList.add('hidden');
@@ -1033,22 +1051,21 @@
       });
 
       function burstConfetti(x, y) {
-        const colors = [
-          getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
-          getComputedStyle(document.documentElement).getPropertyValue('--accent-2').trim()
-        ];
+        const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+        const accent2 = getComputedStyle(document.documentElement).getPropertyValue('--accent-2').trim();
+        const colors = [accent, accent2];
         for(let i=0; i<16; i++) {
           const c = document.createElement('div');
-          c.className = 'fixed w-2 h-2 rounded-full pointer-events-none z-50';
+          c.className = 'fixed w-1.5 h-1.5 rounded-full pointer-events-none z-50';
           c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
           c.style.left = x + 'px';
           c.style.top = y + 'px';
           document.body.appendChild(c);
           
           const angle = Math.random() * Math.PI * 2;
-          const velocity = 40 + Math.random() * 80;
+          const velocity = 40 + Math.random() * 70;
           const tx = Math.cos(angle) * velocity;
-          const ty = Math.sin(angle) * velocity - 80;
+          const ty = Math.sin(angle) * velocity - 60;
           
           c.animate([
             { transform: 'translate(0,0) scale(1)', opacity: 1 },
@@ -1066,6 +1083,8 @@
           if (!input.checkValidity() || input.value.trim() === '') {
             isValid = false;
             input.classList.add('input-invalid', 'animate-shake');
+            void input.offsetWidth;
+            input.classList.add('animate-shake');
           }
         });
 
