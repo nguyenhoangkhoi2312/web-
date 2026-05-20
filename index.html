@@ -6,51 +6,36 @@
   <title>IELTS with Vy | Premium Preparation</title>
   <script src="https://cdn.tailwindcss.com"></script>
   
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
-          colors: {
-            dark: {
-              base: '#080a1a', 
-              surface: '#0f1228'
-            }
-          },
           animation: {
-            'blob': 'blob 25s infinite alternate ease-in-out',
-            'glow-pulse': 'glow-pulse 3s ease-in-out infinite alternate',
-            'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
-            'spin-slow': 'spin 8s linear infinite',
-            'float-1': 'float-y 6s ease-in-out infinite',
-            'float-2': 'float-y 7s ease-in-out 1s infinite reverse',
-            'float-3': 'float-y 5s ease-in-out 2s infinite',
-            'underline-grow': 'underline-grow 0.3s forwards ease-out',
+            'blob': 'blob 28s infinite alternate cubic-bezier(0.4, 0, 0.2, 1)',
+            'float-1': 'float 5s ease-in-out infinite',
+            'float-2': 'float 7s ease-in-out 1.5s infinite',
+            'float-3': 'float 6s ease-in-out 3s infinite',
+            'shake': 'shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both',
           },
           keyframes: {
             blob: {
               '0%': { transform: 'translate(0px, 0px) scale(1)' },
-              '33%': { transform: 'translate(40px, -60px) scale(1.1)' },
-              '66%': { transform: 'translate(-40px, 40px) scale(0.9)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.95)' },
               '100%': { transform: 'translate(0px, 0px) scale(1)' },
             },
-            'glow-pulse': {
-              '0%': { boxShadow: '0 0 10px rgba(168,85,247,0.2)' },
-              '100%': { boxShadow: '0 0 30px rgba(168,85,247,0.7)' }
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-12px)' },
             },
             shake: {
-              '10%, 90%': { transform: 'translate3d(-2px, 0, 0)' },
-              '20%, 80%': { transform: 'translate3d(4px, 0, 0)' },
-              '30%, 50%, 70%': { transform: 'translate3d(-6px, 0, 0)' },
-              '40%, 60%': { transform: 'translate3d(6px, 0, 0)' }
-            },
-            'float-y': {
-              '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-              '50%': { transform: 'translateY(-15px) rotate(2deg)' },
-            },
-            'underline-grow': {
-              '0%': { width: '0%' },
-              '100%': { width: '100%' }
+              '0%, 100%': { transform: 'translateX(0)' },
+              '16.6%, 50%, 83.3%': { transform: 'translateX(-4px)' },
+              '33.3%, 66.6%': { transform: 'translateX(4px)' }
             }
           }
         }
@@ -58,177 +43,280 @@
     }
   </script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
   <style>
+    /* I. SYSTEM: LIGHT / DARK MODE */
+    :root {
+      --bg-base: #f5f4f8;
+      --bg-surface: #ede9f4;
+      --text-primary: #0f0e13;
+      --text-secondary: #4b4a57;
+      --text-muted: #8e8d9a;
+      --glass-fill: rgba(255, 255, 255, 0.55);
+      --glass-border: rgba(255, 255, 255, 0.80);
+      --glass-shadow: rgba(80, 60, 120, 0.10);
+      --glass-inset-top: rgba(255, 255, 255, 0.90);
+      --glass-inset-bot: rgba(0, 0, 0, 0.04);
+      --nav-fill: rgba(245, 244, 248, 0.72);
+      --nav-border: rgba(255, 255, 255, 0.70);
+      --input-fill: rgba(0, 0, 0, 0.04);
+      --input-border: rgba(0, 0, 0, 0.10);
+      --accent: #7c3aed;
+      --accent-light: #a855f7;
+      --accent-2: #db2777;
+      --particle-color: 120, 80, 200;
+      --blob-1: rgba(167, 120, 240, 0.18);
+      --blob-2: rgba(219, 39, 119, 0.10);
+      --blob-3: rgba(99, 102, 241, 0.12);
+      --noise-opacity: 0.018;
+      --grid-color: rgba(100, 80, 160, 0.06);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-base: #07091a;
+        --bg-surface: #0d1028;
+        --text-primary: #f1f0f5;
+        --text-secondary: #a8a5b8;
+        --text-muted: #5c5a70;
+        --glass-fill: rgba(255, 255, 255, 0.042);
+        --glass-border: rgba(255, 255, 255, 0.090);
+        --glass-shadow: rgba(0, 0, 0, 0.50);
+        --glass-inset-top: rgba(255, 255, 255, 0.12);
+        --glass-inset-bot: rgba(0, 0, 0, 0.25);
+        --nav-fill: rgba(7, 9, 26, 0.75);
+        --nav-border: rgba(255, 255, 255, 0.07);
+        --input-fill: rgba(255, 255, 255, 0.055);
+        --input-border: rgba(255, 255, 255, 0.10);
+        --accent: #a78bfa;
+        --accent-light: #c4b5fd;
+        --accent-2: #f472b6;
+        --particle-color: 167, 139, 250;
+        --blob-1: rgba(139, 92, 246, 0.14);
+        --blob-2: rgba(236, 72, 153, 0.09);
+        --blob-3: rgba(99, 102, 241, 0.11);
+        --noise-opacity: 0.028;
+        --grid-color: rgba(128, 128, 128, 0.04);
+      }
+    }
+
+    /* BASE TYPOGRAPHY & SETUP */
     body { 
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #050818; 
-      color: #cbd5e1; /* slate-300 */
+      background-color: var(--bg-base);
+      color: var(--text-secondary);
+      font-feature-settings: "kern" 1, "liga" 1;
+      text-rendering: optimizeLegibility;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* LAYER 3: Subtle Noise Texture */
-    .bg-noise {
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      opacity: 0.03;
-      mix-blend-mode: overlay;
-      pointer-events: none;
+    .text-h1 {
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
     }
 
-    /* LAYER 4: Thin Grid Lines */
-    .bg-grid {
-      background-image: 
-        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
+    .text-h2 {
+      font-size: clamp(2.2rem, 3.8vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--text-primary);
     }
 
-    /* II. GLASS SYSTEM */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    .text-h3 {
+      font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .body-lg {
+      font-size: 1.125rem;
+      font-weight: 500;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      max-width: 65ch;
+    }
+
+    .body-sm {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      line-height: 1.65;
+      color: var(--text-muted);
+      max-width: 65ch;
+    }
+
+    .label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* II. TRUE APPLE LIQUID GLASS */
+    .glass {
+      background: var(--glass-fill);
+      backdrop-filter: blur(18px) saturate(1.6) brightness(1.04);
+      -webkit-backdrop-filter: blur(18px) saturate(1.6) brightness(1.04);
+      border: 1px solid var(--glass-border);
       box-shadow:
-        0 0 0 1px rgba(139, 92, 246, 0.1),
-        0 20px 60px -10px rgba(0, 0, 0, 0.6),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+        inset 0 1px 0 var(--glass-inset-top),
+        inset 0 -1px 0 var(--glass-inset-bot),
+        0 2px 1px rgba(0,0,0,0.04),
+        0 12px 40px -8px var(--glass-shadow);
+    }
+
+    .glass-sm {
+      background: var(--glass-fill);
+      backdrop-filter: blur(12px) saturate(1.4);
+      -webkit-backdrop-filter: blur(12px) saturate(1.4);
+      border: 1px solid var(--glass-border);
+      box-shadow:
+        inset 0 1px 0 var(--glass-inset-top),
+        0 4px 16px -2px var(--glass-shadow);
     }
 
     .glass-nav {
-      background: rgba(5, 8, 24, 0.7);
-      backdrop-filter: blur(20px) saturate(200%);
-      -webkit-backdrop-filter: blur(20px) saturate(200%);
-      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+      background: var(--nav-fill);
+      backdrop-filter: blur(24px) saturate(1.8);
+      -webkit-backdrop-filter: blur(24px) saturate(1.8);
+      border-bottom: 1px solid var(--nav-border);
+      box-shadow: 0 1px 0 var(--glass-inset-top);
+      height: 64px;
     }
+    @media (max-width: 768px) { .glass-nav { height: 56px; } }
 
-    .glass-bright {
-      background: rgba(15, 18, 40, 0.92);
-      backdrop-filter: blur(40px);
-      -webkit-backdrop-filter: blur(40px);
-      border: 1px solid rgba(139, 92, 246, 0.25);
-      box-shadow: 
-        0 0 60px -15px rgba(139, 92, 246, 0.3),
-        inset 0 1px 0 rgba(255,255,255,0.08);
-    }
-
-    /* GLARE EFFECT */
-    .glare-glass {
+    /* Glare Surface */
+    .glare {
       position: relative;
       overflow: hidden;
       --x: 50%;
       --y: 50%;
       --glare-opacity: 0;
     }
-    .glare-glass::after {
+    .glare::after {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(
-        circle at var(--x) var(--y), 
-        rgba(167, 139, 250, 0.25) 0%, 
-        transparent 65%
-      );
+      inset: 0;
+      background: radial-gradient(circle at var(--x) var(--y), rgba(255,255,255,1) 0%, transparent 65%);
       opacity: var(--glare-opacity);
+      mix-blend-mode: overlay;
       transition: opacity 0.5s ease;
       pointer-events: none;
-      z-index: 20;
-      mix-blend-mode: screen;
+      z-index: 10;
     }
-    .glare-glass:hover {
-      --glare-opacity: 1;
+    .glare:hover { --glare-opacity: 0.45; }
+
+    /* III. BACKGROUND LAYERS */
+    .bg-noise {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: var(--noise-opacity);
+      mix-blend-mode: overlay;
+      pointer-events: none;
     }
 
-    /* Cursor Glow */
+    .bg-grid {
+      background-image: 
+        linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    /* V. INTERACTIONS */
     #cursor-glow {
       position: fixed;
       width: 300px; height: 300px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(167, 139, 250, 0.15) 0%, transparent 70%);
-      mix-blend-mode: screen;
+      background: radial-gradient(circle, rgba(var(--particle-color), 0.10) 0%, transparent 70%);
+      mix-blend-mode: normal;
       pointer-events: none;
-      z-index: 2;
+      z-index: 1;
       transform: translate(-50%, -50%);
       opacity: 0;
       transition: opacity 0.3s ease;
     }
 
-    /* Magnetic & Tilt Elements Setup */
-    .btn-magnetic, .tilt-card {
+    .tilt-3d {
       transform-style: preserve-3d;
       will-change: transform;
     }
 
-    /* Scroll Reveal Classes */
-    .reveal-mask {
-      clip-path: inset(100% 0 0 0);
-      transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1);
+    .btn-magnetic {
+      will-change: transform;
     }
-    .reveal-mask.is-revealed {
+
+    /* Scroll Reveal */
+    .reveal-clip {
+      clip-path: inset(100% 0 0 0);
+      transition: clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-clip.is-revealed {
       clip-path: inset(0% 0 0 0);
     }
-    
-    .fade-up {
+    .reveal-card {
       opacity: 0;
-      transform: translateY(40px);
+      transform: translateY(32px);
       transition: opacity 0.8s ease-out, transform 0.8s ease-out;
     }
-    .fade-up.is-revealed {
+    .reveal-card.is-revealed {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* Scroll Progress Bar */
     #scroll-progress {
       position: fixed;
       top: 0; left: 0;
       height: 3px; width: 0%;
-      background: linear-gradient(to right, #7c3aed, #ec4899);
-      box-shadow: 0 0 10px #a855f7;
+      background: linear-gradient(to right, var(--accent), var(--accent-2));
       z-index: 100;
     }
 
-    /* Active Nav Link */
-    .nav-link { position: relative; }
+    .nav-link { position: relative; color: var(--text-secondary); transition: color 0.3s ease; }
+    .nav-link:hover { color: var(--text-primary); }
     .nav-link::after {
       content: ''; position: absolute;
-      bottom: -4px; left: 0;
+      bottom: -6px; left: 0;
       height: 2px; width: 0%;
-      background: #a855f7;
+      background: currentColor;
       transition: width 0.3s ease;
     }
-    .nav-link.active { color: #a855f7; }
     .nav-link.active::after { width: 100%; }
 
-    /* Typing Cursor */
     .typing-cursor {
       display: inline-block;
-      width: 3px; height: 1em;
-      background-color: #a855f7;
-      margin-left: 2px;
+      width: 2px; height: 1em;
+      background-color: currentColor;
+      margin-left: 4px;
       vertical-align: middle;
       animation: blink 0.8s step-end infinite;
     }
-    .typing-cursor.hide { display: none; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-    /* Input Valid/Invalid styling */
+    /* Form Fields */
     .input-field {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: white;
+      background: var(--input-fill);
+      border: 1px solid var(--input-border);
+      color: var(--text-primary);
       transition: all 0.3s ease;
     }
     .input-field:focus {
-      border-color: #a855f7;
-      box-shadow: 0 0 0 3px rgba(168,85,247,0.2);
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--blob-1);
     }
     .input-invalid {
       border-color: #ef4444 !important;
-      box-shadow: 0 0 0 3px rgba(239,68,68,0.2) !important;
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.15) !important;
     }
     .input-valid {
       border-color: #22c55e !important;
@@ -238,51 +326,29 @@
     .accordion-content {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .accordion-icon { transition: transform 0.3s ease; }
+    .accordion-icon { transition: transform 0.35s ease; }
     .accordion-btn.expanded .accordion-icon { transform: rotate(180deg); }
-
-    /* Form Checkmark & Spinner */
-    .spinner {
-      border: 3px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top: 3px solid white;
-      width: 20px; height: 20px;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
     /* Toast */
     #toast {
-      transform: translateY(150px);
+      transform: translateY(150%);
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     #toast.show { transform: translateY(0); }
 
-    /* Confetti particle */
-    .confetti {
-      position: absolute;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 50;
-      animation: pop 1s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
-    }
-    @keyframes pop {
-      0% { transform: translate(0, 0) scale(1); opacity: 1; }
-      100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+    /* Prefers Reduced Motion */
+    @media (prefers-reduced-motion: reduce) { 
+      * { 
+        animation-duration: 0.01ms !important; 
+        transition-duration: 0.01ms !important; 
+      }
     }
   </style>
 </head>
 
-<body class="selection:bg-purple-500/30 selection:text-purple-200">
-
-  <div class="fixed inset-0 w-full h-full pointer-events-none z-[-4] overflow-hidden">
-    <div class="absolute -top-40 -left-40 w-[800px] h-[800px] bg-[#8b5cf6] rounded-full blur-[180px] opacity-[0.18] animate-blob"></div>
-    <div class="absolute top-10 -right-40 w-[700px] h-[700px] bg-[#ec4899] rounded-full blur-[180px] opacity-[0.12] animate-blob" style="animation-delay: -5s;"></div>
-    <div class="absolute -bottom-60 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-[#6366f1] rounded-full blur-[180px] opacity-[0.15] animate-blob" style="animation-delay: -10s;"></div>
-  </div>
+<body>
 
   <canvas id="particle-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-[-3]"></canvas>
 
@@ -290,246 +356,256 @@
 
   <div class="fixed inset-0 w-full h-full bg-grid z-[-1]"></div>
 
-  <div id="cursor-glow" class="hidden lg:block"></div>
+  <div class="fixed inset-0 w-full h-full pointer-events-none z-[-4] overflow-hidden">
+    <div class="absolute -top-32 -left-32 w-[700px] h-[700px] rounded-full blur-[160px] animate-blob" style="background: var(--blob-1);"></div>
+    <div class="absolute -top-10 -right-32 w-[800px] h-[800px] rounded-full blur-[160px] animate-blob" style="background: var(--blob-2); animation-delay: -8s;"></div>
+    <div class="absolute -bottom-60 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full blur-[160px] animate-blob" style="background: var(--blob-3); animation-delay: -16s;"></div>
+  </div>
 
+  <div id="cursor-glow"></div>
   <div id="scroll-progress"></div>
 
-  <header class="glass-nav fixed top-0 left-0 right-0 z-50 w-full">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+  <header class="glass-nav fixed top-0 left-0 right-0 z-50 w-full flex items-center justify-center">
+    <div class="w-full max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8">
       <div class="flex items-center gap-3">
-        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-purple-600 to-fuchsia-500 text-sm font-extrabold text-white shadow-lg shadow-purple-500/40">
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] text-sm font-extrabold text-white">
           PV
         </div>
         <div>
-          <div class="font-extrabold tracking-tight text-white text-sm sm:text-base">IELTS with Vy</div>
-          <div class="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-purple-400">IDP Referral Agent</div>
+          <div class="font-extrabold tracking-tight text-[var(--text-primary)] text-sm sm:text-base leading-tight">IELTS with Vy</div>
+          <div class="label" style="color: var(--accent-light);">IDP Referral Agent</div>
         </div>
       </div>
       
-      <a href="#dangky" class="md:hidden rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-500 px-4 py-2 text-xs font-bold text-white shadow-md btn-magnetic">
+      <a href="#dangky" class="md:hidden rounded-full bg-[var(--accent)] px-5 py-2 text-xs font-bold text-white btn-magnetic">
         Đăng ký
       </a>
 
-      <nav class="hidden md:flex items-center gap-6 lg:gap-8 font-semibold text-sm">
-        <a href="#khoahoc" class="nav-link text-slate-300 hover:text-white transition-colors" data-section="khoahoc">Lộ trình học</a>
-        <a href="#hocphi" class="nav-link text-slate-300 hover:text-white transition-colors" data-section="hocphi">Học phí</a>
-        <a href="https://zalo.me/0962821015" target="_blank" class="nav-link text-slate-300 hover:text-white transition-colors">Zalo Support</a>
-        <a href="#dangky" class="btn-magnetic rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-500 px-6 py-2.5 text-white shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 transition-shadow">
+      <nav class="hidden md:flex items-center gap-8 font-semibold text-sm">
+        <a href="#khoahoc" class="nav-link" data-section="khoahoc">Lộ trình học</a>
+        <a href="#hocphi" class="nav-link" data-section="hocphi">Học phí</a>
+        <a href="https://zalo.me/0962821015" target="_blank" class="nav-link">Zalo Support</a>
+        <a href="#dangky" class="btn-magnetic rounded-full bg-[var(--accent)] px-6 py-2.5 text-white shadow-sm transition-transform">
           Tư vấn xếp lớp
         </a>
       </nav>
     </div>
   </header>
 
-  <main class="relative z-10 pt-28 pb-16 sm:pt-40 sm:pb-24 lg:pt-48 lg:pb-32">
+  <main class="relative z-10 pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-48 lg:pb-32">
     
-    <section class="mx-auto grid max-w-7xl gap-12 lg:gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
-      
+    <section class="mx-auto grid max-w-7xl gap-12 lg:gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8 mb-24 lg:mb-40">
       <div class="max-w-2xl relative z-20">
-        <div class="fade-up mb-8 inline-flex items-center gap-2 sm:gap-3 rounded-full glass-card px-4 py-2 text-xs sm:text-sm font-bold text-purple-300">
-          <span class="relative flex h-2.5 w-2.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-500"></span>
+        <div class="reveal-card glass-sm inline-flex items-center gap-3 rounded-xl px-4 py-2 text-xs font-bold text-[var(--text-primary)] mb-8">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent)]"></span>
           </span>
           Khai giảng khóa tháng 4/2026
         </div>
         
-        <h1 class="text-[2.75rem] sm:text-6xl font-extrabold tracking-tight text-white lg:text-[4.5rem] leading-[1.15] sm:leading-[1.1] min-h-[140px] sm:min-h-[160px]">
-          <span id="type-target-1"></span><br>
-          <span id="type-target-2" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-300 to-fuchsia-300 relative inline-block mt-2"></span>
-          <span id="typing-cursor" class="typing-cursor"></span>
+        <h1 class="text-h1">
+          <span class="inline">
+            <span id="type-line-1"></span><br>
+            <span id="type-line-2" class="text-gradient">&nbsp;</span>
+            <span id="typing-cursor" class="typing-cursor"></span>
+          </span>
         </h1>
         
-        <p class="fade-up mt-6 text-lg sm:text-xl leading-relaxed text-slate-400 font-medium max-w-lg" style="transition-delay: 200ms;">
-          8.5 IELTS | 1520 SAT | Hơn 3 năm kinh nghiệm.<br> Lộ trình cá nhân hóa, chữa bài chuyên sâu từng tiêu chí giúp học viên vượt target.
+        <p class="reveal-card body-lg mt-6" style="transition-delay: 120ms;">
+          8.5 IELTS | 1520 SAT | Hơn 3 năm kinh nghiệm.<br> Lộ trình cá nhân hóa, chữa bài chuyên sâu từng tiêu chí giúp học viên vượt&nbsp;target.
         </p>
 
-        <div class="fade-up mt-8 flex flex-wrap gap-4" style="transition-delay: 300ms;">
-          <div class="glass-card px-4 py-2 rounded-xl flex items-center gap-2">
-            <span class="text-xl font-black text-white stat-number" data-target="60">0</span>
-            <span class="text-xl font-black text-purple-400">+</span>
-            <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Học viên</span>
+        <div class="reveal-card mt-8 flex flex-wrap gap-4" style="transition-delay: 240ms;">
+          <div class="glass-sm px-5 py-2.5 rounded-xl flex flex-col justify-center">
+            <div class="flex items-baseline gap-1">
+              <span class="text-2xl font-black text-[var(--text-primary)] stat-number" data-target="60">0</span>
+              <span class="text-xl font-black" style="color: var(--accent-light);">+</span>
+            </div>
+            <span class="label">Học viên</span>
           </div>
-          <div class="glass-card px-4 py-2 rounded-xl flex items-center gap-2">
-            <span class="text-xl font-black text-white stat-number-float" data-target="8.5">0.0</span>
-            <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Band</span>
+          <div class="glass-sm px-5 py-2.5 rounded-xl flex flex-col justify-center">
+            <div class="flex items-baseline gap-1">
+              <span class="text-2xl font-black text-[var(--text-primary)] stat-number-float" data-target="8.5">0.0</span>
+            </div>
+            <span class="label">Band</span>
           </div>
-          <div class="glass-card px-4 py-2 rounded-xl flex items-center gap-2">
-            <span class="text-xl font-black text-white stat-number" data-target="3">0</span>
-            <span class="text-xl font-black text-pink-400">+</span>
-            <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Năm K.N</span>
+          <div class="glass-sm px-5 py-2.5 rounded-xl flex flex-col justify-center">
+            <div class="flex items-baseline gap-1">
+              <span class="text-2xl font-black text-[var(--text-primary)] stat-number" data-target="3">0</span>
+              <span class="text-xl font-black text-[var(--accent-2)]">+</span>
+            </div>
+            <span class="label">Năm K.N</span>
           </div>
         </div>
         
-        <div class="fade-up mt-10 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4" style="transition-delay: 400ms;">
-          <a href="#dangky" class="btn-magnetic w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-500 px-8 py-4 text-base font-bold text-white shadow-xl shadow-purple-900/20">
+        <div class="reveal-card mt-10 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4" style="transition-delay: 360ms;">
+          <a href="#dangky" class="btn-magnetic w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-[var(--text-primary)] text-[var(--bg-base)] px-8 py-4 text-base font-bold transition-transform">
             Nhận tư vấn lộ trình
           </a>
           
-          <div class="glass-card rounded-full px-5 py-2.5 sm:ml-2 flex items-center gap-3 w-full sm:w-auto">
-            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0 overflow-hidden p-2 shadow-inner border border-white/5">
-              <svg class="w-full h-full text-purple-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <div class="glass-sm rounded-full px-5 py-2 sm:ml-2 flex items-center gap-3 w-full sm:w-auto">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0">
+              <svg class="w-8 h-8" style="color: var(--accent);" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </div>
-            <div class="text-xs font-bold text-slate-300 leading-tight">
-              Đối tác Vàng<br><span class="text-purple-400 font-extrabold text-sm">IDP Vietnam</span>
+            <div class="text-[0.8125rem] font-bold text-[var(--text-secondary)] leading-tight">
+              Đối tác Vàng<br><span class="font-extrabold" style="color: var(--accent-light);">IDP Vietnam</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="fade-up relative w-full aspect-[4/5] lg:aspect-auto lg:h-[650px] mt-10 lg:mt-0 z-10 flex justify-center items-center" style="transition-delay: 200ms;">
-        
-        <div class="absolute inset-0 glass-card glare-glass tilt-card rounded-[2.5rem] sm:rounded-[3.5rem] p-4">
-          <div class="w-full h-full rounded-[2rem] sm:rounded-[3rem] bg-[#0a0d24]/50 overflow-hidden relative border border-white/10 shadow-inner">
-            <div class="absolute inset-0 flex flex-col items-center justify-center text-purple-400/60 font-bold p-8 text-center bg-gradient-to-b from-transparent to-purple-900/20">
-              <svg class="w-16 h-16 mb-4 text-purple-500/50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-              [ Vùng hiển thị Ảnh chụp ]
+      <div class="reveal-card relative w-full aspect-[4/5] lg:aspect-auto lg:h-[640px] mt-10 lg:mt-0 z-10 flex justify-center items-center" style="transition-delay: 240ms;">
+        <div class="absolute inset-0 glass glare tilt-3d rounded-[2.5rem] p-3 sm:p-4">
+          <div class="w-full h-full rounded-[2rem] bg-[var(--input-fill)] overflow-hidden relative border border-[var(--input-border)]">
+            <div class="absolute inset-0 flex flex-col items-center justify-center font-bold p-8 text-center text-[var(--text-muted)]">
+              <svg class="w-12 h-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+              [ Image Placeholder ]
             </div>
           </div>
         </div>
 
-        <div class="absolute -top-4 -right-4 sm:-right-8 glass-card rounded-2xl p-4 shadow-2xl animate-float-1 z-20 animate-glow-pulse">
+        <div class="absolute -top-4 -right-4 sm:-right-6 glass-sm rounded-2xl p-4 animate-float-1 z-20">
           <div class="flex flex-col items-center justify-center">
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Overall</span>
-            <span class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">8.5 IELTS</span>
+            <span class="label">Overall</span>
+            <span class="text-xl font-black text-gradient">8.5 IELTS</span>
           </div>
         </div>
 
-        <div class="absolute top-[40%] -left-6 sm:-left-12 glass-card rounded-2xl p-4 shadow-2xl animate-float-2 z-20 animate-glow-pulse" style="animation-delay: -2s;">
+        <div class="absolute top-[40%] -left-4 sm:-left-8 glass-sm rounded-2xl p-4 animate-float-2 z-20">
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-pink-500/20 border border-pink-500/30 flex items-center justify-center">
-              <svg class="w-4 h-4 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+            <div class="w-8 h-8 rounded-full border flex items-center justify-center" style="border-color: var(--glass-border); background: var(--input-fill);">
+              <svg class="w-4 h-4" style="color: var(--accent-2);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
             </div>
             <div>
-              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Writing</div>
-              <div class="text-lg font-black text-white">7.0</div>
+              <div class="label">Writing</div>
+              <div class="text-base font-black text-[var(--text-primary)]">7.0</div>
             </div>
           </div>
         </div>
 
-        <div class="absolute -bottom-6 right-10 sm:right-16 glass-card rounded-2xl p-4 shadow-2xl animate-float-3 z-20 animate-glow-pulse" style="animation-delay: -4s;">
+        <div class="absolute -bottom-6 right-8 sm:right-12 glass-sm rounded-2xl p-4 animate-float-3 z-20">
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center">
-              <svg class="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            <div class="w-8 h-8 rounded-full border flex items-center justify-center" style="border-color: var(--glass-border); background: var(--input-fill);">
+              <svg class="w-4 h-4" style="color: var(--accent);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
             </div>
             <div>
-              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Reading</div>
-              <div class="text-lg font-black text-white">8.0</div>
+              <div class="label">Reading</div>
+              <div class="text-base font-black text-[var(--text-primary)]">8.0</div>
             </div>
           </div>
         </div>
-        
       </div>
     </section>
 
     <section id="khoahoc" class="py-16 sm:py-24 relative z-20">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
-          <h2 class="reveal-mask text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Lộ trình học <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">tinh gọn</span>
+        <div class="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
+          <h2 class="reveal-clip text-h2">
+            Lộ trình học <span class="text-gradient">tinh&nbsp;gọn</span>
           </h2>
-          <p class="fade-up mt-6 text-lg text-slate-400 font-medium px-2">Hai nhóm lớp thiết kế chuyên biệt. Loại bỏ kiến thức dư thừa, tập trung tối đa vào hiệu quả thực tế trên từng band điểm.</p>
+          <p class="reveal-card body-lg mx-auto mt-6">Hai nhóm lớp thiết kế chuyên biệt. Loại bỏ kiến thức dư thừa, tập trung tối đa vào hiệu quả thực tế trên từng band&nbsp;điểm.</p>
         </div>
 
         <div class="grid lg:grid-cols-2 gap-8 sm:gap-10">
           
-          <div class="fade-up glass-card glare-glass tilt-card rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 relative z-10" style="transition-delay: 100ms;">
-            <div class="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-0 mb-8">
+          <div class="reveal-card glass glare tilt-3d rounded-[2.5rem] p-8 sm:p-10 relative z-10" style="transition-delay: 120ms;">
+            <div class="flex flex-col sm:flex-row justify-between items-start gap-5 mb-8">
               <div>
-                <div class="inline-flex items-center rounded-full bg-purple-500/10 border border-purple-500/20 px-4 py-1.5 text-xs font-extrabold text-purple-300 uppercase tracking-widest mb-4">Foundation</div>
-                <h3 class="text-3xl sm:text-4xl font-extrabold text-white">Lớp Moderate</h3>
-                <p class="mt-2 text-lg text-purple-400 font-extrabold">Target: 4.0 - 6.5</p>
+                <div class="inline-flex items-center rounded-lg px-3 py-1 label mb-4" style="background: var(--input-fill); border: 1px solid var(--input-border);">Foundation</div>
+                <h3 class="text-h3">Lớp Moderate</h3>
+                <p class="mt-2 text-base font-bold" style="color: var(--accent-light);">Target: 4.0 - 6.5</p>
               </div>
-              <div class="w-full sm:w-auto text-left sm:text-right bg-white/5 border border-white/10 px-5 py-3 rounded-2xl flex sm:block justify-between items-center">
-                <div class="text-sm font-extrabold text-slate-200">T5 & T7</div>
-                <div class="text-xs font-bold text-slate-400 sm:mt-1">20:00 - 21:30</div>
+              <div class="w-full sm:w-auto text-left sm:text-right px-4 py-3 rounded-2xl flex sm:block justify-between items-center" style="background: var(--input-fill); border: 1px solid var(--input-border);">
+                <div class="text-sm font-extrabold text-[var(--text-primary)]">T5 & T7</div>
+                <div class="text-xs font-semibold text-[var(--text-muted)] sm:mt-1">20:00 - 21:30</div>
               </div>
             </div>
             
-            <p class="text-base text-slate-300 mb-8 font-medium leading-relaxed">Dành cho học viên muốn củng cố nền tảng, học cách tiếp cận đề bài bản nhất trong 3 tháng.</p>
+            <p class="body-sm mb-8">Dành cho học viên muốn củng cố nền tảng, học cách tiếp cận đề bài bản nhất trong 3&nbsp;tháng.</p>
             
-            <ul class="space-y-4 text-base text-slate-300 font-semibold mb-10">
+            <ul class="space-y-4 body-sm mb-10">
               <li class="flex gap-4 items-start">
-                <div class="mt-1 h-6 w-6 shrink-0 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 border border-purple-500/30"><div class="w-2 h-2 rounded-full bg-purple-400"></div></div> 
+                <div class="mt-1 h-[6px] w-[6px] rounded-full shrink-0" style="background: var(--accent);"></div> 
                 Tiếp cận 4 kỹ năng nhờ phương pháp tích hợp.
               </li>
               <li class="flex gap-4 items-start">
-                <div class="mt-1 h-6 w-6 shrink-0 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 border border-purple-500/30"><div class="w-2 h-2 rounded-full bg-purple-400"></div></div> 
+                <div class="mt-1 h-[6px] w-[6px] rounded-full shrink-0" style="background: var(--accent);"></div> 
                 Luyện Speaking & Writing song song, liên kết topic.
               </li>
             </ul>
 
-            <div class="pt-2 border-t border-white/10">
-              <button class="accordion-btn w-full flex items-center justify-between text-left py-4 text-sm font-bold text-slate-200 hover:text-purple-300 transition-colors focus:outline-none">
+            <div class="pt-2" style="border-top: 1px solid var(--input-border);">
+              <button class="accordion-btn w-full flex items-center justify-between text-left py-4 text-sm font-bold text-[var(--text-primary)] transition-colors focus:outline-none">
                 <span>Tài liệu & Lộ trình chi tiết</span>
-                <svg class="accordion-icon h-5 w-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                <svg class="accordion-icon h-5 w-5 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </button>
               <div class="accordion-content">
                 <div class="space-y-3 pb-4">
-                  <a href="https://docs.google.com/document/d/1Ju_IHjogwd_Zu7qL93J2pUE_rfsRQLQYEfKbQTjdcXk/edit?tab=t.0" target="_blank" class="flex items-center gap-4 text-sm font-medium text-slate-300 hover:text-white transition-colors bg-white/5 rounded-2xl p-3 border border-white/5 hover:border-purple-500/30 group">
-                    <div class="bg-purple-500/20 rounded-xl p-2 text-purple-400">
-                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                  <a href="https://docs.google.com/document/d/1Ju_IHjogwd_Zu7qL93J2pUE_rfsRQLQYEfKbQTjdcXk/edit?tab=t.0" target="_blank" class="flex items-center gap-4 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-2xl p-3 group" style="background: var(--input-fill);">
+                    <div class="rounded-xl p-2" style="background: var(--input-fill); color: var(--accent);">
+                      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                     </div>
                     <span>Syllabus lộ trình</span>
-                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                   </a>
-                  <a href="https://drive.google.com/file/d/1YiQ5YXYMDIoLDSLSUbJ2mfpOz2qD6oO5/view?usp=drivesdk" target="_blank" class="flex items-center gap-4 text-sm font-medium text-slate-300 hover:text-white transition-colors bg-white/5 rounded-2xl p-3 border border-white/5 hover:border-purple-500/30 group">
-                    <div class="bg-purple-500/20 rounded-xl p-2 text-purple-400">
-                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <a href="https://drive.google.com/file/d/1YiQ5YXYMDIoLDSLSUbJ2mfpOz2qD6oO5/view?usp=drivesdk" target="_blank" class="flex items-center gap-4 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-2xl p-3 group" style="background: var(--input-fill);">
+                    <div class="rounded-xl p-2" style="background: var(--input-fill); color: var(--accent);">
+                      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <span>Recording mẫu lớp Moderate</span>
-                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                   </a>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="fade-up glass-card glare-glass tilt-card rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 relative z-10" style="transition-delay: 250ms;">
-            <div class="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-0 mb-8">
+          <div class="reveal-card glass glare tilt-3d rounded-[2.5rem] p-8 sm:p-10 relative z-10" style="transition-delay: 240ms;">
+            <div class="flex flex-col sm:flex-row justify-between items-start gap-5 mb-8">
               <div>
-                <div class="inline-flex items-center rounded-full bg-pink-500/10 border border-pink-500/20 px-4 py-1.5 text-xs font-extrabold text-pink-300 uppercase tracking-widest mb-4">Practice Intensive</div>
-                <h3 class="text-3xl sm:text-4xl font-extrabold text-white">Lớp Giải Đề</h3>
-                <p class="mt-2 text-lg text-pink-400 font-extrabold">Target: 6.5 - 8.5</p>
+                <div class="inline-flex items-center rounded-lg px-3 py-1 label mb-4" style="background: var(--input-fill); border: 1px solid var(--input-border);">Practice Intensive</div>
+                <h3 class="text-h3">Lớp Giải Đề</h3>
+                <p class="mt-2 text-base font-bold" style="color: var(--accent-2);">Target: 6.5 - 8.5</p>
               </div>
-              <div class="w-full sm:w-auto text-left sm:text-right bg-white/5 border border-white/10 px-5 py-3 rounded-2xl flex sm:block justify-between items-center">
-                <div class="text-sm font-extrabold text-slate-200">Thứ 6 & CN</div>
-                <div class="text-xs font-bold text-slate-400 sm:mt-1">20:00 - 21:30</div>
+              <div class="w-full sm:w-auto text-left sm:text-right px-4 py-3 rounded-2xl flex sm:block justify-between items-center" style="background: var(--input-fill); border: 1px solid var(--input-border);">
+                <div class="text-sm font-extrabold text-[var(--text-primary)]">Thứ 6 & CN</div>
+                <div class="text-xs font-semibold text-[var(--text-muted)] sm:mt-1">20:00 - 21:30</div>
               </div>
             </div>
             
-            <p class="text-base text-slate-300 mb-8 font-medium leading-relaxed">Boost band cấp tốc. Dành cho các bạn đã có nền khá vững, luyện đề chuyên sâu kết hợp chữa bài chi tiết.</p>
+            <p class="body-sm mb-8">Boost band cấp tốc. Dành cho các bạn đã có nền khá vững, luyện đề chuyên sâu kết hợp chữa bài chi&nbsp;tiết.</p>
             
-            <ul class="space-y-4 text-base text-slate-300 font-semibold mb-10">
+            <ul class="space-y-4 body-sm mb-10">
               <li class="flex gap-4 items-start">
-                <div class="mt-1 h-6 w-6 shrink-0 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400 border border-pink-500/30"><div class="w-2 h-2 rounded-full bg-pink-400"></div></div> 
+                <div class="mt-1 h-[6px] w-[6px] rounded-full shrink-0" style="background: var(--accent-2);"></div> 
                 Cập nhật đề mới nhất & xu hướng ra đề liên tục.
               </li>
               <li class="flex gap-4 items-start">
-                <div class="mt-1 h-6 w-6 shrink-0 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400 border border-pink-500/30"><div class="w-2 h-2 rounded-full bg-pink-400"></div></div> 
+                <div class="mt-1 h-[6px] w-[6px] rounded-full shrink-0" style="background: var(--accent-2);"></div> 
                 Phân tích kỹ tiêu chí chấm điểm, chiến thuật phòng thi.
               </li>
             </ul>
 
-            <div class="pt-2 border-t border-white/10">
-              <button class="accordion-btn w-full flex items-center justify-between text-left py-4 text-sm font-bold text-slate-200 hover:text-pink-300 transition-colors focus:outline-none">
+            <div class="pt-2" style="border-top: 1px solid var(--input-border);">
+              <button class="accordion-btn w-full flex items-center justify-between text-left py-4 text-sm font-bold text-[var(--text-primary)] transition-colors focus:outline-none">
                 <span>Tài liệu & Lộ trình chi tiết</span>
-                <svg class="accordion-icon h-5 w-5 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                <svg class="accordion-icon h-5 w-5 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </button>
               <div class="accordion-content">
                 <div class="space-y-3 pb-4">
-                  <div class="flex items-center gap-4 text-sm font-medium text-slate-400 bg-white/5 rounded-2xl p-3 border border-white/5 cursor-not-allowed">
-                    <div class="bg-white/10 rounded-xl p-2 text-slate-500">
-                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                  <div class="flex items-center gap-4 text-sm font-medium text-[var(--text-muted)] rounded-2xl p-3 cursor-not-allowed" style="background: var(--input-fill);">
+                    <div class="rounded-xl p-2" style="background: var(--input-fill); color: var(--text-muted);">
+                      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                     </div>
                     <span>Lộ trình cấp tốc (Tài liệu nội bộ)</span>
                   </div>
-                  <a href="https://drive.google.com/file/d/1LouiEDNH-1PACWZKbEdpIK7pH7na-rf_/view?usp=drivesdk" target="_blank" class="flex items-center gap-4 text-sm font-medium text-slate-300 hover:text-white transition-colors bg-white/5 rounded-2xl p-3 border border-white/5 hover:border-pink-500/30 group">
-                    <div class="bg-pink-500/20 rounded-xl p-2 text-pink-400">
-                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <a href="https://drive.google.com/file/d/1LouiEDNH-1PACWZKbEdpIK7pH7na-rf_/view?usp=drivesdk" target="_blank" class="flex items-center gap-4 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-2xl p-3 group" style="background: var(--input-fill);">
+                    <div class="rounded-xl p-2" style="background: var(--input-fill); color: var(--accent-2);">
+                      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <span>Xem Record mẫu lớp Giải đề</span>
-                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                   </a>
                 </div>
               </div>
@@ -541,119 +617,119 @@
     </section>
 
     <section id="hocphi" class="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 py-10 sm:py-20 relative z-20">
-      <div class="fade-up glass-card rounded-3xl sm:rounded-[3.5rem] lg:rounded-[4rem] overflow-hidden relative border border-white/10 shadow-2xl">
+      <div class="reveal-card glass rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden grid lg:grid-cols-[1fr_1fr]">
         
-        <div class="grid lg:grid-cols-[1.1fr_0.9fr] relative z-10">
+        <div class="p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
+          <h2 class="text-h2 mb-8">Đầu tư xứng đáng cho <br><span class="text-gradient">kết quả&nbsp;thật.</span></h2>
           
-          <div class="p-6 sm:p-10 lg:p-16 flex flex-col justify-center">
-            <h2 class="reveal-mask text-4xl sm:text-5xl font-extrabold text-white mb-6 lg:mb-8 tracking-tight leading-tight">Đầu tư xứng đáng cho <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-300">kết quả thật.</span></h2>
-            
-            <div class="flex flex-row items-end gap-4 mb-8 bg-white/5 rounded-[2rem] p-6 w-full sm:w-max border border-white/10 shadow-inner">
-              <span class="text-5xl sm:text-6xl font-black text-white tracking-tighter">2.900k</span>
-              <div class="flex flex-col pb-1 sm:pb-2">
-                <span class="text-slate-500 line-through text-xs sm:text-sm font-bold uppercase tracking-widest">3.900.000đ</span>
-                <span class="text-purple-300 text-sm sm:text-base font-extrabold uppercase tracking-widest">/ tháng</span>
-              </div>
-            </div>
-            
-            <p class="text-slate-400 text-base sm:text-lg leading-relaxed mb-10 font-medium max-w-md">
-              Học phí được thanh toán theo từng tháng. Giúp học viên hoàn toàn an tâm về chất lượng đào tạo đồng đều 🤍.
-            </p>
-            
-            <div class="mt-auto pt-6 border-t border-white/10">
-              <div class="flex flex-col sm:flex-row gap-4">
-                <a href="https://zalo.me/0962821015" target="_blank" class="btn-magnetic flex items-center justify-center sm:justify-start gap-3 glass-card rounded-2xl px-5 py-4 text-white hover:bg-white/5 transition-all">
-                  <svg class="h-6 w-6 text-blue-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21.543 8.358A10.82 10.82 0 0012 2C6.477 2 2 5.922 2 10.76c0 2.502 1.258 4.752 3.253 6.347-.282 1.348-.962 2.825-2.898 3.86a.276.276 0 00.126.516c3.218 0 5.435-1.464 6.643-2.528A11.39 11.39 0 0012 19.52c5.523 0 10-3.922 10-8.76 0-1.02-.2-2.002-.457-2.402z"/></svg>
-                  <span class="font-bold text-base">Zalo: 0962821015</span>
-                </a>
-                <a href="https://www.facebook.com/search/top?q=Phuong%20Vy%20Celeste" target="_blank" class="btn-magnetic flex items-center justify-center sm:justify-start gap-3 glass-card rounded-2xl px-5 py-4 text-white hover:bg-white/5 transition-all">
-                  <svg class="h-6 w-6 text-blue-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                  <span class="font-bold text-base">Phuong Vy Celeste</span>
-                </a>
-              </div>
+          <div class="flex flex-row items-baseline gap-3 mb-8 w-full sm:w-max">
+            <span class="text-5xl sm:text-6xl font-black text-[var(--text-primary)] tracking-tighter">2.900k</span>
+            <div class="flex flex-col">
+              <span class="line-through text-xs sm:text-sm font-bold uppercase tracking-widest text-[var(--text-muted)]">3.900.000đ</span>
+              <span class="text-sm sm:text-base font-extrabold uppercase tracking-widest" style="color: var(--accent);">/ tháng</span>
             </div>
           </div>
+          
+          <p class="body-lg mb-10 max-w-md">
+            Học phí được thanh toán theo từng tháng. Giúp học viên hoàn toàn an tâm về chất lượng đào tạo đồng&nbsp;đều.
+          </p>
+          
+          <div class="mt-auto pt-8" style="border-top: 1px solid var(--input-border);">
+            <div class="flex flex-col sm:flex-row gap-4">
+              <a href="https://zalo.me/0962821015" target="_blank" class="btn-magnetic flex items-center justify-center sm:justify-start gap-3 rounded-2xl px-5 py-4 transition-all" style="background: var(--input-fill);">
+                <svg class="h-6 w-6 text-blue-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21.543 8.358A10.82 10.82 0 0012 2C6.477 2 2 5.922 2 10.76c0 2.502 1.258 4.752 3.253 6.347-.282 1.348-.962 2.825-2.898 3.86a.276.276 0 00.126.516c3.218 0 5.435-1.464 6.643-2.528A11.39 11.39 0 0012 19.52c5.523 0 10-3.922 10-8.76 0-1.02-.2-2.002-.457-2.402z"/></svg>
+                <span class="font-bold text-base text-[var(--text-primary)]">Zalo: 0962821015</span>
+              </a>
+              <a href="https://www.facebook.com/search/top?q=Phuong%20Vy%20Celeste" target="_blank" class="btn-magnetic flex items-center justify-center sm:justify-start gap-3 rounded-2xl px-5 py-4 transition-all" style="background: var(--input-fill);">
+                <svg class="h-6 w-6 text-blue-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <span class="font-bold text-base text-[var(--text-primary)]">Phuong Vy Celeste</span>
+              </a>
+            </div>
+          </div>
+        </div>
 
-          <div id="dangky" class="glass-bright glare-glass p-8 sm:p-12 lg:p-14 rounded-[2rem] sm:rounded-[3rem] flex flex-col justify-center m-2 sm:m-4 relative z-20">
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">Đăng ký xếp lớp</h3>
-            <p class="text-sm font-semibold text-slate-400 mb-8">Pzy sẽ liên hệ tư vấn lộ trình và bài test đầu vào cho bạn.</p>
+        <div id="dangky" class="p-8 sm:p-12 lg:p-16 flex flex-col justify-center" style="background: rgba(0,0,0,0.08);">
+          <h3 class="text-h3 mb-2">Đăng ký xếp lớp</h3>
+          <p class="body-sm mb-8">Pzy sẽ liên hệ tư vấn lộ trình và bài test đầu vào cho bạn.</p>
+          
+          <form id="signup-form" class="space-y-4 sm:space-y-5" novalidate>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              <div class="space-y-2 relative">
+                <label class="label ml-1">Họ và tên</label>
+                <input type="text" id="name" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold" required>
+                <svg class="validation-icon hidden absolute right-4 top-[40px] w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div class="space-y-2 relative">
+                <label class="label ml-1">SĐT / Zalo</label>
+                <input type="tel" id="phone" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold" required pattern="[0-9]{9,11}">
+                <svg class="validation-icon hidden absolute right-4 top-[40px] w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              <div class="space-y-2">
+                <label class="label ml-1">Band mục tiêu</label>
+                <select class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold appearance-none cursor-pointer">
+                  <option value="6.5">6.5+</option>
+                  <option value="7.0">7.0+</option>
+                  <option value="8.0">8.0+</option>
+                </select>
+              </div>
+              <div class="space-y-2">
+                <label class="label ml-1">Thời gian thi dự kiến</label>
+                <input type="text" placeholder="VD: T10/2026" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold">
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="label ml-1">Ghi chú thêm</label>
+              <textarea placeholder="Trình độ hiện tại, lớp mong muốn..." rows="2" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold resize-none sm:h-24 h-20"></textarea>
+            </div>
             
-            <form id="signup-form" class="space-y-4 sm:space-y-5" novalidate>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                <div class="space-y-1.5 relative">
-                  <label class="text-xs font-bold text-slate-400 ml-1 uppercase tracking-wider">Họ và tên</label>
-                  <input type="text" id="name" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold outline-none" required>
-                  <svg class="validation-icon hidden absolute right-4 top-[38px] w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                </div>
-                <div class="space-y-1.5 relative">
-                  <label class="text-xs font-bold text-slate-400 ml-1 uppercase tracking-wider">SĐT / Zalo</label>
-                  <input type="tel" id="phone" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold outline-none" required pattern="[0-9]{9,11}">
-                  <svg class="validation-icon hidden absolute right-4 top-[38px] w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                </div>
-              </div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                <div class="space-y-1.5">
-                  <label class="text-xs font-bold text-slate-400 ml-1 uppercase tracking-wider">Band mục tiêu</label>
-                  <select class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold outline-none appearance-none cursor-pointer">
-                    <option value="6.5" class="bg-dark-surface text-white">6.5+</option>
-                    <option value="7.0" class="bg-dark-surface text-white">7.0+</option>
-                    <option value="8.0" class="bg-dark-surface text-white">8.0+</option>
-                  </select>
-                </div>
-                <div class="space-y-1.5">
-                  <label class="text-xs font-bold text-slate-400 ml-1 uppercase tracking-wider">Thời gian thi dự kiến</label>
-                  <input type="text" placeholder="VD: T10/2026" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold outline-none placeholder-slate-600">
-                </div>
-              </div>
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold text-slate-400 ml-1 uppercase tracking-wider">Ghi chú thêm</label>
-                <textarea placeholder="Trình độ hiện tại, lớp mong muốn..." rows="2" class="input-field w-full rounded-2xl px-5 py-4 text-sm font-bold outline-none placeholder-slate-600 resize-none sm:h-24 h-20"></textarea>
-              </div>
-              
-              <button type="submit" id="submit-btn" class="btn-magnetic w-full rounded-2xl bg-gradient-to-r from-purple-600 to-fuchsia-500 py-4.5 mt-2 text-base font-extrabold text-white transition-all shadow-lg shadow-purple-900/40 hover:shadow-purple-500/50 flex items-center justify-center h-14 relative overflow-hidden">
-                <span id="btn-text">Gửi thông tin đăng ký</span>
-                <div id="btn-spinner" class="spinner hidden"></div>
-                <svg id="btn-check" class="hidden w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              </button>
-            </form>
-          </div>
+            <button type="submit" id="submit-btn" class="btn-magnetic w-full rounded-2xl py-4 mt-4 text-base font-extrabold text-white transition-transform flex items-center justify-center h-14 relative overflow-hidden" style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);">
+              <span id="btn-text">Gửi thông tin đăng ký</span>
+              <div id="btn-spinner" class="hidden w-5 h-5 border-2 rounded-full animate-spin" style="border-color: rgba(255,255,255,0.3); border-top-color: white;"></div>
+              <svg id="btn-check" class="hidden w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </button>
+          </form>
         </div>
       </div>
     </section>
 
-    <footer class="mt-8 border-t border-white/10 bg-dark-base/50 backdrop-blur-xl py-8 text-center text-sm font-bold text-slate-500">
-      <div class="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p>&copy; 2026 Pzy IELTS. All rights reserved.</p>
-        <div class="flex items-center gap-4">
-          <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+    <footer class="glass-nav border-t-0 mt-8 py-8 flex items-center">
+      <div class="mx-auto w-full max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-sm font-bold text-[var(--text-muted)]">&copy; 2026 Pzy IELTS. All rights reserved.</p>
+        <div class="flex items-center gap-4 text-sm font-bold text-[var(--text-muted)]">
+          <span class="w-[6px] h-[6px] rounded-full" style="background: var(--accent);"></span>
           <span class="tracking-wide">Hệ thống chấm chữa chuẩn Academic</span>
-          <span class="w-2 h-2 rounded-full bg-pink-500"></span>
+          <span class="w-[6px] h-[6px] rounded-full" style="background: var(--accent-2);"></span>
         </div>
       </div>
     </footer>
   </main>
 
-  <div id="toast" class="fixed bottom-6 right-6 z-[100] glass-bright px-6 py-4 rounded-2xl flex items-center gap-3 shadow-2xl">
-    <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+  <div id="toast" class="fixed bottom-6 right-6 z-[100] glass-sm px-6 py-4 rounded-2xl flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(34, 197, 94, 0.2); color: #4ade80;">
       <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
     </div>
-    <div class="text-sm font-bold text-white">Đã gửi! Pzy sẽ liên hệ sớm nhé 🎉</div>
+    <div class="text-sm font-bold text-[var(--text-primary)]">Đã gửi! Pzy sẽ liên hệ sớm nhé 🎉</div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const isMobile = window.matchMedia('(pointer: coarse)').matches;
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
       // ==========================================
-      // LAYER 2: CANVAS PARTICLES
+      // CANVAS PARTICLES
       // ==========================================
       const canvas = document.getElementById('particle-canvas');
       const ctx = canvas.getContext('2d');
       let width, height, particles = [];
-      const particleCount = isMobile ? 60 : 120;
+      const particleCount = isMobile ? (isDark ? 55 : 30) : (isDark ? 120 : 70);
       let mouse = { x: -1000, y: -1000 };
       let isVisible = true;
       let animationFrameId;
+
+      let rawColor = getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim() || "120, 80, 200";
 
       function resize() {
         width = canvas.width = window.innerWidth;
@@ -684,30 +760,25 @@
             if (this.x < 0 || this.x > width) this.vx *= -1;
             if (this.y < 0 || this.y > height) this.vy *= -1;
 
-            // Mouse repel
             const dx = mouse.x - this.x;
             const dy = mouse.y - this.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 120) {
-              const force = (120 - dist) / 120;
-              this.vx -= (dx / dist) * force * 0.1;
-              this.vy -= (dy / dist) * force * 0.1;
+            if (dist < 100) {
+              const force = (100 - dist) / 100;
+              this.vx -= (dx / dist) * force * 0.06;
+              this.vy -= (dy / dist) * force * 0.06;
             }
             
-            // Speed limit & friction to return to normal
             const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-            if (speed > 1.5) {
-              this.vx *= 0.95; this.vy *= 0.95;
-            } else if (speed < 0.2) {
-              this.vx *= 1.01; this.vy *= 1.01;
-            }
+            if (speed > 1.5) { this.vx *= 0.95; this.vy *= 0.95; } 
+            else if (speed < 0.2) { this.vx *= 1.01; this.vy *= 1.01; }
           }
           return true;
         }
         draw() {
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(167, 139, 250, ${this.alpha})`;
+          ctx.fillStyle = `rgba(${rawColor}, ${this.alpha})`;
           ctx.fill();
         }
       }
@@ -734,12 +805,12 @@
               const dy = p.y - p2.y;
               const dist = Math.sqrt(dx * dx + dy * dy);
               
-              if (dist < 140) {
+              if (dist < 130) {
                 ctx.beginPath();
                 ctx.moveTo(p.x, p.y);
                 ctx.lineTo(p2.x, p2.y);
-                const opacity = (1 - dist / 140) * 0.35;
-                ctx.strokeStyle = `rgba(139, 92, 246, ${opacity})`;
+                const opacity = (1 - dist / 130) * 0.35;
+                ctx.strokeStyle = `rgba(${rawColor}, ${opacity})`;
                 ctx.lineWidth = 0.8;
                 ctx.stroke();
               }
@@ -764,7 +835,7 @@
       resize(); initParticles(); animateParticles();
 
       // ==========================================
-      // CURSOR GLOW FOLLOWER
+      // CURSOR GLOW 
       // ==========================================
       const cursorGlow = document.getElementById('cursor-glow');
       let cgX = window.innerWidth / 2, cgY = window.innerHeight / 2;
@@ -776,8 +847,8 @@
           cursorGlow.style.opacity = 1;
         });
         function animateCursorGlow() {
-          cgX += (targetCgX - cgX) * 0.08;
-          cgY += (targetCgY - cgY) * 0.08;
+          cgX += (targetCgX - cgX) * 0.07;
+          cgY += (targetCgY - cgY) * 0.07;
           cursorGlow.style.left = `${cgX}px`;
           cursorGlow.style.top = `${cgY}px`;
           requestAnimationFrame(animateCursorGlow);
@@ -786,11 +857,59 @@
       }
 
       // ==========================================
-      // SCROLL PROGRESS BAR & NAV HIGHLIGHT
+      // GLARE, TILT & MAGNETIC
+      // ==========================================
+      if (!isMobile) {
+        document.querySelectorAll('.glare').forEach(el => {
+          el.addEventListener('mousemove', e => {
+            const rect = el.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            el.style.setProperty('--x', `${x}%`);
+            el.style.setProperty('--y', `${y}%`);
+          });
+        });
+
+        document.querySelectorAll('.tilt-3d').forEach(card => {
+          card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -6;
+            const rotateY = ((x - centerX) / centerX) * 6;
+            card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+          });
+          card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
+            card.style.transition = 'transform 0.7s cubic-bezier(0.34,1.56,0.64,1)';
+          });
+          card.addEventListener('mouseenter', () => { card.style.transition = 'none'; });
+        });
+
+        document.querySelectorAll('.btn-magnetic').forEach(btn => {
+          btn.addEventListener('mousemove', e => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const factor = 8 / (rect.width / 2);
+            btn.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+          });
+          btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translate(0px, 0px)';
+            btn.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+          });
+          btn.addEventListener('mouseenter', () => { btn.style.transition = 'none'; });
+        });
+      }
+
+      // ==========================================
+      // SCROLL SYSTEM
       // ==========================================
       const progressBar = document.getElementById('scroll-progress');
-      const sections = document.querySelectorAll('section[id]');
       const navLinks = document.querySelectorAll('.nav-link');
+      const sections = document.querySelectorAll('section[id]');
 
       window.addEventListener('scroll', () => {
         const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -813,37 +932,7 @@
       sections.forEach(sec => navObserver.observe(sec));
 
       // ==========================================
-      // TYPING EFFECT
-      // ==========================================
-      const str1 = "Tăng band IELTS ";
-      const str2 = "thực chất & vững chắc.";
-      const target1 = document.getElementById('type-target-1');
-      const target2 = document.getElementById('type-target-2');
-      const cursor = document.getElementById('typing-cursor');
-      let tIdx1 = 0, tIdx2 = 0;
-
-      function typeStr2() {
-        if (tIdx2 < str2.length) {
-          target2.textContent += str2.charAt(tIdx2);
-          tIdx2++;
-          setTimeout(typeStr2, 30);
-        } else {
-          setTimeout(() => cursor.classList.add('hide'), 2400); // hide after 3 blinks
-        }
-      }
-      function typeStr1() {
-        if (tIdx1 < str1.length) {
-          target1.textContent += str1.charAt(tIdx1);
-          tIdx1++;
-          setTimeout(typeStr1, 30);
-        } else {
-          typeStr2();
-        }
-      }
-      setTimeout(typeStr1, 300);
-
-      // ==========================================
-      // SCROLL REVEAL & STAT COUNTERS
+      // REVEAL & COUNTERS
       // ==========================================
       const revealObserver = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
@@ -851,12 +940,11 @@
             entry.target.classList.add('is-revealed');
             obs.unobserve(entry.target);
             
-            // Check if contains stat numbers
             const nums = entry.target.querySelectorAll('.stat-number, .stat-number-float');
             nums.forEach(num => {
               const target = parseFloat(num.getAttribute('data-target'));
               const isFloat = num.classList.contains('stat-number-float');
-              const duration = 2000;
+              const duration = 1800;
               let start = null;
               
               function step(timestamp) {
@@ -864,7 +952,6 @@
                 const progress = Math.min((timestamp - start) / duration, 1);
                 const easeOut = 1 - Math.pow(1 - progress, 3);
                 const current = easeOut * target;
-                
                 num.textContent = isFloat ? current.toFixed(1) : Math.floor(current);
                 if (progress < 1) requestAnimationFrame(step);
               }
@@ -872,64 +959,39 @@
             });
           }
         });
-      }, { threshold: 0.15 });
-
-      document.querySelectorAll('.reveal-mask, .fade-up').forEach(el => revealObserver.observe(el));
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal-clip, .reveal-card').forEach(el => revealObserver.observe(el));
 
       // ==========================================
-      // 3D TILT & MAGNETIC BUTTONS (Desktop only)
+      // TYPING
       // ==========================================
-      if (!isMobile) {
-        // Tilt Cards
-        document.querySelectorAll('.tilt-card').forEach(card => {
-          card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -8;
-            const rotateY = ((x - centerX) / centerX) * 8;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-          });
-          card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-            card.style.transition = 'transform 0.6s ease-out';
-          });
-          card.addEventListener('mouseenter', () => {
-            card.style.transition = 'none';
-          });
-        });
+      const str1 = "Tăng band IELTS ";
+      const str2 = "thực chất & vững chắc.";
+      const target1 = document.getElementById('type-line-1');
+      const target2 = document.getElementById('type-line-2');
+      const cursor = document.getElementById('typing-cursor');
+      let tIdx1 = 0, tIdx2 = 0;
 
-        // Magnetic Buttons
-        document.querySelectorAll('.btn-magnetic').forEach(btn => {
-          btn.addEventListener('mousemove', e => {
-            const rect = btn.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-          });
-          btn.addEventListener('mouseleave', () => {
-            btn.style.transform = 'translate(0px, 0px)';
-            btn.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
-          });
-          btn.addEventListener('mouseenter', () => {
-            btn.style.transition = 'none';
-          });
-        });
+      function typeStr2() {
+        if (tIdx2 === 0) target2.innerHTML = '';
+        if (tIdx2 < str2.length) {
+          target2.textContent += str2.charAt(tIdx2);
+          tIdx2++;
+          setTimeout(typeStr2, 32);
+        } else {
+          setTimeout(() => cursor.style.display = 'none', 2400);
+        }
       }
-
-      // GLARE EFFECT UPDATE
-      document.querySelectorAll('.glare-glass').forEach(el => {
-        el.addEventListener('mousemove', e => {
-          const rect = el.getBoundingClientRect();
-          const x = ((e.clientX - rect.left) / rect.width) * 100;
-          const y = ((e.clientY - rect.top) / rect.height) * 100;
-          el.style.setProperty('--x', `${x}%`);
-          el.style.setProperty('--y', `${y}%`);
-        });
-      });
+      function typeStr1() {
+        if (tIdx1 < str1.length) {
+          target1.textContent += str1.charAt(tIdx1);
+          tIdx1++;
+          setTimeout(typeStr1, 32);
+        } else {
+          typeStr2();
+        }
+      }
+      setTimeout(typeStr1, 300);
 
       // ==========================================
       // ACCORDION
@@ -947,7 +1009,7 @@
       });
 
       // ==========================================
-      // FORM VALIDATION & SUBMIT
+      // FORM UX
       // ==========================================
       const form = document.getElementById('signup-form');
       const inputs = form.querySelectorAll('.input-field[required]');
@@ -963,18 +1025,42 @@
             input.classList.remove('input-valid');
             input.classList.add('input-invalid');
             if(icon) icon.classList.add('hidden');
-            // Shake animation
             input.classList.remove('animate-shake');
-            void input.offsetWidth; // trigger reflow
+            void input.offsetWidth;
             input.classList.add('animate-shake');
           }
         });
       });
 
+      function burstConfetti(x, y) {
+        const colors = [
+          getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
+          getComputedStyle(document.documentElement).getPropertyValue('--accent-2').trim()
+        ];
+        for(let i=0; i<16; i++) {
+          const c = document.createElement('div');
+          c.className = 'fixed w-2 h-2 rounded-full pointer-events-none z-50';
+          c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          c.style.left = x + 'px';
+          c.style.top = y + 'px';
+          document.body.appendChild(c);
+          
+          const angle = Math.random() * Math.PI * 2;
+          const velocity = 40 + Math.random() * 80;
+          const tx = Math.cos(angle) * velocity;
+          const ty = Math.sin(angle) * velocity - 80;
+          
+          c.animate([
+            { transform: 'translate(0,0) scale(1)', opacity: 1 },
+            { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+          ], { duration: 800, easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)' });
+          
+          setTimeout(() => c.remove(), 800);
+        }
+      }
+
       form.addEventListener('submit', (e) => {
         e.preventDefault();
-        
-        // Check all
         let isValid = true;
         inputs.forEach(input => {
           if (!input.checkValidity() || input.value.trim() === '') {
@@ -985,7 +1071,6 @@
 
         if (!isValid) return;
 
-        // Valid -> Submit sequence
         const btn = document.getElementById('submit-btn');
         const btnText = document.getElementById('btn-text');
         const spinner = document.getElementById('btn-spinner');
@@ -998,28 +1083,13 @@
           spinner.classList.add('hidden');
           check.classList.remove('hidden');
           
-          // Confetti
           const rect = btn.getBoundingClientRect();
-          for(let i=0; i<20; i++) {
-            const conf = document.createElement('div');
-            conf.className = 'confetti';
-            conf.style.backgroundColor = ['#a855f7', '#ec4899', '#3b82f6', '#10b981'][Math.floor(Math.random()*4)];
-            conf.style.left = `${rect.left + rect.width/2}px`;
-            conf.style.top = `${rect.top + rect.height/2}px`;
-            const angle = Math.random() * Math.PI * 2;
-            const velocity = 50 + Math.random() * 100;
-            conf.style.setProperty('--dx', `${Math.cos(angle) * velocity}px`);
-            conf.style.setProperty('--dy', `${Math.sin(angle) * velocity - 50}px`);
-            document.body.appendChild(conf);
-            setTimeout(() => conf.remove(), 1000);
-          }
+          burstConfetti(rect.left + rect.width/2, rect.top + rect.height/2);
 
-          // Show Toast
           const toast = document.getElementById('toast');
           toast.classList.add('show');
           setTimeout(() => toast.classList.remove('show'), 4000);
 
-          // Reset after 3s
           setTimeout(() => {
             check.classList.add('hidden');
             btnText.classList.remove('hidden');
