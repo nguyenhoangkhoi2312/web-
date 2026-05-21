@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="light">
   <title>IELTS with Vy | Premium Preparation</title>
   <script src="https://cdn.tailwindcss.com"></script>
   
@@ -42,7 +42,7 @@
        I. DESIGN TOKENS — Light mode default
        ════════════════════════════════════════════ */
     :root {
-      color-scheme: light dark;
+      color-scheme: light;
       --bg-base: #fbfaff;
       --text-primary: #0a0913;
       --text-secondary: #3d3c4a;
@@ -67,106 +67,63 @@
       --vor-0: #ddd4ff;
       --vor-1: #f1ecff;
       --vor-2: #fbfaff;
-      --vor-opacity: 0.32;
-      --vor-vignette: rgba(251, 250, 255, 0.55);
+      --vor-opacity: 0.22;
+      --vor-vignette: rgba(251, 250, 255, 0.62);
 
       /* ────────────────────────────────────────────
-         LIQUID GLASS TOKENS — central dial for tuning
-         .glass / .glass-sm reference these. Override
-         them in @media(prefers-color-scheme: dark)
-         to retune for dark mode in one place.
+         LIQUID GLASS TOKENS — central dial for tuning.
+         .glass / .glass-sm / .glass::before all reference
+         these so the whole surface vocabulary can be
+         retuned from one place.
          ──────────────────────────────────────────── */
-      /* Multi-stop tile gradient on the surface itself */
-      --glass-tile-1: rgba(255,255,255,0.40);
-      --glass-tile-2: rgba(255,255,255,0.15);
-      --glass-tile-3: rgba(255,255,255,0.22);
-      --glass-tile-4: rgba(255,255,255,0.36);
-      /* backdrop-filter knobs */
+      /* Multi-stop tile gradient on the surface itself.
+         Apple iOS 26 glass is much more transparent than iOS 15 frost —
+         alphas live in the 0.10–0.25 range so the content behind is clearly
+         legible through the glass, and refraction does the visual work. */
+      --glass-tile-1: rgba(255,255,255,0.22);
+      --glass-tile-2: rgba(255,255,255,0.08);
+      --glass-tile-3: rgba(255,255,255,0.12);
+      --glass-tile-4: rgba(255,255,255,0.20);
+      /* backdrop-filter knobs. Lower blur + higher saturate = refraction
+         dominates over frost, content behind looks vibrant (Apple's
+         "vibrant materials" behavior). */
       --glass-refract: url(#liquid-lens);
       --glass-refract-sm: url(#liquid-lens-sm);
-      --glass-blur: 2px;
-      --glass-blur-webkit: 8px;
-      --glass-sat: 2.2;
-      --glass-bright: 1.05;
-      /* 4-edge rim — softened from 1.0 to 0.92 so light mode doesn't ring */
-      --glass-rim-t: rgba(255,255,255,0.92);
-      --glass-rim-l: rgba(255,255,255,0.60);
-      --glass-rim-r: rgba(255,255,255,0.42);
-      --glass-rim-b: rgba(255,255,255,0.50);
-      --glass-rim-inner: rgba(255,255,255,0.12);
-      /* Bottom-edge accent inner-glow */
-      --glass-tint: rgba(124,58,237,0.05);
-      /* Drop shadows (3 layers) */
-      --glass-drop-1: rgba(15,14,30,0.05);
-      --glass-drop-2: rgba(80,60,120,0.16);
-      --glass-drop-3: rgba(80,60,120,0.22);
-      /* Specular gradient ::before */
-      --glass-spec-hi: rgba(255,255,255,0.48);
-      --glass-spec-mid: rgba(255,255,255,0.08);
+      --glass-blur: 1px;
+      --glass-blur-webkit: 6px;
+      --glass-sat: 2.6;
+      --glass-bright: 1.04;
+      /* 4-edge rim — Apple's edge highlight is brightest at top, fading
+         around the sides. We keep the same geometry but soften top further
+         to avoid a hard white ring. */
+      --glass-rim-t: rgba(255,255,255,0.78);
+      --glass-rim-l: rgba(255,255,255,0.42);
+      --glass-rim-r: rgba(255,255,255,0.28);
+      --glass-rim-b: rgba(255,255,255,0.32);
+      --glass-rim-inner: rgba(255,255,255,0.14);
+      /* Lensing rim — used as a second inner band stacked under the rim.
+         Simulates the curved-glass refraction visible in iOS 26 surfaces. */
+      --glass-lens-rim: rgba(255,255,255,0.32);
+      /* Bottom-edge accent inner-glow — restrained */
+      --glass-tint: rgba(124,58,237,0.035);
+      /* Drop shadows — Apple style: 4 layered shadows, all low-opacity,
+         violet-tinted so they feel like cast shadow on the brand surface
+         rather than generic gray. */
+      --glass-drop-1: rgba(15,14,30,0.025);
+      --glass-drop-2: rgba(80,60,120,0.045);
+      --glass-drop-3: rgba(80,60,120,0.075);
+      --glass-drop-4: rgba(80,60,120,0.10);
+      /* Specular gradient ::before — tighter band, less peak intensity.
+         Apple's spec highlight covers only the top ~5% with a sharp falloff
+         and a soft radial bloom in the top-left. */
+      --glass-spec-hi: rgba(255,255,255,0.36);
+      --glass-spec-mid: rgba(255,255,255,0.05);
       --glass-spec-blend: plus-lighter;
-      --glass-spec-opacity: 1;
+      --glass-spec-opacity: 0.95;
     }
 
-    /* Dark mode — follows OS preference (or system override) */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-base: #0a0813;
-        --text-primary: #f4f1ff;
-        --text-secondary: #c1bed1;
-        --text-muted: #7a7691;
-        --glass-fill: rgba(255, 255, 255, 0.06);
-        --glass-border: rgba(255, 255, 255, 0.10);
-        --glass-shadow: rgba(0, 0, 0, 0.55);
-        --glass-inset-top: rgba(255, 255, 255, 0.14);
-        --glass-inset-bot: rgba(0, 0, 0, 0.30);
-        --nav-fill: rgba(10, 8, 19, 0.72);
-        --nav-border: rgba(255, 255, 255, 0.08);
-        --input-fill: rgba(255, 255, 255, 0.04);
-        --input-fill-strong: rgba(255, 255, 255, 0.07);
-        --input-border: rgba(255, 255, 255, 0.08);
-        --accent: #a78bfa;
-        --accent-light: #c4b5fd;
-        --accent-2: #7c3aed;
-        --accent-3: #ddd6fe;
-        --accent-rgb: 167, 139, 250;
-        --form-tint: rgba(167, 139, 250, 0.04);
-        
-        --vor-0: #5b21b6;
-        --vor-1: #2e1065;
-        --vor-2: #0a0813;
-        --vor-opacity: 0.65;
-        --vor-vignette: rgba(10, 8, 19, 0.55);
-
-        /* Dark-mode glass tokens — keep same names, retune values.
-           Dropping url() refraction in dark prevents the smeared
-           streak artifact over deep navy backgrounds. */
-        --glass-tile-1: rgba(255,255,255,0.060);
-        --glass-tile-2: rgba(255,255,255,0.020);
-        --glass-tile-3: rgba(255,255,255,0.038);
-        --glass-tile-4: rgba(255,255,255,0.065);
-        --glass-refract: ;
-        --glass-refract-sm: ;
-        --glass-blur: 16px;
-        --glass-blur-webkit: 16px;
-        --glass-sat: 1.35;
-        --glass-bright: 0.95;
-        /* Dark rims: faint top + bottom, no side rim — keeps card honest */
-        --glass-rim-t: rgba(255,255,255,0.16);
-        --glass-rim-l: rgba(255,255,255,0.05);
-        --glass-rim-r: rgba(255,255,255,0.04);
-        --glass-rim-b: rgba(255,255,255,0.05);
-        --glass-rim-inner: rgba(255,255,255,0.05);
-        /* Subtle violet inner-glow at the bottom edge — adds depth without rim */
-        --glass-tint: rgba(167,139,250,0.06);
-        --glass-drop-1: rgba(0,0,0,0.40);
-        --glass-drop-2: rgba(0,0,0,0.55);
-        --glass-drop-3: rgba(0,0,0,0.45);
-        --glass-spec-hi: rgba(255,255,255,0.06);
-        --glass-spec-mid: rgba(255,255,255,0.01);
-        --glass-spec-blend: screen;
-        --glass-spec-opacity: 0.75;
-      }
-    }
+    /* Dark mode removed by request — site is light-mode only.
+       :root tokens above are the single source of truth. */
 
     /* ════════════════════════════════════════════
        II. BASE TYPOGRAPHY
@@ -182,11 +139,15 @@
     html { scrollbar-width: none; -ms-overflow-style: none; }
     html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
     
-    body { 
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    body {
+      /* Apple's actual stack — SF Pro Display on macOS/iOS, SF Pro Text on smaller,
+         Inter as the closest web fallback, then Jakarta. Avoids "system-ui" because
+         on Windows it resolves to Segoe UI which has different metrics. */
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Plus Jakarta Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
       background-color: var(--bg-base);
       color: var(--text-secondary);
-      font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ccmp" 1;
+      /* ss01 = alt single-storey a, cv11 = tabular figures with slashed zero, kern + liga obvious */
+      font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ccmp" 1, "ss01" 1, "cv11" 1;
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -194,32 +155,35 @@
       margin: 0;
     }
 
-    /* H1 — extra padding so Vietnamese diacritics don't clip */
+    /* H1 — Apple Display tightness. The diacritic padding is real, leave it.
+       letter-spacing pushes from -0.03 → -0.035 to match SF Pro Display's tightness
+       at large sizes (Apple's hero type is even tighter on .com but Vietnamese
+       diacritics can't go further without collisions). */
     .text-h1 {
       font-size: clamp(2.8rem, 5.5vw, 5rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
+      font-weight: 700;
+      letter-spacing: -0.035em;
       color: var(--text-primary);
-      line-height: 1.18;
+      line-height: 1.10;
       padding-top: 0.08em;
       padding-bottom: 0.08em;
     }
 
     .text-h2 {
       font-size: clamp(2.2rem, 3.8vw, 3.5rem);
-      font-weight: 800;
-      letter-spacing: -0.025em;
+      font-weight: 700;
+      letter-spacing: -0.028em;
       color: var(--text-primary);
-      line-height: 1.18;
+      line-height: 1.12;
       padding-bottom: 0.06em;
     }
 
     .text-h3 {
       font-size: clamp(1.6rem, 2.5vw, 2.2rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      font-weight: 600;
+      letter-spacing: -0.022em;
       color: var(--text-primary);
-      line-height: 1.25;
+      line-height: 1.18;
       padding-bottom: 0.04em;
     }
 
@@ -302,31 +266,6 @@
        — Top-edge specular ::before (static)
        — Mouse swipe shimmer ::after (linear, not radial)
        ════════════════════════════════════════════ */
-    /* Dark-mode-aware liquid glass: borders + fills use rgba based on text color contrast */
-    @media (prefers-color-scheme: dark) {
-      /* IDP IELTS Referral Agent lockup has dark text — wrap in soft white pill on dark backgrounds */
-      .nav-idp-logo {
-        background: rgba(255, 255, 255, 0.92);
-        padding: 4px 10px;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-      }
-      .nav-idp-logo img { height: 30px !important; }
-
-      /* .glass / .glass-sm / .glass::before now reuse light declarations
-         and just pull dark values from the --glass-* tokens overridden in
-         :root above. Only .glass-nav has structurally different shadows
-         (no specular pseudo, no rim layers) so it stays an explicit override. */
-      .glass-nav {
-        background: linear-gradient(180deg,
-          rgba(10,8,19,0.55) 0%,
-          rgba(10,8,19,0.80) 100%);
-        border-bottom-color: rgba(255,255,255,0.08);
-        box-shadow:
-          inset 0 1px 0 rgba(255,255,255,0.07),
-          0 1px 12px -4px rgba(0,0,0,0.6);
-      }
-    }
     /* GPU layer promotion for glass elements — keeps backdrop-filter cheap to repaint */
     .glass, .glass-sm, .glass-nav {
       position: relative;
@@ -336,11 +275,14 @@
       contain: layout style paint;
     }
 
-    /* LIQUID GLASS — clear lens, not frosted pane.
-       Low blur + high saturation = content shows through with a lensing glow.
-       Multi-edge inset rim simulates a real piece of glass with thickness.
-       All knobs live in --glass-* tokens (light defaults in :root, dark
-       override in the @media block above) — tune in one place. */
+    /* LIQUID GLASS — clear refractive lens, not a frosted pane.
+       Apple iOS 26 / macOS Tahoe vocabulary:
+         · low blur, high saturate → vibrant content visible through
+         · 4 inset rims (top/L/R/bot) for real glass thickness
+         · ::before specular curve = top-light reflection
+         · ::after lensing band = curved edge refraction
+         · 4 drop shadows, all violet-tinted, all low-alpha
+       All knobs in --glass-* tokens — tune in one place. */
     .glass {
       background: linear-gradient(135deg,
         var(--glass-tile-1) 0%,
@@ -351,15 +293,22 @@
       -webkit-backdrop-filter: blur(var(--glass-blur-webkit)) saturate(var(--glass-sat)) brightness(var(--glass-bright));
       border: 1px solid var(--glass-rim-t);
       box-shadow:
+        /* Edge thickness (4 rims) */
         inset 0 1.5px 0.5px var(--glass-rim-t),
         inset 1.4px 0 0.5px var(--glass-rim-l),
         inset -1.4px 0 0.5px var(--glass-rim-r),
         inset 0 -1.5px 0.5px var(--glass-rim-b),
+        /* Lensing band — bright inner rim ~1.5px in from edge (iOS 26 fresnel feel) */
+        inset 0 0 0 1.5px var(--glass-lens-rim),
+        /* Inner outline rim — softens the lens band into the surface */
+        inset 0 0 0 2.5px var(--glass-rim-inner),
+        /* Bottom accent glow */
         inset 0 -16px 36px var(--glass-tint),
-        inset 0 0 0 1px var(--glass-rim-inner),
-        0 1px 2px var(--glass-drop-1),
-        0 14px 32px -10px var(--glass-drop-2),
-        0 32px 70px -22px var(--glass-drop-3);
+        /* Drop shadow — 4 layers, low alpha each, Apple-style diffuse stack */
+        0 1px 1.5px var(--glass-drop-1),
+        0 4px 12px -2px var(--glass-drop-2),
+        0 16px 40px -8px var(--glass-drop-3),
+        0 50px 100px -32px var(--glass-drop-4);
     }
 
     .glass-sm {
@@ -375,44 +324,50 @@
         inset 1px 0 0.4px var(--glass-rim-l),
         inset -1px 0 0.4px var(--glass-rim-r),
         inset 0 -1.2px 0.4px var(--glass-rim-b),
-        inset 0 0 0 1px var(--glass-rim-inner),
-        0 1px 1px var(--glass-drop-1),
-        0 6px 18px -4px var(--glass-drop-2);
+        inset 0 0 0 1px var(--glass-lens-rim),
+        inset 0 0 0 1.8px var(--glass-rim-inner),
+        0 1px 1.5px var(--glass-drop-1),
+        0 4px 10px -2px var(--glass-drop-2),
+        0 14px 28px -10px var(--glass-drop-3);
     }
 
     .glass-nav {
+      /* Apple's nav (apple.com top bar) is much more transparent than a card —
+         heavy blur + saturate + very soft tint. The 0.62 tail keeps text
+         legible on scrolled content. */
       background: linear-gradient(
         180deg,
-        rgba(251,250,255,0.45) 0%,
-        rgba(251,250,255,0.70) 100%
+        rgba(251,250,255,0.55) 0%,
+        rgba(251,250,255,0.72) 100%
       );
-      backdrop-filter: url(#liquid-lens-nav) blur(8px) saturate(2.2) brightness(1.03);
-      -webkit-backdrop-filter: blur(16px) saturate(2.2) brightness(1.04);
-      border-bottom: 1px solid rgba(255,255,255,0.7);
+      backdrop-filter: url(#liquid-lens-nav) blur(20px) saturate(1.8) brightness(1.02);
+      -webkit-backdrop-filter: saturate(1.8) blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.95),
-        inset 0 -0.5px 0 rgba(0,0,0,0.04),
-        0 1px 12px -4px rgba(80,60,120,0.12);
-      height: 64px;
+        inset 0 1px 0 rgba(255,255,255,0.55),
+        0 1px 0 rgba(0,0,0,0.02);
+      height: 56px;
     }
-    @media (max-width: 768px) { .glass-nav { height: 56px; } }
+    @media (max-width: 768px) { .glass-nav { height: 48px; } }
 
     /* SPECULAR — curved bright highlight at top, like light hitting a real lens curve.
-       Tokens drive both intensity and blend-mode so dark mode can switch from
-       plus-lighter (additive — would bloom on dark bg) to screen (dimmed). */
+       Apple-style: sharp band (~6% tall), short falloff, soft asymmetric bloom
+       in the top-left to suggest a directional light source. */
     .glass::before, .glass-sm::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: inherit;
       background:
+        /* Sharp top edge band — bright at the very edge, gone by 6% */
         linear-gradient(180deg,
           var(--glass-spec-hi) 0%,
-          var(--glass-spec-mid) 3.5%,
-          transparent 11%),
-        radial-gradient(ellipse 70% 32% at 30% -8%,
+          var(--glass-spec-mid) 2.2%,
+          transparent 6%),
+        /* Soft asymmetric bloom — feels like a light at 11 o'clock */
+        radial-gradient(ellipse 55% 22% at 28% -6%,
           var(--glass-spec-hi) 0%,
-          transparent 65%);
+          transparent 70%);
       pointer-events: none;
       z-index: 1;
       opacity: var(--glass-spec-opacity);
@@ -559,62 +514,6 @@
       border-color: rgba(34, 197, 94, 0.55) !important;
     }
 
-    /* Dark-mode overrides for pill + input */
-    @media (prefers-color-scheme: dark) {
-      .glass-pill {
-        background: linear-gradient(135deg,
-          rgba(255,255,255,0.10) 0%,
-          rgba(255,255,255,0.04) 50%,
-          rgba(255,255,255,0.08) 100%);
-        border-color: rgba(255,255,255,0.12);
-        box-shadow:
-          inset 0 1px 0.3px rgba(255,255,255,0.18),
-          inset 0 0 0 1px rgba(255,255,255,0.05),
-          0 1px 2px rgba(0,0,0,0.4),
-          0 4px 14px -3px rgba(0,0,0,0.4);
-      }
-      .glass-pill::before {
-        background: linear-gradient(180deg,
-          rgba(255,255,255,0.16) 0%,
-          rgba(255,255,255,0.04) 4%,
-          transparent 14%);
-      }
-      a.glass-pill:hover, button.glass-pill:hover {
-        box-shadow:
-          inset 0 1px 0.3px rgba(255,255,255,0.22),
-          inset 0 0 0 1px rgba(167,139,250,0.18),
-          0 2px 6px rgba(0,0,0,0.5),
-          0 10px 24px -6px rgba(167,139,250,0.20);
-      }
-      .input-field {
-        background: linear-gradient(135deg,
-          rgba(255,255,255,0.08) 0%,
-          rgba(255,255,255,0.03) 50%,
-          rgba(255,255,255,0.06) 100%);
-        border-color: rgba(255,255,255,0.10);
-        box-shadow:
-          inset 0 1px 0.3px rgba(255,255,255,0.16),
-          inset 0 0 0 1px rgba(255,255,255,0.04);
-      }
-      .input-field:hover {
-        background: linear-gradient(135deg,
-          rgba(255,255,255,0.12) 0%,
-          rgba(255,255,255,0.05) 50%,
-          rgba(255,255,255,0.09) 100%);
-      }
-      .input-field:focus {
-        background: linear-gradient(135deg,
-          rgba(255,255,255,0.15) 0%,
-          rgba(255,255,255,0.07) 50%,
-          rgba(255,255,255,0.11) 100%);
-        border-color: rgba(167,139,250, 0.55);
-        box-shadow:
-          inset 0 1px 0.3px rgba(255,255,255,0.22),
-          0 0 0 4px rgba(167,139,250, 0.12),
-          0 4px 14px -4px rgba(167,139,250, 0.30);
-      }
-    }
-
     /* ══════════════════════════════════════════
        LIQUID GLASS BUTTONS — tinted glass treatment for CTAs
        Solid color for legibility, but with specular highlight + lensing rim,
@@ -678,15 +577,17 @@
        V. INTERACTIONS
        ════════════════════════════════════════════ */
     #cursor-glow {
+      /* Apple doesn't use cursor-following effects on apple.com — tone this
+         way down so it reads as ambient warmth, not a tracker. */
       position: fixed;
-      width: 360px; height: 360px;
+      width: 480px; height: 480px;
       top: 0; left: 0;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(var(--accent-rgb), 0.08) 0%, transparent 65%);
+      background: radial-gradient(circle, rgba(var(--accent-rgb), 0.045) 0%, transparent 60%);
       pointer-events: none;
       z-index: 1;
       opacity: 0;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.6s ease;
       will-change: transform;
     }
 
@@ -852,25 +753,7 @@
       .voronoi-bg animate { display: none; }
     }
     /* ════════════════════════════════════════════
-       VI. DARK-MODE LIQUID GLASS
-       .glass / .glass-sm / .glass::before are now token-driven —
-       dark values live in :root @media block at top of file.
-       Only .glass-pill and .glass-nav (which still hard-code their
-       backdrop-filter) need backdrop overrides here.
-       ════════════════════════════════════════════ */
-    @media (prefers-color-scheme: dark) {
-      .glass-pill {
-        backdrop-filter: blur(10px) saturate(1.25) brightness(0.97);
-        -webkit-backdrop-filter: blur(10px) saturate(1.25) brightness(0.97);
-      }
-      .glass-nav {
-        backdrop-filter: blur(18px) saturate(1.4) brightness(0.95);
-        -webkit-backdrop-filter: blur(18px) saturate(1.4) brightness(0.95);
-      }
-    }
-
-    /* ════════════════════════════════════════════
-       VII. ACCORDION PERFORMANCE — UN-NEST BACKDROP-FILTERS
+       VI. ACCORDION PERFORMANCE — UN-NEST BACKDROP-FILTERS
        Các .accordion-row.glass-pill nằm trong card .glass parent,
        mỗi cái có backdrop-filter riêng → mỗi frame browser phải
        compute filter chained cho 2–3 pill trong khi grid-template-rows
@@ -890,16 +773,6 @@
     .accordion-row .glass-pill {
       background: rgba(255,255,255,0.65);
     }
-    @media (prefers-color-scheme: dark) {
-      .accordion-row.glass-pill {
-        background: rgba(255,255,255,0.045);
-        border-color: rgba(255,255,255,0.08);
-      }
-      .accordion-row .glass-pill {
-        background: rgba(255,255,255,0.07);
-        border-color: rgba(255,255,255,0.10);
-      }
-    }
     /* Khi accordion đang animate, cô lập paint vào container — browser
        không phải re-paint hero/voronoi-bg phía sau */
     .accordion-content {
@@ -915,35 +788,7 @@
     }
 
     /* ════════════════════════════════════════════
-       VIII. VIDEO PLAYER CONTROLS — DARK MODE FIX
-       Các button có inline style background:rgba(255,255,255,0.95)
-       + color:var(--text-primary). Ở dark mode, --text-primary ~ trắng,
-       background trắng → text invisible. Override với background dark
-       + accent color cho icons. !important cần thiết để thắng inline style.
-       ════════════════════════════════════════════ */
-    @media (prefers-color-scheme: dark) {
-      #clip-play-btn,
-      #clip-sound-btn {
-        background: rgba(20, 18, 35, 0.78) !important;
-        color: var(--text-primary) !important;
-        box-shadow:
-          inset 0 1px 0 rgba(255,255,255,0.08),
-          0 2px 10px rgba(0,0,0,0.65) !important;
-      }
-      #clip-center-btn span {
-        background: rgba(20, 18, 35, 0.78) !important;
-        border: 1px solid rgba(255,255,255,0.10);
-      }
-      /* Icons trong center / play / pause SVG — giữ accent purple cho contrast */
-      #clip-center-icon-play path,
-      #clip-icon-play path,
-      #clip-icon-pause rect {
-        fill: var(--accent-light);
-      }
-    }
-
-    /* ════════════════════════════════════════════
-       IX. ACCORDION ANIMATING — REDUCE PARENT FILTER COST
+       VII. ACCORDION ANIMATING — REDUCE PARENT FILTER COST
        Root cause của lag: parent .glass card có backdrop-filter blur(16px)
        saturate(...). Khi grid-template-rows animate từ 0fr → 1fr, height của
        card thay đổi mỗi frame → bounds của backdrop-filter đổi → browser
