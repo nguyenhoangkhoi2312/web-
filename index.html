@@ -788,20 +788,25 @@
     }
 
     /* ════════════════════════════════════════════
-       VII. ACCORDION ANIMATING — REDUCE PARENT FILTER COST
-       Root cause của lag: parent .glass card có backdrop-filter blur(16px)
-       saturate(...). Khi grid-template-rows animate từ 0fr → 1fr, height của
-       card thay đổi mỗi frame → bounds của backdrop-filter đổi → browser
-       phải re-rasterize toàn bộ filter cho area mới. Trên Safari iOS và
-       Chrome desktop, đây là chi phí thực sự.
-       
-       Fix: trong khi accordion đang transition, tạm thời hạ blur xuống ~6px
-       (chi phí ~4-6x rẻ hơn) và bỏ saturate/brightness. Sau 500ms khi
-       transition xong → restore filter đầy đủ.
-       ════════════════════════════════════════════ */
+       VII. ACCORDION ANIMATING — FALLBACK-ONLY FILTER THROTTLE
+       Only the non-VT fallback path adds this class (JS handler decides).
+       View Transitions already do GPU-snapshot crossfade, so they don't
+       need any filter throttling — applying it there caused a visible
+       "frosted → liquid glass" material swap mid-open. Now:
+         · VT branch: card keeps full liquid glass throughout the open.
+         · Fallback branch: card's backdrop-filter swaps to a value that
+           is *close enough* to the resting glass so the transition reads
+           as a small lensing shift, not a material change.
+
+       The fallback throttle keeps the saturate (vibrancy of content
+       behind) and just trims the SVG refraction + bumps blur from 1px →
+       3px. Visually almost identical to resting glass, but cheap enough
+       that re-rasterizing per frame doesn't lag. We also smoothly
+       transition the swap so the eye doesn't catch the change. */
     .glass.is-accordion-animating {
-      backdrop-filter: blur(6px) !important;
-      -webkit-backdrop-filter: blur(6px) !important;
+      backdrop-filter: blur(3px) saturate(2.2) brightness(1.04) !important;
+      -webkit-backdrop-filter: blur(7px) saturate(2.2) brightness(1.04) !important;
+      transition: backdrop-filter 0.22s ease-out, -webkit-backdrop-filter 0.22s ease-out;
     }
     /* Đồng thời disable card-hover transform animation trong lúc accordion mở,
        tránh layer composite thêm */
@@ -1493,10 +1498,11 @@
       // clip-path transition. clip-path is composited on GPU; grid-rows
       // handles the layout push for surrounding siblings.
       //
-      // Both strategies still throttle parent backdrop-filter via the
-      // is-accordion-animating class — see CSS section IX. The vt-running
-      // class disables our CSS transitions during the snapshot so the
-      // browser interpolation is the only thing moving.
+      // VT branch handles its own GPU crossfade — applying the filter
+      // throttle there caused a visible frosted→glass material swap.
+      // Throttle only fires in the fallback branch (CSS grid-rows path).
+      // vt-running class disables our CSS transitions during the snapshot
+      // so the browser interpolation is the only thing moving.
       const supportsVT = typeof document.startViewTransition === 'function';
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1505,18 +1511,11 @@
           const card = btn.closest('.glass');
           const applyToggle = () => btn.classList.toggle('expanded');
 
-          // Throttle expensive parent backdrop-filter during reveal
-          if (card) {
-            card.classList.add('is-accordion-animating');
-            clearTimeout(card._accordionTimer);
-            card._accordionTimer = setTimeout(() => {
-              card.classList.remove('is-accordion-animating');
-            }, 550);
-          }
-
           // Strategy A: View Transitions (skipped when user prefers reduced
           // motion — VT still animates the snapshot which would defeat the
-          // a11y preference)
+          // a11y preference). NO filter throttling here — the card stays
+          // at its full liquid-glass material throughout, so the open feels
+          // like one continuous surface rather than swapping materials.
           if (supportsVT && !reduceMotion && card && card.classList.contains('vt-accordion-card')) {
             card.classList.add('vt-running');
             const transition = document.startViewTransition(applyToggle);
@@ -1526,7 +1525,19 @@
             return;
           }
 
-          // Strategy B: CSS grid-rows + clip-path (handles everything else)
+          // Strategy B: CSS grid-rows + clip-path path. Browser would
+          // re-rasterize the parent backdrop-filter on every frame as the
+          // card's height interpolates, so we trim filter cost just for
+          // the open window. The throttled value is visually close to the
+          // resting glass (same saturate, slightly higher blur, no SVG
+          // refraction) and the swap is CSS-transitioned for soft handoff.
+          if (card) {
+            card.classList.add('is-accordion-animating');
+            clearTimeout(card._accordionTimer);
+            card._accordionTimer = setTimeout(() => {
+              card.classList.remove('is-accordion-animating');
+            }, 550);
+          }
           applyToggle();
         });
       });
