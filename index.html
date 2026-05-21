@@ -63,12 +63,48 @@
       --accent-3: #c084fc;
       --accent-rgb: 124, 58, 237;
       --form-tint: rgba(124, 58, 237, 0.022);
-      
+
       --vor-0: #ddd4ff;
       --vor-1: #f1ecff;
       --vor-2: #fbfaff;
       --vor-opacity: 0.32;
       --vor-vignette: rgba(251, 250, 255, 0.55);
+
+      /* ────────────────────────────────────────────
+         LIQUID GLASS TOKENS — central dial for tuning
+         .glass / .glass-sm reference these. Override
+         them in @media(prefers-color-scheme: dark)
+         to retune for dark mode in one place.
+         ──────────────────────────────────────────── */
+      /* Multi-stop tile gradient on the surface itself */
+      --glass-tile-1: rgba(255,255,255,0.40);
+      --glass-tile-2: rgba(255,255,255,0.15);
+      --glass-tile-3: rgba(255,255,255,0.22);
+      --glass-tile-4: rgba(255,255,255,0.36);
+      /* backdrop-filter knobs */
+      --glass-refract: url(#liquid-lens);
+      --glass-refract-sm: url(#liquid-lens-sm);
+      --glass-blur: 2px;
+      --glass-blur-webkit: 8px;
+      --glass-sat: 2.2;
+      --glass-bright: 1.05;
+      /* 4-edge rim — softened from 1.0 to 0.92 so light mode doesn't ring */
+      --glass-rim-t: rgba(255,255,255,0.92);
+      --glass-rim-l: rgba(255,255,255,0.60);
+      --glass-rim-r: rgba(255,255,255,0.42);
+      --glass-rim-b: rgba(255,255,255,0.50);
+      --glass-rim-inner: rgba(255,255,255,0.12);
+      /* Bottom-edge accent inner-glow */
+      --glass-tint: rgba(124,58,237,0.05);
+      /* Drop shadows (3 layers) */
+      --glass-drop-1: rgba(15,14,30,0.05);
+      --glass-drop-2: rgba(80,60,120,0.16);
+      --glass-drop-3: rgba(80,60,120,0.22);
+      /* Specular gradient ::before */
+      --glass-spec-hi: rgba(255,255,255,0.48);
+      --glass-spec-mid: rgba(255,255,255,0.08);
+      --glass-spec-blend: plus-lighter;
+      --glass-spec-opacity: 1;
     }
 
     /* Dark mode — follows OS preference (or system override) */
@@ -100,6 +136,35 @@
         --vor-2: #0a0813;
         --vor-opacity: 0.65;
         --vor-vignette: rgba(10, 8, 19, 0.55);
+
+        /* Dark-mode glass tokens — keep same names, retune values.
+           Dropping url() refraction in dark prevents the smeared
+           streak artifact over deep navy backgrounds. */
+        --glass-tile-1: rgba(255,255,255,0.060);
+        --glass-tile-2: rgba(255,255,255,0.020);
+        --glass-tile-3: rgba(255,255,255,0.038);
+        --glass-tile-4: rgba(255,255,255,0.065);
+        --glass-refract: ;
+        --glass-refract-sm: ;
+        --glass-blur: 16px;
+        --glass-blur-webkit: 16px;
+        --glass-sat: 1.35;
+        --glass-bright: 0.95;
+        /* Dark rims: faint top + bottom, no side rim — keeps card honest */
+        --glass-rim-t: rgba(255,255,255,0.16);
+        --glass-rim-l: rgba(255,255,255,0.05);
+        --glass-rim-r: rgba(255,255,255,0.04);
+        --glass-rim-b: rgba(255,255,255,0.05);
+        --glass-rim-inner: rgba(255,255,255,0.05);
+        /* Subtle violet inner-glow at the bottom edge — adds depth without rim */
+        --glass-tint: rgba(167,139,250,0.06);
+        --glass-drop-1: rgba(0,0,0,0.40);
+        --glass-drop-2: rgba(0,0,0,0.55);
+        --glass-drop-3: rgba(0,0,0,0.45);
+        --glass-spec-hi: rgba(255,255,255,0.06);
+        --glass-spec-mid: rgba(255,255,255,0.01);
+        --glass-spec-blend: screen;
+        --glass-spec-opacity: 0.75;
       }
     }
 
@@ -248,32 +313,10 @@
       }
       .nav-idp-logo img { height: 30px !important; }
 
-      .glass {
-        background: linear-gradient(135deg,
-          rgba(255,255,255,0.06) 0%,
-          rgba(255,255,255,0.02) 38%,
-          rgba(255,255,255,0.04) 70%,
-          rgba(255,255,255,0.08) 100%);
-        border-color: rgba(255,255,255,0.08);
-        box-shadow:
-          inset 0 1px 0.5px rgba(255,255,255,0.14),
-          inset 0 -1px 0.5px rgba(255,255,255,0.04),
-          inset 0 0 0 1px rgba(255,255,255,0.05),
-          0 1px 2px rgba(0,0,0,0.4),
-          0 20px 40px -12px rgba(0,0,0,0.6),
-          0 40px 80px -24px rgba(0,0,0,0.5);
-      }
-      .glass-sm {
-        background: linear-gradient(135deg,
-          rgba(255,255,255,0.07) 0%,
-          rgba(255,255,255,0.03) 50%,
-          rgba(255,255,255,0.06) 100%);
-        border-color: rgba(255,255,255,0.09);
-        box-shadow:
-          inset 0 1px 0.5px rgba(255,255,255,0.12),
-          inset 0 0 0 1px rgba(255,255,255,0.04),
-          0 6px 18px -4px rgba(0,0,0,0.5);
-      }
+      /* .glass / .glass-sm / .glass::before now reuse light declarations
+         and just pull dark values from the --glass-* tokens overridden in
+         :root above. Only .glass-nav has structurally different shadows
+         (no specular pseudo, no rim layers) so it stays an explicit override. */
       .glass-nav {
         background: linear-gradient(180deg,
           rgba(10,8,19,0.55) 0%,
@@ -282,18 +325,6 @@
         box-shadow:
           inset 0 1px 0 rgba(255,255,255,0.07),
           0 1px 12px -4px rgba(0,0,0,0.6);
-      }
-      .glass::before, .glass-sm::before {
-        background:
-          linear-gradient(180deg,
-            rgba(255,255,255,0.08) 0%,
-            rgba(255,255,255,0.02) 5%,
-            transparent 14%),
-          radial-gradient(ellipse 70% 28% at 30% -10%,
-            rgba(255,255,255,0.08) 0%,
-            transparent 65%);
-        mix-blend-mode: screen;
-        opacity: 0.85;
       }
     }
     /* GPU layer promotion for glass elements — keeps backdrop-filter cheap to repaint */
@@ -307,51 +338,46 @@
 
     /* LIQUID GLASS — clear lens, not frosted pane.
        Low blur + high saturation = content shows through with a lensing glow.
-       Multi-edge inset rim simulates a real piece of glass with thickness. */
-    /* Detect support: only browsers that handle url() filters get the refraction.
-       Safari/-webkit- only gets soft blur fallback. */
+       Multi-edge inset rim simulates a real piece of glass with thickness.
+       All knobs live in --glass-* tokens (light defaults in :root, dark
+       override in the @media block above) — tune in one place. */
     .glass {
-      background: linear-gradient(
-        135deg,
-        rgba(255,255,255,0.40) 0%,
-        rgba(255,255,255,0.15) 38%,
-        rgba(255,255,255,0.22) 70%,
-        rgba(255,255,255,0.36) 100%
-      );
-      /* Refractive lens + minimal blur + saturation pump */
-      backdrop-filter: url(#liquid-lens) blur(2px) saturate(2.2) brightness(1.05);
-      -webkit-backdrop-filter: blur(8px) saturate(2.0) brightness(1.05);
-      border: 1px solid rgba(255,255,255,0.55);
+      background: linear-gradient(135deg,
+        var(--glass-tile-1) 0%,
+        var(--glass-tile-2) 38%,
+        var(--glass-tile-3) 70%,
+        var(--glass-tile-4) 100%);
+      backdrop-filter: var(--glass-refract, ) blur(var(--glass-blur)) saturate(var(--glass-sat)) brightness(var(--glass-bright));
+      -webkit-backdrop-filter: blur(var(--glass-blur-webkit)) saturate(var(--glass-sat)) brightness(var(--glass-bright));
+      border: 1px solid var(--glass-rim-t);
       box-shadow:
-        inset 0 1.5px 0.5px rgba(255,255,255,1),
-        inset 1.4px 0 0.5px rgba(255,255,255,0.65),
-        inset -1.4px 0 0.5px rgba(255,255,255,0.45),
-        inset 0 -1.5px 0.5px rgba(255,255,255,0.55),
-        inset 0 -16px 36px rgba(124,58,237,0.05),
-        inset 0 0 0 1px rgba(255,255,255,0.12),
-        0 1px 2px rgba(15,14,30,0.05),
-        0 14px 32px -10px rgba(80,60,120,0.16),
-        0 32px 70px -22px rgba(80,60,120,0.22);
+        inset 0 1.5px 0.5px var(--glass-rim-t),
+        inset 1.4px 0 0.5px var(--glass-rim-l),
+        inset -1.4px 0 0.5px var(--glass-rim-r),
+        inset 0 -1.5px 0.5px var(--glass-rim-b),
+        inset 0 -16px 36px var(--glass-tint),
+        inset 0 0 0 1px var(--glass-rim-inner),
+        0 1px 2px var(--glass-drop-1),
+        0 14px 32px -10px var(--glass-drop-2),
+        0 32px 70px -22px var(--glass-drop-3);
     }
 
     .glass-sm {
-      background: linear-gradient(
-        135deg,
-        rgba(255,255,255,0.50) 0%,
-        rgba(255,255,255,0.20) 50%,
-        rgba(255,255,255,0.38) 100%
-      );
-      backdrop-filter: url(#liquid-lens-sm) blur(2px) saturate(2.0) brightness(1.05);
-      -webkit-backdrop-filter: blur(6px) saturate(1.9) brightness(1.05);
-      border: 1px solid rgba(255,255,255,0.6);
+      background: linear-gradient(135deg,
+        var(--glass-tile-1) 0%,
+        var(--glass-tile-2) 50%,
+        var(--glass-tile-4) 100%);
+      backdrop-filter: var(--glass-refract-sm, ) blur(var(--glass-blur)) saturate(var(--glass-sat)) brightness(var(--glass-bright));
+      -webkit-backdrop-filter: blur(calc(var(--glass-blur-webkit) - 2px)) saturate(var(--glass-sat)) brightness(var(--glass-bright));
+      border: 1px solid var(--glass-rim-t);
       box-shadow:
-        inset 0 1.2px 0.4px rgba(255,255,255,1),
-        inset 1px 0 0.4px rgba(255,255,255,0.6),
-        inset -1px 0 0.4px rgba(255,255,255,0.45),
-        inset 0 -1.2px 0.4px rgba(255,255,255,0.5),
-        inset 0 0 0 1px rgba(255,255,255,0.15),
-        0 1px 1px rgba(15,14,30,0.04),
-        0 6px 18px -4px rgba(80,60,120,0.14);
+        inset 0 1.2px 0.4px var(--glass-rim-t),
+        inset 1px 0 0.4px var(--glass-rim-l),
+        inset -1px 0 0.4px var(--glass-rim-r),
+        inset 0 -1.2px 0.4px var(--glass-rim-b),
+        inset 0 0 0 1px var(--glass-rim-inner),
+        0 1px 1px var(--glass-drop-1),
+        0 6px 18px -4px var(--glass-drop-2);
     }
 
     .glass-nav {
@@ -371,7 +397,9 @@
     }
     @media (max-width: 768px) { .glass-nav { height: 56px; } }
 
-    /* SPECULAR — curved bright highlight at top, like light hitting a real lens curve */
+    /* SPECULAR — curved bright highlight at top, like light hitting a real lens curve.
+       Tokens drive both intensity and blend-mode so dark mode can switch from
+       plus-lighter (additive — would bloom on dark bg) to screen (dimmed). */
     .glass::before, .glass-sm::before {
       content: '';
       position: absolute;
@@ -379,18 +407,16 @@
       border-radius: inherit;
       background:
         linear-gradient(180deg,
-          rgba(255,255,255,0.55) 0%,
-          rgba(255,255,255,0.10) 3.5%,
-          transparent 11%
-        ),
+          var(--glass-spec-hi) 0%,
+          var(--glass-spec-mid) 3.5%,
+          transparent 11%),
         radial-gradient(ellipse 70% 32% at 30% -8%,
-          rgba(255,255,255,0.55) 0%,
-          transparent 65%
-        );
+          var(--glass-spec-hi) 0%,
+          transparent 65%);
       pointer-events: none;
       z-index: 1;
-      opacity: 1;
-      mix-blend-mode: plus-lighter;
+      opacity: var(--glass-spec-opacity);
+      mix-blend-mode: var(--glass-spec-blend);
     }
 
     /* MOUSE SHIMMER — diagonal sweep, not a circular spotlight */
@@ -729,20 +755,44 @@
       padding-right: 2.5rem;
     }
 
-    /* Accordion — modern grid-template-rows trick = true auto-height transition, no JS scrollHeight calc */
+    /* ────────────────────────────────────────────
+       Accordion — TWO REVEAL STRATEGIES layered:
+
+       (B) Base: grid-template-rows 0fr→1fr handles layout (sibling push-down),
+           PLUS clip-path inset() animates in parallel on GPU compositor for
+           the visual reveal — clip-path is a true compositor-accelerated
+           property so the perceived smoothness comes from the GPU, not from
+           layout interpolation.
+
+       (A) Enhanced: when document.startViewTransition exists (Chrome 111+,
+           Safari 18+), the click handler wraps the toggle in a view
+           transition. Browser snapshots before/after and GPU-crossfades —
+           the grid-rows interpolation only runs once, instantly. See JS
+           below for the wrapper.
+       ──────────────────────────────────────────── */
     .accordion-content {
       display: grid;
       grid-template-rows: 0fr;
-      transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease-out;
       opacity: 0;
+      /* GPU layer for the clip-path reveal */
+      clip-path: inset(0 0 100% 0);
+      transform: translateZ(0);
+      transition:
+        grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        clip-path 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.35s ease-out;
     }
     .accordion-content > .accordion-inner {
       overflow: hidden;
       min-height: 0;
+      /* Promote inner to its own compositor layer so parent .glass filter
+         re-rasterize doesn't drag the children's paint along */
+      transform: translateZ(0);
     }
     .accordion-btn.expanded + .accordion-content {
       grid-template-rows: 1fr;
       opacity: 1;
+      clip-path: inset(0 0 0 0);
     }
     /* Stagger child items as panel opens */
     .accordion-content .accordion-row {
@@ -759,6 +809,31 @@
     .accordion-btn.expanded + .accordion-content .accordion-row:nth-child(3) { transition-delay: 0.26s; }
     .accordion-icon { transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
     .accordion-btn.expanded .accordion-icon { transform: rotate(180deg); }
+
+    /* View Transitions — when active, the browser does the GPU crossfade,
+       so our own grid-rows + clip-path transitions become redundant. Make
+       them instant during a VT so the visual is purely the browser snapshot
+       interpolation (no double-animation jitter). */
+    .vt-accordion-card[data-vt="acc-moderate"] { view-transition-name: acc-moderate; }
+    .vt-accordion-card[data-vt="acc-giaide"]   { view-transition-name: acc-giaide; }
+    ::view-transition-group(acc-moderate),
+    ::view-transition-group(acc-giaide) {
+      animation-duration: 0.5s;
+      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    ::view-transition-old(acc-moderate),
+    ::view-transition-new(acc-moderate),
+    ::view-transition-old(acc-giaide),
+    ::view-transition-new(acc-giaide) {
+      animation-duration: 0.5s;
+      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .vt-running .accordion-content {
+      transition: none !important;
+    }
+    .vt-running .accordion-content .accordion-row {
+      transition: none !important;
+    }
 
     /* Toast */
     #toast {
@@ -777,72 +852,20 @@
       .voronoi-bg animate { display: none; }
     }
     /* ════════════════════════════════════════════
-       VI. DARK-MODE LIQUID GLASS — SOFTER & QUIETER
-       Disable SVG displacement (vệt méo trên nền tối),
-       giảm saturate/brightness, giảm specular plus-lighter.
-       LƯU Ý: phải override ĐỦ properties (background, border,
-       backdrop-filter, box-shadow, ::before mix-blend-mode)
-       vì light declarations ở trên trong source order — section
-       này là dark override cuối cùng, declaration-wins-by-order.
+       VI. DARK-MODE LIQUID GLASS
+       .glass / .glass-sm / .glass::before are now token-driven —
+       dark values live in :root @media block at top of file.
+       Only .glass-pill and .glass-nav (which still hard-code their
+       backdrop-filter) need backdrop overrides here.
        ════════════════════════════════════════════ */
     @media (prefers-color-scheme: dark) {
-      .glass {
-        /* Background: thay light gradient rgba(255,255,255,0.40) bằng dark
-           gradient nhẹ rgba(255,255,255,0.05) → bớt mảng trắng đậm */
-        background: linear-gradient(135deg,
-          rgba(255,255,255,0.055) 0%,
-          rgba(255,255,255,0.02) 38%,
-          rgba(255,255,255,0.035) 70%,
-          rgba(255,255,255,0.06) 100%);
-        /* Bỏ url(#liquid-lens) — chỉ blur+saturate. Brightness giảm xuống 0.95
-           để card không sáng hơn nền. */
-        backdrop-filter: blur(16px) saturate(1.35) brightness(0.95);
-        -webkit-backdrop-filter: blur(16px) saturate(1.35) brightness(0.95);
-        border: 1px solid rgba(255,255,255,0.08);
-        /* Rim trắng đậm trên các cạnh đang gây vệt sáng — giảm xuống ~40% */
-        box-shadow:
-          inset 0 1px 0.5px rgba(255,255,255,0.10),
-          inset 0 -1px 0.5px rgba(255,255,255,0.03),
-          inset 0 0 0 1px rgba(255,255,255,0.04),
-          0 1px 2px rgba(0,0,0,0.4),
-          0 20px 40px -12px rgba(0,0,0,0.55),
-          0 40px 80px -24px rgba(0,0,0,0.45);
-      }
-      .glass-sm {
-        background: linear-gradient(135deg,
-          rgba(255,255,255,0.06) 0%,
-          rgba(255,255,255,0.025) 50%,
-          rgba(255,255,255,0.05) 100%);
-        backdrop-filter: blur(12px) saturate(1.3) brightness(0.95);
-        -webkit-backdrop-filter: blur(12px) saturate(1.3) brightness(0.95);
-        border: 1px solid rgba(255,255,255,0.09);
-        box-shadow:
-          inset 0 1px 0.4px rgba(255,255,255,0.09),
-          inset 0 0 0 1px rgba(255,255,255,0.04),
-          0 6px 18px -4px rgba(0,0,0,0.45);
-      }
       .glass-pill {
-        /* Cùng nguyên tắc — bỏ refraction, giảm saturate, blur nhẹ */
         backdrop-filter: blur(10px) saturate(1.25) brightness(0.97);
         -webkit-backdrop-filter: blur(10px) saturate(1.25) brightness(0.97);
       }
       .glass-nav {
         backdrop-filter: blur(18px) saturate(1.4) brightness(0.95);
         -webkit-backdrop-filter: blur(18px) saturate(1.4) brightness(0.95);
-      }
-      /* Specular ::before: light version dùng plus-lighter ở rgba(255,255,255,0.55) → 
-         trên nền dark cộng dồn ra vệt sáng. Override sang screen + giá trị thấp. */
-      .glass::before, .glass-sm::before {
-        background:
-          linear-gradient(180deg,
-            rgba(255,255,255,0.05) 0%,
-            rgba(255,255,255,0.01) 6%,
-            transparent 15%),
-          radial-gradient(ellipse 70% 26% at 30% -12%,
-            rgba(255,255,255,0.05) 0%,
-            transparent 65%);
-        mix-blend-mode: screen;
-        opacity: 0.7;
       }
     }
 
@@ -1155,7 +1178,7 @@
         <div class="grid lg:grid-cols-2 gap-8 items-start">
           
           <!-- Moderate -->
-          <div class="reveal-card glass glare card-hover rounded-[2rem] p-8 sm:p-10 relative z-10" style="transition-delay: 120ms;">
+          <div class="reveal-card glass glare card-hover rounded-[2rem] p-8 sm:p-10 relative z-10 vt-accordion-card" data-vt="acc-moderate" style="transition-delay: 120ms;">
             <div class="flex flex-col sm:flex-row justify-between items-start gap-5 mb-6">
               <div>
                 <div class="glass-pill inline-flex items-center rounded-full px-3 py-1.5 label mb-4" style="color: var(--accent); border-color: rgba(124,58,237,0.20);">Foundation</div>
@@ -1209,7 +1232,7 @@
           </div>
 
           <!-- Giai De -->
-          <div class="reveal-card glass glare card-hover rounded-[2rem] p-8 sm:p-10 relative z-10" style="transition-delay: 240ms;">
+          <div class="reveal-card glass glare card-hover rounded-[2rem] p-8 sm:p-10 relative z-10 vt-accordion-card" data-vt="acc-giaide" style="transition-delay: 240ms;">
             <div class="flex flex-col sm:flex-row justify-between items-start gap-5 mb-6">
               <div>
                 <div class="glass-pill inline-flex items-center rounded-full px-3 py-1.5 label mb-4" style="color: var(--accent-2); border-color: rgba(109,40,217,0.22);">Practice Intensive</div>
@@ -1614,21 +1637,52 @@
       setTimeout(typeStr1, 400);
 
       // ==========================================
-      // ACCORDION — toggle class, CSS handles grid-template-rows animation.
-      // Trong khi animate, hạ backdrop-filter của card cha để tránh re-rasterize
-      // expensive filter mỗi frame khi grid-template-rows nội suy.
+      // ACCORDION — hybrid hardware-accelerated reveal.
+      //
+      // Strategy A (preferred): document.startViewTransition wraps the
+      // toggle. Browser snapshots the card before+after, then GPU-crossfades
+      // between the two states. Layout happens once, instantly — the
+      // animation itself is pure compositor work. Chrome 111+, Safari 18+.
+      //
+      // Strategy B (fallback): plain class toggle drives the CSS grid-rows +
+      // clip-path transition. clip-path is composited on GPU; grid-rows
+      // handles the layout push for surrounding siblings.
+      //
+      // Both strategies still throttle parent backdrop-filter via the
+      // is-accordion-animating class — see CSS section IX. The vt-running
+      // class disables our CSS transitions during the snapshot so the
+      // browser interpolation is the only thing moving.
+      const supportsVT = typeof document.startViewTransition === 'function';
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
       document.querySelectorAll('.accordion-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const card = btn.closest('.glass');
+          const applyToggle = () => btn.classList.toggle('expanded');
+
+          // Throttle expensive parent backdrop-filter during reveal
           if (card) {
             card.classList.add('is-accordion-animating');
             clearTimeout(card._accordionTimer);
-            // 550ms = 500ms transition + safety margin cho frame cuối composite
             card._accordionTimer = setTimeout(() => {
               card.classList.remove('is-accordion-animating');
             }, 550);
           }
-          btn.classList.toggle('expanded');
+
+          // Strategy A: View Transitions (skipped when user prefers reduced
+          // motion — VT still animates the snapshot which would defeat the
+          // a11y preference)
+          if (supportsVT && !reduceMotion && card && card.classList.contains('vt-accordion-card')) {
+            card.classList.add('vt-running');
+            const transition = document.startViewTransition(applyToggle);
+            transition.finished.finally(() => {
+              card.classList.remove('vt-running');
+            });
+            return;
+          }
+
+          // Strategy B: CSS grid-rows + clip-path (handles everything else)
+          applyToggle();
         });
       });
 
