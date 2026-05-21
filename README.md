@@ -11,7 +11,7 @@ Một landing page tĩnh được thiết kế theo phong cách **"Apple Liquid 
     * Scroll reveal.
 * **Accordion Hiệu năng cao:** Lộ trình học được đóng gói trong Accordion. Sử dụng CSS Grid (`grid-template-rows`) và **View Transitions API** giúp thao tác đóng/mở mượt.
 * **Video Player:** Trình phát video được tích hợp sẵn giao diện kính, hỗ trợ scrubber, bật/tắt tiếng và tự động phát/tạm dừng khi cuộn trang để tiết kiệm tài nguyên.
-* **Form Đăng ký Sống động:** Form Validate trực tiếp, hiệu ứng rung (shake) khi nhập thiếu thông tin và hiệu ứng tung pháo giấy (confetti) thú vị khi gửi thành công.
+* **Form Đăng ký Sống động:** Form Validate trực tiếp, hiệu ứng shake khi nhập thiếu thông tin và hiệu ứng confetti thú vị khi gửi thành công.
 * **Nền Voronoi Động:** Background sử dụng SVG filter `feTurbulence` nhẹ nhàng, tạo cảm giác chuyển động vân lỏng sống động mà không tốn tài nguyên chạy JavaScript canvas.
 
 ## 🛠 Công nghệ sử dụng
