@@ -780,13 +780,25 @@
        VI. DARK-MODE LIQUID GLASS — SOFTER & QUIETER
        Disable SVG displacement (vệt méo trên nền tối),
        giảm saturate/brightness, giảm specular plus-lighter.
+       LƯU Ý: phải override ĐỦ properties (background, border,
+       backdrop-filter, box-shadow, ::before mix-blend-mode)
+       vì light declarations ở trên trong source order — section
+       này là dark override cuối cùng, declaration-wins-by-order.
        ════════════════════════════════════════════ */
     @media (prefers-color-scheme: dark) {
       .glass {
+        /* Background: thay light gradient rgba(255,255,255,0.40) bằng dark
+           gradient nhẹ rgba(255,255,255,0.05) → bớt mảng trắng đậm */
+        background: linear-gradient(135deg,
+          rgba(255,255,255,0.055) 0%,
+          rgba(255,255,255,0.02) 38%,
+          rgba(255,255,255,0.035) 70%,
+          rgba(255,255,255,0.06) 100%);
         /* Bỏ url(#liquid-lens) — chỉ blur+saturate. Brightness giảm xuống 0.95
            để card không sáng hơn nền. */
         backdrop-filter: blur(16px) saturate(1.35) brightness(0.95);
         -webkit-backdrop-filter: blur(16px) saturate(1.35) brightness(0.95);
+        border: 1px solid rgba(255,255,255,0.08);
         /* Rim trắng đậm trên các cạnh đang gây vệt sáng — giảm xuống ~40% */
         box-shadow:
           inset 0 1px 0.5px rgba(255,255,255,0.10),
@@ -797,8 +809,13 @@
           0 40px 80px -24px rgba(0,0,0,0.45);
       }
       .glass-sm {
+        background: linear-gradient(135deg,
+          rgba(255,255,255,0.06) 0%,
+          rgba(255,255,255,0.025) 50%,
+          rgba(255,255,255,0.05) 100%);
         backdrop-filter: blur(12px) saturate(1.3) brightness(0.95);
         -webkit-backdrop-filter: blur(12px) saturate(1.3) brightness(0.95);
+        border: 1px solid rgba(255,255,255,0.09);
         box-shadow:
           inset 0 1px 0.4px rgba(255,255,255,0.09),
           inset 0 0 0 1px rgba(255,255,255,0.04),
@@ -812,6 +829,20 @@
       .glass-nav {
         backdrop-filter: blur(18px) saturate(1.4) brightness(0.95);
         -webkit-backdrop-filter: blur(18px) saturate(1.4) brightness(0.95);
+      }
+      /* Specular ::before: light version dùng plus-lighter ở rgba(255,255,255,0.55) → 
+         trên nền dark cộng dồn ra vệt sáng. Override sang screen + giá trị thấp. */
+      .glass::before, .glass-sm::before {
+        background:
+          linear-gradient(180deg,
+            rgba(255,255,255,0.05) 0%,
+            rgba(255,255,255,0.01) 6%,
+            transparent 15%),
+          radial-gradient(ellipse 70% 26% at 30% -12%,
+            rgba(255,255,255,0.05) 0%,
+            transparent 65%);
+        mix-blend-mode: screen;
+        opacity: 0.7;
       }
     }
 
@@ -858,6 +889,56 @@
     .accordion-btn.expanded + .accordion-content,
     .accordion-btn:focus + .accordion-content {
       will-change: grid-template-rows;
+    }
+
+    /* ════════════════════════════════════════════
+       VIII. VIDEO PLAYER CONTROLS — DARK MODE FIX
+       Các button có inline style background:rgba(255,255,255,0.95)
+       + color:var(--text-primary). Ở dark mode, --text-primary ~ trắng,
+       background trắng → text invisible. Override với background dark
+       + accent color cho icons. !important cần thiết để thắng inline style.
+       ════════════════════════════════════════════ */
+    @media (prefers-color-scheme: dark) {
+      #clip-play-btn,
+      #clip-sound-btn {
+        background: rgba(20, 18, 35, 0.78) !important;
+        color: var(--text-primary) !important;
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.08),
+          0 2px 10px rgba(0,0,0,0.65) !important;
+      }
+      #clip-center-btn span {
+        background: rgba(20, 18, 35, 0.78) !important;
+        border: 1px solid rgba(255,255,255,0.10);
+      }
+      /* Icons trong center / play / pause SVG — giữ accent purple cho contrast */
+      #clip-center-icon-play path,
+      #clip-icon-play path,
+      #clip-icon-pause rect {
+        fill: var(--accent-light);
+      }
+    }
+
+    /* ════════════════════════════════════════════
+       IX. ACCORDION ANIMATING — REDUCE PARENT FILTER COST
+       Root cause của lag: parent .glass card có backdrop-filter blur(16px)
+       saturate(...). Khi grid-template-rows animate từ 0fr → 1fr, height của
+       card thay đổi mỗi frame → bounds của backdrop-filter đổi → browser
+       phải re-rasterize toàn bộ filter cho area mới. Trên Safari iOS và
+       Chrome desktop, đây là chi phí thực sự.
+       
+       Fix: trong khi accordion đang transition, tạm thời hạ blur xuống ~6px
+       (chi phí ~4-6x rẻ hơn) và bỏ saturate/brightness. Sau 500ms khi
+       transition xong → restore filter đầy đủ.
+       ════════════════════════════════════════════ */
+    .glass.is-accordion-animating {
+      backdrop-filter: blur(6px) !important;
+      -webkit-backdrop-filter: blur(6px) !important;
+    }
+    /* Đồng thời disable card-hover transform animation trong lúc accordion mở,
+       tránh layer composite thêm */
+    .glass.is-accordion-animating.card-hover {
+      transition: none;
     }
 
   </style>
@@ -1533,10 +1614,20 @@
       setTimeout(typeStr1, 400);
 
       // ==========================================
-      // ACCORDION — just toggles class, CSS handles smooth grid-template-rows animation
-      // ==========================================
+      // ACCORDION — toggle class, CSS handles grid-template-rows animation.
+      // Trong khi animate, hạ backdrop-filter của card cha để tránh re-rasterize
+      // expensive filter mỗi frame khi grid-template-rows nội suy.
       document.querySelectorAll('.accordion-btn').forEach(btn => {
         btn.addEventListener('click', () => {
+          const card = btn.closest('.glass');
+          if (card) {
+            card.classList.add('is-accordion-animating');
+            clearTimeout(card._accordionTimer);
+            // 550ms = 500ms transition + safety margin cho frame cuối composite
+            card._accordionTimer = setTimeout(() => {
+              card.classList.remove('is-accordion-animating');
+            }, 550);
+          }
           btn.classList.toggle('expanded');
         });
       });
