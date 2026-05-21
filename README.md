@@ -16,10 +16,10 @@ Một landing page tĩnh được thiết kế theo phong cách **"Apple Liquid 
 
 ## 🛠 Công nghệ sử dụng
 
-* **HTML5 / CSS3 / Vanilla JavaScript:** 
-* **Tailwind CSS (CDN):** 
-* **CSS View Transitions API:** 
-* **CSS Variables (Custom Properties):** 
+* **HTML5 / CSS3 / Vanilla JavaScript** 
+* **Tailwind CSS (CDN)** 
+* **CSS View Transitions API** 
+* **CSS Variables (Custom Properties)** 
 
 ## 📂 Cấu trúc dự án
 
