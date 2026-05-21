@@ -331,6 +331,54 @@
         0 14px 28px -10px var(--glass-drop-3);
     }
 
+    /* GLASS-SOLID — high-opacity variant for cards floating ON TOP of
+       photographs / busy imagery. The transparent glass-sm vocabulary
+       makes numbers unreadable against the hero portrait, so this
+       variant uses a near-opaque white fill while keeping the iOS
+       edge-rim + specular highlight + violet drop shadow. */
+    .glass-solid {
+      position: relative;
+      isolation: isolate;
+      background:
+        linear-gradient(160deg,
+          rgba(255,255,255,0.98) 0%,
+          rgba(255,255,255,0.92) 60%,
+          rgba(255,255,255,0.96) 100%);
+      backdrop-filter: blur(20px) saturate(1.8);
+      -webkit-backdrop-filter: blur(20px) saturate(1.8);
+      border: 1px solid rgba(255,255,255,0.95);
+      box-shadow:
+        inset 0 1.5px 0.5px rgba(255,255,255,1),
+        inset 1px 0 0.5px rgba(255,255,255,0.7),
+        inset -1px 0 0.5px rgba(255,255,255,0.55),
+        inset 0 -1.5px 0.5px rgba(124,58,237,0.10),
+        inset 0 0 0 1px rgba(255,255,255,0.20),
+        0 2px 4px rgba(15,14,30,0.08),
+        0 10px 22px -6px rgba(80,60,120,0.22),
+        0 24px 48px -16px rgba(80,60,120,0.28);
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+    }
+    .glass-solid::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background:
+        linear-gradient(180deg,
+          rgba(255,255,255,0.95) 0%,
+          rgba(255,255,255,0.20) 6%,
+          transparent 18%),
+        radial-gradient(ellipse 60% 25% at 30% -8%,
+          rgba(255,255,255,0.85) 0%,
+          transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: plus-lighter;
+      opacity: 0.85;
+    }
+    .glass-solid > * { position: relative; z-index: 2; }
+
     .glass-nav {
       /* Apple's nav (apple.com top bar) is much more transparent than a card —
          heavy blur + saturate + very soft tint. The 0.62 tail keeps text
@@ -675,66 +723,33 @@
       display: grid;
       grid-template-rows: 0fr;
       opacity: 0;
-      /* GPU layer for the clip-path reveal */
-      clip-path: inset(0 0 100% 0);
-      transform: translateZ(0);
       transition:
-        grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-        clip-path 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.35s ease-out;
+        grid-template-rows 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.22s ease-out;
     }
     .accordion-content > .accordion-inner {
       overflow: hidden;
       min-height: 0;
-      /* Promote inner to its own compositor layer so parent .glass filter
-         re-rasterize doesn't drag the children's paint along */
-      transform: translateZ(0);
     }
     .accordion-btn.expanded + .accordion-content {
       grid-template-rows: 1fr;
       opacity: 1;
-      clip-path: inset(0 0 0 0);
     }
-    /* Stagger child items as panel opens */
+    /* Stagger child items as panel opens — quick, tight cascade */
     .accordion-content .accordion-row {
       opacity: 0;
-      transform: translate3d(0, -8px, 0);
-      transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      transform: translate3d(0, -6px, 0);
+      transition: opacity 0.26s cubic-bezier(0.22, 1, 0.36, 1), transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .accordion-btn.expanded + .accordion-content .accordion-row {
       opacity: 1;
       transform: translate3d(0, 0, 0);
     }
-    .accordion-btn.expanded + .accordion-content .accordion-row:nth-child(1) { transition-delay: 0.10s; }
-    .accordion-btn.expanded + .accordion-content .accordion-row:nth-child(2) { transition-delay: 0.18s; }
-    .accordion-btn.expanded + .accordion-content .accordion-row:nth-child(3) { transition-delay: 0.26s; }
-    .accordion-icon { transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+    .accordion-btn.expanded + .accordion-content .accordion-row:nth-child(1) { transition-delay: 0.06s; }
+    .accordion-btn.expanded + .accordion-content .accordion-row:nth-child(2) { transition-delay: 0.11s; }
+    .accordion-btn.expanded + .accordion-content .accordion-row:nth-child(3) { transition-delay: 0.16s; }
+    .accordion-icon { transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
     .accordion-btn.expanded .accordion-icon { transform: rotate(180deg); }
-
-    /* View Transitions — when active, the browser does the GPU crossfade,
-       so our own grid-rows + clip-path transitions become redundant. Make
-       them instant during a VT so the visual is purely the browser snapshot
-       interpolation (no double-animation jitter). */
-    .vt-accordion-card[data-vt="acc-moderate"] { view-transition-name: acc-moderate; }
-    .vt-accordion-card[data-vt="acc-giaide"]   { view-transition-name: acc-giaide; }
-    ::view-transition-group(acc-moderate),
-    ::view-transition-group(acc-giaide) {
-      animation-duration: 0.5s;
-      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    ::view-transition-old(acc-moderate),
-    ::view-transition-new(acc-moderate),
-    ::view-transition-old(acc-giaide),
-    ::view-transition-new(acc-giaide) {
-      animation-duration: 0.5s;
-      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .vt-running .accordion-content {
-      transition: none !important;
-    }
-    .vt-running .accordion-content .accordion-row {
-      transition: none !important;
-    }
 
     /* Toast */
     #toast {
@@ -788,33 +803,18 @@
     }
 
     /* ════════════════════════════════════════════
-       VII. ACCORDION ANIMATING — SHED THE SVG REFRACTION
-       Root cause of lag (both VT and fallback paths): the parent .glass
-       card's backdrop-filter chain is
-           url(#liquid-lens) blur(1px) saturate(2.6) brightness(1.04)
-       The url() piece is an SVG feImage+feDisplacementMap filter, which
-       most browsers can't GPU-accelerate — it runs on the CPU. When the
-       filter region's bounds change (card growing) or the browser has to
-       rasterize TWO snapshots (View Transitions), this dominates the
-       frame budget.
-
-       Fix: while the accordion is opening/closing, drop ONLY the url()
-       refraction — keep blur+saturate+brightness identical. Visually
-       almost indistinguishable (loses subtle wavy edge distortion), but
-       ~5-10× cheaper to rasterize. The CSS transition on backdrop-filter
-       is bidirectional, so swap-in and swap-out are both smooth.
-       ════════════════════════════════════════════ */
+       VII. ACCORDION CARD — drop SVG refraction permanently.
+       url(#liquid-lens) is a feImage+feDisplacementMap filter that runs on
+       the CPU; on a card that height-animates it dominates the frame
+       budget. The subtle wavy edge distortion isn't perceptible on a
+       content-heavy card, so we keep blur+saturate+brightness only and
+       skip the swap-during-animation dance entirely. ════════════════════════════════════════════ */
     .vt-accordion-card {
-      transition: backdrop-filter 0.22s ease-out,
-                  -webkit-backdrop-filter 0.22s ease-out;
-    }
-    .glass.is-accordion-animating {
-      /* Same blur/saturate/brightness as resting glass — only url() goes away */
       backdrop-filter: blur(1px) saturate(2.6) brightness(1.04) !important;
       -webkit-backdrop-filter: blur(6px) saturate(2.6) brightness(1.04) !important;
     }
-    /* Đồng thời disable card-hover transform animation trong lúc accordion mở,
-       tránh layer composite thêm */
+    /* During the open/close window, also disable card-hover transform so it
+       doesn't fight the height interpolation for compositor layers. */
     .glass.is-accordion-animating.card-hover {
       transition: none;
     }
@@ -952,23 +952,23 @@
         </p>
 
         <div class="reveal-card mt-8 grid grid-cols-3 gap-2.5 sm:gap-3 max-w-sm" style="transition-delay: 240ms;">
-          <div class="glass-sm rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 flex flex-col items-start">
+          <div class="glass-sm rounded-2xl px-3 py-3.5 sm:px-4 sm:py-4 flex flex-col items-start">
             <div class="flex items-baseline gap-0.5">
-              <span class="text-xl sm:text-2xl font-black stat-number" data-target="60" style="color: var(--text-primary);">0</span>
-              <span class="text-lg sm:text-xl font-black" style="color: var(--accent-light);">+</span>
+              <span class="text-2xl sm:text-3xl font-black stat-number leading-none" data-target="60" style="color: var(--text-primary);">0</span>
+              <span class="text-xl sm:text-2xl font-black leading-none" style="color: var(--accent);">+</span>
             </div>
-            <span class="label mt-0.5">Học viên</span>
+            <span class="label mt-1.5" style="color: var(--text-secondary);">Học viên</span>
           </div>
-          <div class="glass-sm rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 flex flex-col items-start">
-            <span class="text-xl sm:text-2xl font-black stat-number-float" data-target="8.5" style="color: var(--text-primary);">0.0</span>
-            <span class="label mt-0.5">Band</span>
+          <div class="glass-sm rounded-2xl px-3 py-3.5 sm:px-4 sm:py-4 flex flex-col items-start">
+            <span class="text-2xl sm:text-3xl font-black stat-number-float leading-none" data-target="8.5" style="color: var(--text-primary);">0.0</span>
+            <span class="label mt-1.5" style="color: var(--text-secondary);">Band</span>
           </div>
-          <div class="glass-sm rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 flex flex-col items-start">
+          <div class="glass-sm rounded-2xl px-3 py-3.5 sm:px-4 sm:py-4 flex flex-col items-start">
             <div class="flex items-baseline gap-0.5">
-              <span class="text-xl sm:text-2xl font-black stat-number" data-target="3" style="color: var(--text-primary);">0</span>
-              <span class="text-lg sm:text-xl font-black" style="color: var(--accent-2);">+</span>
+              <span class="text-2xl sm:text-3xl font-black stat-number leading-none" data-target="3" style="color: var(--text-primary);">0</span>
+              <span class="text-xl sm:text-2xl font-black leading-none" style="color: var(--accent-2);">+</span>
             </div>
-            <span class="label mt-0.5">Năm K.N</span>
+            <span class="label mt-1.5" style="color: var(--text-secondary);">Năm K.N</span>
           </div>
         </div>
         
@@ -987,33 +987,33 @@
           </div>
         </div>
 
-        <div class="absolute -top-4 -right-4 sm:-right-6 glass-sm rounded-2xl p-4 animate-float-1 z-20">
+        <div class="absolute top-2 right-2 sm:-top-4 sm:-right-6 glass-solid rounded-2xl px-3.5 py-2.5 sm:px-4 sm:py-3 animate-float-1 z-20">
           <div class="flex flex-col items-center justify-center">
-            <span class="label">Overall</span>
-            <span class="text-xl font-black text-gradient mt-1">8.5 IELTS</span>
+            <span class="label" style="color: var(--text-secondary); font-size: 0.625rem;">Overall</span>
+            <span class="text-lg sm:text-xl font-black text-gradient mt-0.5">8.5 IELTS</span>
           </div>
         </div>
 
-        <div class="absolute top-[40%] -left-4 sm:-left-8 glass-sm rounded-2xl p-4 animate-float-2 z-20">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full flex items-center justify-center" style="background: var(--input-fill); border: 1px solid var(--input-border);">
-              <svg class="w-4 h-4" style="color: var(--accent-2);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+        <div class="absolute top-[38%] left-2 sm:-left-8 glass-solid rounded-2xl px-3.5 py-2.5 sm:px-4 sm:py-3 animate-float-2 z-20">
+          <div class="flex items-center gap-2.5 sm:gap-3">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center shrink-0" style="background: rgba(124,58,237,0.10); border: 1px solid rgba(124,58,237,0.20);">
+              <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" style="color: var(--accent-2);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
             </div>
             <div>
-              <div class="label">Writing</div>
-              <div class="text-base font-black mt-0.5" style="color: var(--text-primary);">7.0</div>
+              <div class="label" style="color: var(--text-secondary); font-size: 0.625rem;">Writing</div>
+              <div class="text-lg sm:text-xl font-black mt-0.5 leading-none" style="color: var(--text-primary);">7.0</div>
             </div>
           </div>
         </div>
 
-        <div class="absolute -bottom-6 right-8 sm:right-12 glass-sm rounded-2xl p-4 animate-float-3 z-20">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full flex items-center justify-center" style="background: var(--input-fill); border: 1px solid var(--input-border);">
-              <svg class="w-4 h-4" style="color: var(--accent);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <div class="absolute bottom-2 right-2 sm:-bottom-6 sm:right-12 glass-solid rounded-2xl px-3.5 py-2.5 sm:px-4 sm:py-3 animate-float-3 z-20">
+          <div class="flex items-center gap-2.5 sm:gap-3">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center shrink-0" style="background: rgba(124,58,237,0.10); border: 1px solid rgba(124,58,237,0.20);">
+              <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" style="color: var(--accent);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
             </div>
             <div>
-              <div class="label">Reading</div>
-              <div class="text-base font-black mt-0.5" style="color: var(--text-primary);">8.0</div>
+              <div class="label" style="color: var(--text-secondary); font-size: 0.625rem;">Reading</div>
+              <div class="text-lg sm:text-xl font-black mt-0.5 leading-none" style="color: var(--text-primary);">8.0</div>
             </div>
           </div>
         </div>
@@ -1491,59 +1491,25 @@
       }
       setTimeout(typeStr1, 400);
 
-      // ==========================================
-      // ACCORDION — hybrid hardware-accelerated reveal.
-      //
-      // Strategy A (preferred): document.startViewTransition wraps the
-      // toggle. Browser snapshots the card before+after, then GPU-crossfades
-      // between the two states. Layout happens once, instantly — the
-      // animation itself is pure compositor work. Chrome 111+, Safari 18+.
-      //
-      // Strategy B (fallback): plain class toggle drives the CSS grid-rows +
-      // clip-path transition. clip-path is composited on GPU; grid-rows
-      // handles the layout push for surrounding siblings.
-      //
-      // VT branch handles its own GPU crossfade — applying the filter
-      // throttle there caused a visible frosted→glass material swap.
-      // Throttle only fires in the fallback branch (CSS grid-rows path).
-      // vt-running class disables our CSS transitions during the snapshot
-      // so the browser interpolation is the only thing moving.
-      const supportsVT = typeof document.startViewTransition === 'function';
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
+      // ACCORDION — CSS-only grid-rows reveal.
+      // View Transitions was tried but caused a duplicated/ghost snapshot
+      // because the page has heavy backdrop-filter + SVG refraction layers;
+      // VT crossfades the OLD layer on top of NEW for ~0.5s, which on this
+      // page reads as a duplicate frame. CSS path is predictable: the parent
+      // .glass card's SVG refraction is the dominant lag source during the
+      // height interpolation, so we drop only url(#liquid-lens) for the
+      // animation window and keep blur/saturate/brightness identical.
       document.querySelectorAll('.accordion-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const card = btn.closest('.glass');
-          const applyToggle = () => btn.classList.toggle('expanded');
-
-          // Strategy A: View Transitions (skipped when user prefers reduced
-          // motion — VT still animates the snapshot which would defeat the
-          // a11y preference). NO filter throttling here — the card stays
-          // at its full liquid-glass material throughout, so the open feels
-          // like one continuous surface rather than swapping materials.
-          if (supportsVT && !reduceMotion && card && card.classList.contains('vt-accordion-card')) {
-            card.classList.add('vt-running');
-            const transition = document.startViewTransition(applyToggle);
-            transition.finished.finally(() => {
-              card.classList.remove('vt-running');
-            });
-            return;
-          }
-
-          // Strategy B: CSS grid-rows + clip-path path. Browser would
-          // re-rasterize the parent backdrop-filter on every frame as the
-          // card's height interpolates, so we trim filter cost just for
-          // the open window. The throttled value is visually close to the
-          // resting glass (same saturate, slightly higher blur, no SVG
-          // refraction) and the swap is CSS-transitioned for soft handoff.
           if (card) {
             card.classList.add('is-accordion-animating');
             clearTimeout(card._accordionTimer);
             card._accordionTimer = setTimeout(() => {
               card.classList.remove('is-accordion-animating');
-            }, 550);
+            }, 380);
           }
-          applyToggle();
+          btn.classList.toggle('expanded');
         });
       });
 
