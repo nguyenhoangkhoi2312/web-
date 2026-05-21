@@ -247,7 +247,7 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
       }
       .nav-idp-logo img { height: 30px !important; }
-    }
+
       .glass {
         background: linear-gradient(135deg,
           rgba(255,255,255,0.06) 0%,
@@ -286,12 +286,14 @@
       .glass::before, .glass-sm::before {
         background:
           linear-gradient(180deg,
-            rgba(255,255,255,0.18) 0%,
-            rgba(255,255,255,0.04) 4%,
-            transparent 12%),
-          radial-gradient(ellipse 70% 32% at 30% -8%,
-            rgba(255,255,255,0.20) 0%,
+            rgba(255,255,255,0.08) 0%,
+            rgba(255,255,255,0.02) 5%,
+            transparent 14%),
+          radial-gradient(ellipse 70% 28% at 30% -10%,
+            rgba(255,255,255,0.08) 0%,
             transparent 65%);
+        mix-blend-mode: screen;
+        opacity: 0.85;
       }
     }
     /* GPU layer promotion for glass elements — keeps backdrop-filter cheap to repaint */
@@ -774,6 +776,90 @@
       }
       .voronoi-bg animate { display: none; }
     }
+    /* ════════════════════════════════════════════
+       VI. DARK-MODE LIQUID GLASS — SOFTER & QUIETER
+       Disable SVG displacement (vệt méo trên nền tối),
+       giảm saturate/brightness, giảm specular plus-lighter.
+       ════════════════════════════════════════════ */
+    @media (prefers-color-scheme: dark) {
+      .glass {
+        /* Bỏ url(#liquid-lens) — chỉ blur+saturate. Brightness giảm xuống 0.95
+           để card không sáng hơn nền. */
+        backdrop-filter: blur(16px) saturate(1.35) brightness(0.95);
+        -webkit-backdrop-filter: blur(16px) saturate(1.35) brightness(0.95);
+        /* Rim trắng đậm trên các cạnh đang gây vệt sáng — giảm xuống ~40% */
+        box-shadow:
+          inset 0 1px 0.5px rgba(255,255,255,0.10),
+          inset 0 -1px 0.5px rgba(255,255,255,0.03),
+          inset 0 0 0 1px rgba(255,255,255,0.04),
+          0 1px 2px rgba(0,0,0,0.4),
+          0 20px 40px -12px rgba(0,0,0,0.55),
+          0 40px 80px -24px rgba(0,0,0,0.45);
+      }
+      .glass-sm {
+        backdrop-filter: blur(12px) saturate(1.3) brightness(0.95);
+        -webkit-backdrop-filter: blur(12px) saturate(1.3) brightness(0.95);
+        box-shadow:
+          inset 0 1px 0.4px rgba(255,255,255,0.09),
+          inset 0 0 0 1px rgba(255,255,255,0.04),
+          0 6px 18px -4px rgba(0,0,0,0.45);
+      }
+      .glass-pill {
+        /* Cùng nguyên tắc — bỏ refraction, giảm saturate, blur nhẹ */
+        backdrop-filter: blur(10px) saturate(1.25) brightness(0.97);
+        -webkit-backdrop-filter: blur(10px) saturate(1.25) brightness(0.97);
+      }
+      .glass-nav {
+        backdrop-filter: blur(18px) saturate(1.4) brightness(0.95);
+        -webkit-backdrop-filter: blur(18px) saturate(1.4) brightness(0.95);
+      }
+    }
+
+    /* ════════════════════════════════════════════
+       VII. ACCORDION PERFORMANCE — UN-NEST BACKDROP-FILTERS
+       Các .accordion-row.glass-pill nằm trong card .glass parent,
+       mỗi cái có backdrop-filter riêng → mỗi frame browser phải
+       compute filter chained cho 2–3 pill trong khi grid-template-rows
+       đang animate. Loại bỏ filter trên pill bên trong accordion
+       (chúng vẫn nhìn ổn vì parent .glass đã làm lensing) → animation
+       mượt hẳn trên Safari iOS và Chrome desktop.
+       ════════════════════════════════════════════ */
+    .accordion-row,
+    .accordion-row .glass-pill {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    /* Vì bỏ refraction, cần background đủ contrast để pill vẫn rõ */
+    .accordion-row.glass-pill {
+      background: rgba(255,255,255,0.55);
+    }
+    .accordion-row .glass-pill {
+      background: rgba(255,255,255,0.65);
+    }
+    @media (prefers-color-scheme: dark) {
+      .accordion-row.glass-pill {
+        background: rgba(255,255,255,0.045);
+        border-color: rgba(255,255,255,0.08);
+      }
+      .accordion-row .glass-pill {
+        background: rgba(255,255,255,0.07);
+        border-color: rgba(255,255,255,0.10);
+      }
+    }
+    /* Khi accordion đang animate, cô lập paint vào container — browser
+       không phải re-paint hero/voronoi-bg phía sau */
+    .accordion-content {
+      contain: layout paint style;
+    }
+    .accordion-content > .accordion-inner {
+      contain: layout paint;
+    }
+    /* Bật will-change CHỈ khi accordion đang mở/đóng, không phải lúc nào cũng bật */
+    .accordion-btn.expanded + .accordion-content,
+    .accordion-btn:focus + .accordion-content {
+      will-change: grid-template-rows;
+    }
+
   </style>
 </head>
 
