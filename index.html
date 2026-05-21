@@ -23,13 +23,13 @@
           },
           keyframes: {
             float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-12px)' },
+              '0%, 100%': { transform: 'translate3d(0, 0, 0)' },
+              '50%': { transform: 'translate3d(0, -12px, 0)' },
             },
             shake: {
-              '0%, 100%': { transform: 'translateX(0)' },
-              '16.6%, 50%, 83.3%': { transform: 'translateX(-4px)' },
-              '33.3%, 66.6%': { transform: 'translateX(4px)' }
+              '0%, 100%': { transform: 'translate3d(0, 0, 0)' },
+              '16.6%, 50%, 83.3%': { transform: 'translate3d(-4px, 0, 0)' },
+              '33.3%, 66.6%': { transform: 'translate3d(4px, 0, 0)' }
             }
           }
         }
@@ -42,7 +42,7 @@
        I. DESIGN TOKENS — Light mode default
        ════════════════════════════════════════════ */
     :root {
-      color-scheme: light only;
+      color-scheme: light dark;
       --bg-base: #fbfaff;
       --text-primary: #0a0913;
       --text-secondary: #3d3c4a;
@@ -58,12 +58,12 @@
       --input-fill-strong: rgba(0, 0, 0, 0.055);
       --input-border: rgba(0, 0, 0, 0.085);
       --accent: #7c3aed;
-      --accent-light: #a855f7;
-      --accent-2: #db2777;
+      --accent-light: #a78bfa;
+      --accent-2: #6d28d9;
+      --accent-3: #c084fc;
       --accent-rgb: 124, 58, 237;
       --form-tint: rgba(124, 58, 237, 0.022);
       
-      /* Voronoi background — softer so text reads instantly */
       --vor-0: #ddd4ff;
       --vor-1: #f1ecff;
       --vor-2: #fbfaff;
@@ -71,13 +71,51 @@
       --vor-vignette: rgba(251, 250, 255, 0.55);
     }
 
-    /* No dark mode — site stays bright so text pops on scroll */
+    /* Dark mode — follows OS preference (or system override) */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-base: #0a0813;
+        --text-primary: #f4f1ff;
+        --text-secondary: #c1bed1;
+        --text-muted: #7a7691;
+        --glass-fill: rgba(255, 255, 255, 0.06);
+        --glass-border: rgba(255, 255, 255, 0.10);
+        --glass-shadow: rgba(0, 0, 0, 0.55);
+        --glass-inset-top: rgba(255, 255, 255, 0.14);
+        --glass-inset-bot: rgba(0, 0, 0, 0.30);
+        --nav-fill: rgba(10, 8, 19, 0.72);
+        --nav-border: rgba(255, 255, 255, 0.08);
+        --input-fill: rgba(255, 255, 255, 0.04);
+        --input-fill-strong: rgba(255, 255, 255, 0.07);
+        --input-border: rgba(255, 255, 255, 0.08);
+        --accent: #a78bfa;
+        --accent-light: #c4b5fd;
+        --accent-2: #7c3aed;
+        --accent-3: #ddd6fe;
+        --accent-rgb: 167, 139, 250;
+        --form-tint: rgba(167, 139, 250, 0.04);
+        
+        --vor-0: #5b21b6;
+        --vor-1: #2e1065;
+        --vor-2: #0a0813;
+        --vor-opacity: 0.65;
+        --vor-vignette: rgba(10, 8, 19, 0.55);
+      }
+    }
 
     /* ════════════════════════════════════════════
        II. BASE TYPOGRAPHY
        Critical fixes for Vietnamese diacritics
        ════════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; }
+
+    /* Smooth scroll behaviour — native + lazy paint hints */
+    html { scroll-behavior: smooth; }
+    img, svg, video { transform: translateZ(0); }
+
+    /* Hide native scrollbar — custom indicator handles position feedback */
+    html { scrollbar-width: none; -ms-overflow-style: none; }
+    html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
     
     body { 
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -199,9 +237,70 @@
        — Top-edge specular ::before (static)
        — Mouse swipe shimmer ::after (linear, not radial)
        ════════════════════════════════════════════ */
+    /* Dark-mode-aware liquid glass: borders + fills use rgba based on text color contrast */
+    @media (prefers-color-scheme: dark) {
+      /* IDP IELTS Referral Agent lockup has dark text — wrap in soft white pill on dark backgrounds */
+      .nav-idp-logo {
+        background: rgba(255, 255, 255, 0.92);
+        padding: 4px 10px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      }
+      .nav-idp-logo img { height: 30px !important; }
+    }
+      .glass {
+        background: linear-gradient(135deg,
+          rgba(255,255,255,0.06) 0%,
+          rgba(255,255,255,0.02) 38%,
+          rgba(255,255,255,0.04) 70%,
+          rgba(255,255,255,0.08) 100%);
+        border-color: rgba(255,255,255,0.08);
+        box-shadow:
+          inset 0 1px 0.5px rgba(255,255,255,0.14),
+          inset 0 -1px 0.5px rgba(255,255,255,0.04),
+          inset 0 0 0 1px rgba(255,255,255,0.05),
+          0 1px 2px rgba(0,0,0,0.4),
+          0 20px 40px -12px rgba(0,0,0,0.6),
+          0 40px 80px -24px rgba(0,0,0,0.5);
+      }
+      .glass-sm {
+        background: linear-gradient(135deg,
+          rgba(255,255,255,0.07) 0%,
+          rgba(255,255,255,0.03) 50%,
+          rgba(255,255,255,0.06) 100%);
+        border-color: rgba(255,255,255,0.09);
+        box-shadow:
+          inset 0 1px 0.5px rgba(255,255,255,0.12),
+          inset 0 0 0 1px rgba(255,255,255,0.04),
+          0 6px 18px -4px rgba(0,0,0,0.5);
+      }
+      .glass-nav {
+        background: linear-gradient(180deg,
+          rgba(10,8,19,0.55) 0%,
+          rgba(10,8,19,0.80) 100%);
+        border-bottom-color: rgba(255,255,255,0.08);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.07),
+          0 1px 12px -4px rgba(0,0,0,0.6);
+      }
+      .glass::before, .glass-sm::before {
+        background:
+          linear-gradient(180deg,
+            rgba(255,255,255,0.18) 0%,
+            rgba(255,255,255,0.04) 4%,
+            transparent 12%),
+          radial-gradient(ellipse 70% 32% at 30% -8%,
+            rgba(255,255,255,0.20) 0%,
+            transparent 65%);
+      }
+    }
+    /* GPU layer promotion for glass elements — keeps backdrop-filter cheap to repaint */
     .glass, .glass-sm, .glass-nav {
       position: relative;
       isolation: isolate;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      contain: layout style paint;
     }
 
     /* LIQUID GLASS — clear lens, not frosted pane.
@@ -321,12 +420,172 @@
     /* Ensure content sits ABOVE the pseudo elements */
     .glass > *, .glass-sm > * { position: relative; z-index: 3; }
 
-    /* Subtle card hover — no 3D tilt, just gentle scale */
+    /* Subtle card hover — silky cubic-bezier, GPU-only transform */
     .card-hover {
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: transform;
     }
-    .card-hover:hover { transform: translateY(-4px); }
+    .card-hover:hover { transform: translate3d(0, -5px, 0); }
+
+    /* ══════════════════════════════════════════
+       LIQUID GLASS PILL — a tinted-glass pill for nav badges,
+       category tags, accordion rows, contact buttons, etc.
+       Same vocabulary as .glass / .glass-sm but lighter weight.
+       ══════════════════════════════════════════ */
+    .glass-pill {
+      position: relative;
+      isolation: isolate;
+      background: linear-gradient(135deg,
+        rgba(255,255,255,0.55) 0%,
+        rgba(255,255,255,0.25) 50%,
+        rgba(255,255,255,0.42) 100%);
+      backdrop-filter: url(#liquid-lens-sm) blur(4px) saturate(1.9) brightness(1.04);
+      -webkit-backdrop-filter: blur(8px) saturate(1.7) brightness(1.04);
+      border: 1px solid rgba(255,255,255,0.65);
+      box-shadow:
+        inset 0 1px 0.3px rgba(255,255,255,0.95),
+        inset 1px 0 0.3px rgba(255,255,255,0.55),
+        inset -1px 0 0.3px rgba(255,255,255,0.40),
+        inset 0 -1px 0.3px rgba(255,255,255,0.45),
+        inset 0 0 0 1px rgba(255,255,255,0.10),
+        0 1px 1px rgba(15,14,30,0.04),
+        0 4px 12px -3px rgba(80,60,120,0.10);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  background 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+    .glass-pill::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background:
+        linear-gradient(180deg,
+          rgba(255,255,255,0.50) 0%,
+          rgba(255,255,255,0.08) 4%,
+          transparent 14%);
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: plus-lighter;
+    }
+    .glass-pill > * { position: relative; z-index: 2; }
+    a.glass-pill:hover, button.glass-pill:hover {
+      transform: translate3d(0, -1.5px, 0);
+      box-shadow:
+        inset 0 1px 0.3px rgba(255,255,255,1),
+        inset 1px 0 0.3px rgba(255,255,255,0.65),
+        inset -1px 0 0.3px rgba(255,255,255,0.50),
+        inset 0 -1px 0.3px rgba(255,255,255,0.55),
+        inset 0 0 0 1px rgba(124,58,237,0.12),
+        0 2px 4px rgba(15,14,30,0.06),
+        0 10px 24px -6px rgba(124,58,237,0.18);
+    }
+
+    /* Liquid glass form input — same vocabulary, plus focus glow */
+    .input-field {
+      position: relative;
+      background: linear-gradient(135deg,
+        rgba(255,255,255,0.45) 0%,
+        rgba(255,255,255,0.20) 50%,
+        rgba(255,255,255,0.35) 100%);
+      backdrop-filter: blur(6px) saturate(1.7);
+      -webkit-backdrop-filter: blur(6px) saturate(1.7);
+      border: 1px solid rgba(255,255,255,0.60);
+      box-shadow:
+        inset 0 1px 0.3px rgba(255,255,255,0.95),
+        inset 0 0 0 1px rgba(255,255,255,0.10),
+        0 1px 1px rgba(15,14,30,0.03);
+      color: var(--text-primary);
+      transition: background 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .input-field::placeholder { color: var(--text-muted); }
+    .input-field:hover {
+      background: linear-gradient(135deg,
+        rgba(255,255,255,0.55) 0%,
+        rgba(255,255,255,0.28) 50%,
+        rgba(255,255,255,0.42) 100%);
+    }
+    .input-field:focus {
+      outline: none;
+      background: linear-gradient(135deg,
+        rgba(255,255,255,0.65) 0%,
+        rgba(255,255,255,0.36) 50%,
+        rgba(255,255,255,0.50) 100%);
+      border-color: rgba(var(--accent-rgb), 0.55);
+      box-shadow:
+        inset 0 1px 0.3px rgba(255,255,255,1),
+        inset 0 0 0 1px rgba(var(--accent-rgb), 0.10),
+        0 0 0 4px rgba(var(--accent-rgb), 0.10),
+        0 4px 14px -4px rgba(var(--accent-rgb), 0.22);
+    }
+    .input-invalid {
+      border-color: rgba(239, 68, 68, 0.55) !important;
+      box-shadow:
+        inset 0 1px 0.3px rgba(255,255,255,1),
+        0 0 0 4px rgba(239, 68, 68, 0.10) !important;
+    }
+    .input-valid {
+      border-color: rgba(34, 197, 94, 0.55) !important;
+    }
+
+    /* Dark-mode overrides for pill + input */
+    @media (prefers-color-scheme: dark) {
+      .glass-pill {
+        background: linear-gradient(135deg,
+          rgba(255,255,255,0.10) 0%,
+          rgba(255,255,255,0.04) 50%,
+          rgba(255,255,255,0.08) 100%);
+        border-color: rgba(255,255,255,0.12);
+        box-shadow:
+          inset 0 1px 0.3px rgba(255,255,255,0.18),
+          inset 0 0 0 1px rgba(255,255,255,0.05),
+          0 1px 2px rgba(0,0,0,0.4),
+          0 4px 14px -3px rgba(0,0,0,0.4);
+      }
+      .glass-pill::before {
+        background: linear-gradient(180deg,
+          rgba(255,255,255,0.16) 0%,
+          rgba(255,255,255,0.04) 4%,
+          transparent 14%);
+      }
+      a.glass-pill:hover, button.glass-pill:hover {
+        box-shadow:
+          inset 0 1px 0.3px rgba(255,255,255,0.22),
+          inset 0 0 0 1px rgba(167,139,250,0.18),
+          0 2px 6px rgba(0,0,0,0.5),
+          0 10px 24px -6px rgba(167,139,250,0.20);
+      }
+      .input-field {
+        background: linear-gradient(135deg,
+          rgba(255,255,255,0.08) 0%,
+          rgba(255,255,255,0.03) 50%,
+          rgba(255,255,255,0.06) 100%);
+        border-color: rgba(255,255,255,0.10);
+        box-shadow:
+          inset 0 1px 0.3px rgba(255,255,255,0.16),
+          inset 0 0 0 1px rgba(255,255,255,0.04);
+      }
+      .input-field:hover {
+        background: linear-gradient(135deg,
+          rgba(255,255,255,0.12) 0%,
+          rgba(255,255,255,0.05) 50%,
+          rgba(255,255,255,0.09) 100%);
+      }
+      .input-field:focus {
+        background: linear-gradient(135deg,
+          rgba(255,255,255,0.15) 0%,
+          rgba(255,255,255,0.07) 50%,
+          rgba(255,255,255,0.11) 100%);
+        border-color: rgba(167,139,250, 0.55);
+        box-shadow:
+          inset 0 1px 0.3px rgba(255,255,255,0.22),
+          0 0 0 4px rgba(167,139,250, 0.12),
+          0 4px 14px -4px rgba(167,139,250, 0.30);
+      }
+    }
 
     /* ══════════════════════════════════════════
        LIQUID GLASS BUTTONS — tinted glass treatment for CTAs
@@ -393,13 +652,14 @@
     #cursor-glow {
       position: fixed;
       width: 360px; height: 360px;
+      top: 0; left: 0;
       border-radius: 50%;
       background: radial-gradient(circle, rgba(var(--accent-rgb), 0.08) 0%, transparent 65%);
       pointer-events: none;
       z-index: 1;
-      transform: translate(-50%, -50%);
       opacity: 0;
       transition: opacity 0.4s ease;
+      will-change: transform;
     }
 
     .btn-magnetic { will-change: transform; }
@@ -412,12 +672,14 @@
 
     .reveal-card {
       opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      transform: translate3d(0, 28px, 0);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
     }
     .reveal-card.is-revealed {
       opacity: 1;
-      transform: translateY(0);
+      transform: translate3d(0, 0, 0);
+      will-change: auto;
     }
 
     #scroll-progress { display: none; } /* replaced by ring around logo */
@@ -448,28 +710,14 @@
     }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-    /* Form fields */
-    .input-field {
-      background: var(--input-fill);
-      border: 1px solid var(--input-border);
-      color: var(--text-primary);
-      transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    /* Float chip animations \u2014 GPU-only via will-change + translate3d (overrides Tailwind defaults) */
+    [class*="animate-float"] {
+      will-change: transform;
+      transform: translateZ(0);
+      backface-visibility: hidden;
     }
-    .input-field::placeholder { color: var(--text-muted); }
-    .input-field:hover { background: var(--input-fill-strong); }
-    .input-field:focus {
-      outline: none;
-      background: var(--input-fill-strong);
-      border-color: rgba(var(--accent-rgb), 0.45);
-      box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08);
-    }
-    .input-invalid {
-      border-color: rgba(239, 68, 68, 0.5) !important;
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10) !important;
-    }
-    .input-valid {
-      border-color: rgba(34, 197, 94, 0.5) !important;
-    }
+
+    /* Form fields — old block removed; .input-field now defined as liquid glass above */
 
     /* Native select arrow */
     select.input-field {
@@ -479,13 +727,35 @@
       padding-right: 2.5rem;
     }
 
-    /* Accordion */
+    /* Accordion — modern grid-template-rows trick = true auto-height transition, no JS scrollHeight calc */
     .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease-out;
+      opacity: 0;
     }
-    .accordion-icon { transition: transform 0.35s ease; }
+    .accordion-content > .accordion-inner {
+      overflow: hidden;
+      min-height: 0;
+    }
+    .accordion-btn.expanded + .accordion-content {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+    /* Stagger child items as panel opens */
+    .accordion-content .accordion-row {
+      opacity: 0;
+      transform: translate3d(0, -8px, 0);
+      transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .accordion-btn.expanded + .accordion-content .accordion-row {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+    .accordion-btn.expanded + .accordion-content .accordion-row:nth-child(1) { transition-delay: 0.10s; }
+    .accordion-btn.expanded + .accordion-content .accordion-row:nth-child(2) { transition-delay: 0.18s; }
+    .accordion-btn.expanded + .accordion-content .accordion-row:nth-child(3) { transition-delay: 0.26s; }
+    .accordion-icon { transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
     .accordion-btn.expanded .accordion-icon { transform: rotate(180deg); }
 
     /* Toast */
@@ -566,32 +836,18 @@
 
   <div id="cursor-glow"></div>
 
+  <!-- Custom scroll indicator: vertical pill on right edge -->
+  <div id="scroll-indicator" class="fixed right-2 sm:right-3 z-40 pointer-events-none" style="top: 90px; bottom: 32px; width: 4px;" aria-hidden="true">
+    <div class="absolute inset-0 rounded-full" style="background: rgba(15,14,30,0.06);"></div>
+    <div id="scroll-thumb" class="absolute left-0 right-0 rounded-full"
+         style="top: 0; height: 88px; background: linear-gradient(to bottom, var(--accent-3, #c084fc), var(--accent), var(--accent-2)); box-shadow: 0 0 10px rgba(124,58,237,0.35), inset 0 1px 0 rgba(255,255,255,0.35);"></div>
+  </div>
+
   <header class="glass-nav fixed top-0 left-0 right-0 z-50 w-full flex items-center justify-center">
     <div class="w-full max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-full">
-      <div class="flex items-center gap-3">
-        <!-- Logo with scroll-progress ring around it -->
-        <div class="relative shrink-0" style="width: 56px; height: 56px;">
-          <svg class="absolute inset-0 -rotate-90" viewBox="0 0 56 56" aria-hidden="true">
-            <defs>
-              <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color: var(--accent);"/>
-                <stop offset="100%" style="stop-color: var(--accent-2);"/>
-              </linearGradient>
-            </defs>
-            <circle cx="28" cy="28" r="26" fill="none" stroke="rgba(15,14,30,0.07)" stroke-width="1.6"/>
-            <circle id="scroll-ring" cx="28" cy="28" r="26" fill="none" stroke="url(#ring-grad)" stroke-width="1.6"
-                    stroke-dasharray="163.36" stroke-dashoffset="163.36" stroke-linecap="round"
-                    style="transition: stroke-dashoffset 0.18s ease-out; filter: drop-shadow(0 0 5px rgba(124,58,237,0.45));"/>
-          </svg>
-          <div class="absolute rounded-full overflow-hidden bg-white" style="inset: 5px; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.05);">
-            <img src="assets/logo-circle.png" alt="IELTS Persons" class="w-full h-full object-cover block" style="image-rendering: -webkit-optimize-contrast;">
-          </div>
-        </div>
-        <div>
-          <div class="font-extrabold tracking-tight text-sm sm:text-base leading-tight" style="color: var(--text-primary);">IELTS with Vy</div>
-          <div class="label" style="color: var(--accent-light);">IDP Referral Agent</div>
-        </div>
-      </div>
+      <a href="#" class="nav-idp-logo flex items-center gap-3 group" aria-label="IDP IELTS Referral Agent">
+        <img src="assets/idp-ielts-lockup.png" alt="IDP IELTS Referral Agent" class="block transition-transform group-hover:scale-[1.02]" style="height: 38px; width: auto; image-rendering: -webkit-optimize-contrast;">
+      </a>
       
       <a href="#dangky" class="md:hidden btn-liquid-accent rounded-full px-5 py-2 text-xs font-bold btn-magnetic">
         Đăng ký
@@ -614,27 +870,26 @@
     <!-- HERO -->
     <section class="mx-auto grid max-w-7xl gap-12 lg:gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8 mb-24 lg:mb-40">
       <div class="max-w-2xl relative z-20">
-        <!-- Prominent IELTS Persons brand mark — large, with soft pink halo -->
+        <!-- Hero brand mark: IELTS Persons logo + class name -->
         <div class="reveal-card relative inline-flex items-center gap-4 mb-7">
           <div class="relative shrink-0" style="width: 96px; height: 96px;">
-            <!-- Soft pink halo glow behind logo -->
-            <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle at 50% 50%, rgba(244, 114, 182, 0.35) 0%, rgba(244, 114, 182, 0.12) 45%, transparent 70%); filter: blur(8px); transform: scale(1.25);" aria-hidden="true"></div>
-            <!-- Logo with soft pink rim -->
-            <div class="absolute inset-0 rounded-full overflow-hidden bg-white" style="box-shadow: 0 0 0 1.5px rgba(244,114,182,0.45), 0 8px 24px -6px rgba(244,114,182,0.35), inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -1px 0 rgba(244,114,182,0.18);">
+            <!-- Soft purple halo glow -->
+            <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.32) 0%, rgba(124, 58, 237, 0.10) 45%, transparent 70%); filter: blur(8px); transform: scale(1.25);" aria-hidden="true"></div>
+            <div class="absolute inset-0 rounded-full overflow-hidden bg-white" style="box-shadow: 0 0 0 1.5px rgba(124,58,237,0.45), 0 8px 24px -6px rgba(124,58,237,0.32), inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -1px 0 rgba(124,58,237,0.18);">
               <img src="assets/logo-circle.png" alt="IELTS Persons" class="w-full h-full object-cover block" style="transform: scale(1.04);">
             </div>
           </div>
           <div class="leading-tight">
             <div class="text-[0.68rem] font-bold uppercase tracking-[0.16em]" style="color: var(--text-muted);">Class by</div>
-            <div class="text-2xl font-black mt-0.5" style="color: var(--text-primary); letter-spacing: -0.015em;">
-              IELTS <span style="color: #e0223a;">Persons</span>
+            <div class="text-2xl sm:text-[1.7rem] font-black mt-0.5" style="color: var(--text-primary); letter-spacing: -0.018em;">
+              IELTS with <span class="text-gradient" style="padding-top:0; padding-bottom:0;">Vy</span>
             </div>
             <div class="text-xs font-bold mt-1" style="color: var(--accent-light);">8.5 IELTS · 1520 SAT · Pzy</div>
           </div>
         </div>
 
-        <div class="reveal-card glass-sm inline-flex items-center gap-3 rounded-full px-4 py-2 text-xs font-bold mb-8" style="color: var(--text-primary); transition-delay: 60ms;">
-          <span class="relative flex h-2 w-2">
+        <div class="reveal-card glass-pill inline-flex items-center gap-2.5 rounded-full px-4 py-2 text-xs font-bold mb-8" style="color: var(--text-primary); transition-delay: 60ms;">
+          <span class="relative inline-flex h-2 w-2 shrink-0">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background: var(--accent);"></span>
             <span class="relative inline-flex rounded-full h-2 w-2" style="background: var(--accent);"></span>
           </span>
@@ -651,22 +906,22 @@
           Lộ trình cá nhân hóa, chữa bài chuyên sâu từng tiêu chí giúp học viên vượt&nbsp;target.
         </p>
 
-        <div class="reveal-card mt-8 flex flex-wrap gap-3" style="transition-delay: 240ms;">
-          <div class="glass-sm px-5 py-3 rounded-2xl flex flex-col">
+        <div class="reveal-card mt-8 grid grid-cols-3 gap-2.5 sm:gap-3 max-w-sm" style="transition-delay: 240ms;">
+          <div class="glass-sm rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 flex flex-col items-start">
             <div class="flex items-baseline gap-0.5">
-              <span class="text-2xl font-black stat-number" data-target="60" style="color: var(--text-primary);">0</span>
-              <span class="text-xl font-black" style="color: var(--accent-light);">+</span>
+              <span class="text-xl sm:text-2xl font-black stat-number" data-target="60" style="color: var(--text-primary);">0</span>
+              <span class="text-lg sm:text-xl font-black" style="color: var(--accent-light);">+</span>
             </div>
             <span class="label mt-0.5">Học viên</span>
           </div>
-          <div class="glass-sm px-5 py-3 rounded-2xl flex flex-col">
-            <span class="text-2xl font-black stat-number-float" data-target="8.5" style="color: var(--text-primary);">0.0</span>
+          <div class="glass-sm rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 flex flex-col items-start">
+            <span class="text-xl sm:text-2xl font-black stat-number-float" data-target="8.5" style="color: var(--text-primary);">0.0</span>
             <span class="label mt-0.5">Band</span>
           </div>
-          <div class="glass-sm px-5 py-3 rounded-2xl flex flex-col">
+          <div class="glass-sm rounded-2xl px-3 py-3 sm:px-4 sm:py-3.5 flex flex-col items-start">
             <div class="flex items-baseline gap-0.5">
-              <span class="text-2xl font-black stat-number" data-target="3" style="color: var(--text-primary);">0</span>
-              <span class="text-xl font-black" style="color: var(--accent-2);">+</span>
+              <span class="text-xl sm:text-2xl font-black stat-number" data-target="3" style="color: var(--text-primary);">0</span>
+              <span class="text-lg sm:text-xl font-black" style="color: var(--accent-2);">+</span>
             </div>
             <span class="label mt-0.5">Năm K.N</span>
           </div>
@@ -676,19 +931,6 @@
           <a href="#dangky" class="btn-magnetic btn-liquid-dark w-full sm:w-auto inline-flex items-center justify-center rounded-full px-8 py-4 text-base font-extrabold transition-transform">
             Nhận tư vấn lộ trình
           </a>
-          
-          <div class="glass-sm idp-badge rounded-full pl-2 pr-5 py-2 sm:ml-1 flex items-center gap-3 w-full sm:w-auto">
-            <div class="shrink-0 rounded-full bg-white flex items-center justify-center" style="width: 36px; height: 36px; box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.06), 0 1px 2px rgba(15,14,30,0.06);">
-              <img src="assets/idp-logo.png" alt="IDP" class="block" style="width: 24px; height: 24px; object-fit: contain;">
-            </div>
-            <div class="flex flex-col leading-tight">
-              <span class="text-[0.625rem] font-bold uppercase tracking-[0.12em]" style="color: var(--text-muted);">In partnership with</span>
-              <span class="flex items-baseline gap-1.5 mt-0.5">
-                <span class="text-sm font-extrabold" style="color: var(--text-primary); letter-spacing: -0.01em;">IDP</span>
-                <span class="text-sm font-black" style="color: #e0223a; letter-spacing: -0.02em;">IELTS</span>
-              </span>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -743,13 +985,13 @@
           <p class="reveal-card body-lg mx-auto mt-6">Hai nhóm lớp thiết kế chuyên biệt. Loại bỏ kiến thức dư thừa, tập trung tối đa vào hiệu quả thực tế trên từng band&nbsp;điểm.</p>
         </div>
 
-        <div class="grid lg:grid-cols-2 gap-8">
+        <div class="grid lg:grid-cols-2 gap-8 items-start">
           
           <!-- Moderate -->
           <div class="reveal-card glass glare card-hover rounded-[2rem] p-8 sm:p-10 relative z-10" style="transition-delay: 120ms;">
             <div class="flex flex-col sm:flex-row justify-between items-start gap-5 mb-6">
               <div>
-                <div class="inline-flex items-center rounded-md px-2.5 py-1 label mb-4" style="background: var(--input-fill); border: 1px solid var(--input-border);">Foundation</div>
+                <div class="glass-pill inline-flex items-center rounded-full px-3 py-1.5 label mb-4" style="color: var(--accent); border-color: rgba(124,58,237,0.20);">Foundation</div>
                 <h3 class="text-h3">Lớp Moderate</h3>
                 <p class="mt-2 text-sm font-bold" style="color: var(--accent-light);">Target: 4.0 – 6.5</p>
                 <p class="mt-3 text-xs font-semibold tracking-wide" style="color: var(--text-muted);">
@@ -777,21 +1019,23 @@
                 <svg class="accordion-icon h-5 w-5" style="color: var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </button>
               <div class="accordion-content">
+                <div class="accordion-inner">
                 <div class="space-y-2.5 pb-4">
-                  <a href="https://docs.google.com/document/d/1Ju_IHjogwd_Zu7qL93J2pUE_rfsRQLQYEfKbQTjdcXk/edit?tab=t.0" target="_blank" class="flex items-center gap-4 text-sm font-medium transition-colors rounded-xl p-3 group" style="background: var(--input-fill); color: var(--text-secondary);">
-                    <div class="rounded-lg p-2" style="background: var(--input-fill-strong); color: var(--accent);">
+                  <a href="https://docs.google.com/document/d/1Ju_IHjogwd_Zu7qL93J2pUE_rfsRQLQYEfKbQTjdcXk/edit?tab=t.0" target="_blank" class="accordion-row glass-pill flex items-center gap-4 text-sm font-medium rounded-2xl p-3 group" style="color: var(--text-secondary);">
+                    <div class="glass-pill rounded-xl p-2" style="color: var(--accent);">
                       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                     </div>
                     <span>Syllabus lộ trình</span>
                     <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1" style="color: var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                   </a>
-                  <a href="https://drive.google.com/file/d/1YiQ5YXYMDIoLDSLSUbJ2mfpOz2qD6oO5/view?usp=drivesdk" target="_blank" class="flex items-center gap-4 text-sm font-medium transition-colors rounded-xl p-3 group" style="background: var(--input-fill); color: var(--text-secondary);">
-                    <div class="rounded-lg p-2" style="background: var(--input-fill-strong); color: var(--accent);">
+                  <a href="https://drive.google.com/file/d/1YiQ5YXYMDIoLDSLSUbJ2mfpOz2qD6oO5/view?usp=drivesdk" target="_blank" class="accordion-row glass-pill flex items-center gap-4 text-sm font-medium rounded-2xl p-3 group" style="color: var(--text-secondary);">
+                    <div class="glass-pill rounded-xl p-2" style="color: var(--accent);">
                       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <span>Recording mẫu lớp Moderate</span>
                     <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1" style="color: var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                   </a>
+                </div>
                 </div>
               </div>
             </div>
@@ -801,7 +1045,7 @@
           <div class="reveal-card glass glare card-hover rounded-[2rem] p-8 sm:p-10 relative z-10" style="transition-delay: 240ms;">
             <div class="flex flex-col sm:flex-row justify-between items-start gap-5 mb-6">
               <div>
-                <div class="inline-flex items-center rounded-md px-2.5 py-1 label mb-4" style="background: var(--input-fill); border: 1px solid var(--input-border);">Practice Intensive</div>
+                <div class="glass-pill inline-flex items-center rounded-full px-3 py-1.5 label mb-4" style="color: var(--accent-2); border-color: rgba(109,40,217,0.22);">Practice Intensive</div>
                 <h3 class="text-h3">Lớp Giải Đề</h3>
                 <p class="mt-2 text-sm font-bold" style="color: var(--accent-2);">Target: 6.5 – 8.5</p>
                 <p class="mt-3 text-xs font-semibold tracking-wide" style="color: var(--text-muted);">
@@ -829,20 +1073,22 @@
                 <svg class="accordion-icon h-5 w-5" style="color: var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </button>
               <div class="accordion-content">
+                <div class="accordion-inner">
                 <div class="space-y-2.5 pb-4">
-                  <div class="flex items-center gap-4 text-sm font-medium rounded-xl p-3 cursor-not-allowed" style="background: var(--input-fill); color: var(--text-muted);">
-                    <div class="rounded-lg p-2" style="background: var(--input-fill-strong); color: var(--text-muted);">
+                  <div class="accordion-row glass-pill flex items-center gap-4 text-sm font-medium rounded-2xl p-3 cursor-not-allowed" style="color: var(--text-muted); opacity: 0.7;">
+                    <div class="glass-pill rounded-xl p-2" style="color: var(--text-muted);">
                       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                     </div>
                     <span>Lộ trình cấp tốc (Tài liệu nội bộ)</span>
                   </div>
-                  <a href="https://drive.google.com/file/d/1LouiEDNH-1PACWZKbEdpIK7pH7na-rf_/view?usp=drivesdk" target="_blank" class="flex items-center gap-4 text-sm font-medium transition-colors rounded-xl p-3 group" style="background: var(--input-fill); color: var(--text-secondary);">
-                    <div class="rounded-lg p-2" style="background: var(--input-fill-strong); color: var(--accent-2);">
+                  <a href="https://drive.google.com/file/d/1LouiEDNH-1PACWZKbEdpIK7pH7na-rf_/view?usp=drivesdk" target="_blank" class="accordion-row glass-pill flex items-center gap-4 text-sm font-medium rounded-2xl p-3 group" style="color: var(--text-secondary);">
+                    <div class="glass-pill rounded-xl p-2" style="color: var(--accent-2);">
                       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <span>Xem Record mẫu lớp Giải đề</span>
                     <svg class="h-4 w-4 ml-auto transition-transform group-hover:translate-x-1" style="color: var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                   </a>
+                </div>
                 </div>
               </div>
             </div>
@@ -863,26 +1109,65 @@
             <span class="text-gradient">Vui&nbsp;thật&nbsp;sự.</span>
           </h2>
           <p class="reveal-card body-lg mt-6" style="transition-delay: 180ms;">
-            Pzy tin rằng lớp học không khí thoải mái sẽ giúp học viên tự tin nói, dám sai và tiến bộ&nbsp;nhanh hơn. Một lát cắt ngắn ngủi trên&nbsp;lớp&nbsp;thôi.
+            Pzy tin rằng lớp học không khí thoải mái sẽ giúp học viên tự tin nói, dám sai và tiến bộ&nbsp;nhanh hơn. Một lát cắt ngắn ngủi trên&nbsp;lớp.
           </p>
         </div>
 
         <!-- Video slot — class clip -->
         <div class="reveal-card relative" style="transition-delay: 240ms;">
           <div class="relative glass glare rounded-[2rem] p-3 sm:p-4 overflow-hidden">
-            <div class="relative w-full rounded-[1.5rem] overflow-hidden group" style="aspect-ratio: 16 / 10; background: #1a1525; border: 1px solid var(--input-border);">
+            <div id="clip-card" class="relative w-full rounded-[1.5rem] overflow-hidden group" style="aspect-ratio: 16 / 10; background: #1a1525; border: 1px solid var(--input-border);">
               
-              <video id="class-clip" class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline preload="auto" data-src="assets/class-clip.mp4" aria-label="Một mảnh trên lớp với cô Vy"></video>
+              <video id="class-clip" class="absolute inset-0 w-full h-full object-cover cursor-pointer" autoplay muted loop playsinline preload="auto" data-src="assets/class-clip.mp4" aria-label="Một mảnh trên lớp với cô Vy"></video>
 
-              <!-- Bottom-right sound toggle -->
-              <button id="clip-sound-btn" type="button" aria-label="Bật tiếng" class="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 glass-sm rounded-full pl-3 pr-4 py-2 flex items-center gap-2 text-xs font-extrabold transition-opacity" style="color: var(--text-primary);">
-                <svg id="clip-sound-icon-muted" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/></svg>
-                <svg id="clip-sound-icon-on" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
-                <span id="clip-sound-label">Bật tiếng</span>
+              <!-- Center play/pause overlay (visible when paused) -->
+              <button id="clip-center-btn" type="button" aria-label="Phát" class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-0 pointer-events-none">
+                <span class="glass-sm rounded-full w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center" style="background: rgba(255,255,255,0.85); backdrop-filter: blur(8px) saturate(1.6);">
+                  <svg id="clip-center-icon-play" class="w-7 h-7 sm:w-8 sm:h-8 translate-x-[2px]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M8 5.5v13a1 1 0 0 0 1.55.83l10-6.5a1 1 0 0 0 0-1.66l-10-6.5A1 1 0 0 0 8 5.5z" style="fill: var(--accent);"/>
+                  </svg>
+                </span>
               </button>
 
-              <!-- Subtle gradient at bottom so chip is always legible -->
-              <div class="absolute inset-x-0 bottom-0 h-24 pointer-events-none" style="background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);" aria-hidden="true"></div>
+              <!-- Bottom controls — hover/touch reveals full bar -->
+              <div id="clip-controls" class="absolute inset-x-0 bottom-0 z-10 transition-opacity duration-300" style="opacity: 1;">
+                <!-- Soft gradient backdrop for legibility -->
+                <div class="absolute inset-x-0 bottom-0 h-28 pointer-events-none" style="background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0.15) 60%, transparent);" aria-hidden="true"></div>
+
+                <div class="relative px-4 sm:px-5 pt-3 pb-3 sm:pb-4">
+                  <!-- Play + time | sound -->
+                  <div class="flex items-center justify-between mb-2.5">
+                    <div class="flex items-center gap-2.5">
+                      <button id="clip-play-btn" type="button" aria-label="Phát/Tạm dừng" class="w-9 h-9 rounded-full flex items-center justify-center transition-transform hover:scale-110 active:scale-95" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(6px); box-shadow: 0 2px 8px rgba(0,0,0,0.25);">
+                        <svg id="clip-icon-play" class="w-4 h-4 translate-x-[1px] hidden" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M8 5.5v13a1 1 0 0 0 1.55.83l10-6.5a1 1 0 0 0 0-1.66l-10-6.5A1 1 0 0 0 8 5.5z" style="fill: var(--accent);"/>
+                        </svg>
+                        <svg id="clip-icon-pause" class="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
+                          <rect x="6.5" y="5" width="3.5" height="14" rx="1" style="fill: var(--accent);"/>
+                          <rect x="14" y="5" width="3.5" height="14" rx="1" style="fill: var(--accent);"/>
+                        </svg>
+                      </button>
+                      <span class="text-xs font-bold tabular-nums" style="color: rgba(255,255,255,0.95); text-shadow: 0 1px 4px rgba(0,0,0,0.5);">
+                        <span id="clip-current">0:00</span><span style="opacity: 0.5;"> / </span><span id="clip-duration">0:00</span>
+                      </span>
+                    </div>
+
+                    <button id="clip-sound-btn" type="button" aria-label="Bật tiếng" class="rounded-full pl-3 pr-4 py-2 flex items-center gap-2 text-[0.7rem] font-extrabold transition-all hover:scale-105 active:scale-95" style="color: var(--text-primary); background: rgba(255,255,255,0.95); backdrop-filter: blur(6px); box-shadow: 0 2px 8px rgba(0,0,0,0.25);">
+                      <svg id="clip-sound-icon-muted" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/></svg>
+                      <svg id="clip-sound-icon-on" class="w-3.5 h-3.5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+                      <span id="clip-sound-label">Bật tiếng</span>
+                    </button>
+                  </div>
+
+                  <!-- Scrubber track — drag to seek -->
+                  <div id="clip-scrubber" class="relative h-5 flex items-center cursor-pointer touch-none select-none" role="slider" aria-label="Tua video" tabindex="0">
+                    <div class="relative w-full h-[3px] rounded-full" style="background: rgba(255,255,255,0.25);">
+                      <div id="clip-progress" class="absolute inset-y-0 left-0 rounded-full" style="width: 0%; background: linear-gradient(to right, var(--accent-3, #c084fc), var(--accent)); box-shadow: 0 0 8px rgba(124,58,237,0.6);"></div>
+                      <div id="clip-thumb" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full transition-transform" style="left: 0%; background: white; box-shadow: 0 0 0 2px rgba(124,58,237,0.9), 0 2px 8px rgba(0,0,0,0.4);"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -913,11 +1198,11 @@
             
             <div class="mt-auto pt-8" style="border-top: 1px solid var(--input-border);">
               <div class="flex flex-col sm:flex-row gap-3">
-                <a href="https://zalo.me/0962821015" target="_blank" class="btn-magnetic flex items-center justify-center sm:justify-start gap-3 rounded-2xl px-5 py-3.5 transition-all" style="background: var(--input-fill); border: 1px solid var(--input-border);">
+                <a href="https://zalo.me/0962821015" target="_blank" class="glass-pill btn-magnetic flex items-center justify-center sm:justify-start gap-3 rounded-full px-5 py-3.5">
                   <svg class="h-5 w-5 shrink-0" style="color: #0068ff;" fill="currentColor" viewBox="0 0 24 24"><path d="M21.543 8.358A10.82 10.82 0 0012 2C6.477 2 2 5.922 2 10.76c0 2.502 1.258 4.752 3.253 6.347-.282 1.348-.962 2.825-2.898 3.86a.276.276 0 00.126.516c3.218 0 5.435-1.464 6.643-2.528A11.39 11.39 0 0012 19.52c5.523 0 10-3.922 10-8.76 0-1.02-.2-2.002-.457-2.402z"/></svg>
                   <span class="font-bold text-sm" style="color: var(--text-primary);">Zalo: 0962821015</span>
                 </a>
-                <a href="https://www.facebook.com/search/top?q=Phuong%20Vy%20Celeste" target="_blank" class="btn-magnetic flex items-center justify-center sm:justify-start gap-3 rounded-2xl px-5 py-3.5 transition-all" style="background: var(--input-fill); border: 1px solid var(--input-border);">
+                <a href="https://www.facebook.com/search/top?q=Phuong%20Vy%20Celeste" target="_blank" class="glass-pill btn-magnetic flex items-center justify-center sm:justify-start gap-3 rounded-full px-5 py-3.5">
                   <svg class="h-5 w-5 shrink-0" style="color: #0866ff;" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                   <span class="font-bold text-sm" style="color: var(--text-primary);">Phuong Vy Celeste</span>
                 </a>
@@ -1007,12 +1292,11 @@
         window.addEventListener('mousemove', e => {
           targetCgX = e.clientX; targetCgY = e.clientY;
           cursorGlow.style.opacity = 1;
-        });
+        }, { passive: true });
         function animateCursorGlow() {
-          cgX += (targetCgX - cgX) * 0.07;
-          cgY += (targetCgY - cgY) * 0.07;
-          cursorGlow.style.left = `${cgX}px`;
-          cursorGlow.style.top = `${cgY}px`;
+          cgX += (targetCgX - cgX) * 0.08;
+          cgY += (targetCgY - cgY) * 0.08;
+          cursorGlow.style.transform = `translate3d(${cgX - 180}px, ${cgY - 180}px, 0)`;
           requestAnimationFrame(animateCursorGlow);
         }
         animateCursorGlow();
@@ -1024,11 +1308,14 @@
       // ==========================================
       if (!isMobile) {
         document.querySelectorAll('.glare').forEach(el => {
+          let pending = false, lastX = 50;
+          const apply = () => { pending = false; el.style.setProperty('--glare-pos', `${lastX}%`); };
           el.addEventListener('mousemove', e => {
             const rect = el.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
-            el.style.setProperty('--glare-pos', `${Math.max(15, Math.min(85, x))}%`);
-          });
+            lastX = Math.max(15, Math.min(85, x));
+            if (!pending) { pending = true; requestAnimationFrame(apply); }
+          }, { passive: true });
         });
       }
 
@@ -1037,36 +1324,51 @@
       // ==========================================
       if (!isMobile) {
         document.querySelectorAll('.btn-magnetic').forEach(btn => {
+          let pending = false, lastX = 0, lastY = 0;
+          const apply = () => { pending = false; btn.style.transform = `translate3d(${lastX}px, ${lastY}px, 0)`; };
           btn.addEventListener('mousemove', e => {
             const rect = btn.getBoundingClientRect();
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
-            const maxOffset = 6;
-            const factor = maxOffset / Math.max(rect.width, 80);
-            btn.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
-          });
+            const factor = 6 / Math.max(rect.width, 80);
+            lastX = x * factor; lastY = y * factor;
+            if (!pending) { pending = true; requestAnimationFrame(apply); }
+          }, { passive: true });
           btn.addEventListener('mouseleave', () => {
-            btn.style.transform = 'translate(0px, 0px)';
-            btn.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+            btn.style.transform = 'translate3d(0, 0, 0)';
+            btn.style.transition = 'transform 0.55s cubic-bezier(0.22, 1, 0.36, 1)';
           });
           btn.addEventListener('mouseenter', () => { btn.style.transition = 'none'; });
         });
       }
 
       // ==========================================
-      // SCROLL PROGRESS RING (around the logo) + NAV ACTIVE
+      // SCROLL INDICATOR — rAF-throttled for 60fps
       // ==========================================
-      const scrollRing = document.getElementById('scroll-ring');
-      const RING_CIRC = 2 * Math.PI * 26; // r=26 (matches enlarged logo)
+      const scrollIndicator = document.getElementById('scroll-indicator');
+      const scrollThumb = document.getElementById('scroll-thumb');
+      let scrollPending = false;
+      const updateScrollIndicator = () => {
+        scrollPending = false;
+        if (!scrollIndicator || !scrollThumb) return;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
+        const trackH = scrollIndicator.clientHeight;
+        const thumbH = scrollThumb.clientHeight;
+        scrollThumb.style.transform = `translate3d(0, ${(pct * (trackH - thumbH)).toFixed(1)}px, 0)`;
+      };
+      const onScrollIndicator = () => {
+        if (!scrollPending) { scrollPending = true; requestAnimationFrame(updateScrollIndicator); }
+      };
+      window.addEventListener('scroll', onScrollIndicator, { passive: true });
+      window.addEventListener('resize', updateScrollIndicator);
+      updateScrollIndicator();
+
+      // ==========================================
+      // NAV ACTIVE state
+      // ==========================================
       const navLinks = document.querySelectorAll('.nav-link');
       const sections = document.querySelectorAll('section[id]');
-
-      window.addEventListener('scroll', () => {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const pct = height > 0 ? winScroll / height : 0;
-        if (scrollRing) scrollRing.style.strokeDashoffset = (RING_CIRC * (1 - pct)).toFixed(2);
-      }, { passive: true });
 
       const navObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -1145,28 +1447,21 @@
       setTimeout(typeStr1, 400);
 
       // ==========================================
-      // ACCORDION
+      // ACCORDION — just toggles class, CSS handles smooth grid-template-rows animation
       // ==========================================
       document.querySelectorAll('.accordion-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          const content = btn.nextElementSibling;
           btn.classList.toggle('expanded');
-          if (btn.classList.contains('expanded')) {
-            content.style.maxHeight = content.scrollHeight + "px";
-          } else {
-            content.style.maxHeight = "0px";
-          }
         });
       });
 
       // ==========================================
-      // CLASS CLIP — load via blob URL (server lacks Range support),
-      //              sound toggle + pause when out of view
+      // CLASS CLIP — full custom controls
       // ==========================================
       const clip = document.getElementById('class-clip');
       const sndBtn = document.getElementById('clip-sound-btn');
       if (clip && sndBtn) {
-        // Fetch the MP4 and serve from a blob URL — avoids broken Range handling
+        // Load via blob URL (server lacks Range support)
         fetch(clip.dataset.src)
           .then(r => r.blob())
           .then(blob => {
@@ -1174,9 +1469,31 @@
             clip.play().catch(()=>{});
           })
           .catch(err => console.warn('clip load failed:', err));
+
+        // --- elements
+        const card = document.getElementById('clip-card');
+        const controls = document.getElementById('clip-controls');
+        const centerBtn = document.getElementById('clip-center-btn');
+        const playBtn = document.getElementById('clip-play-btn');
+        const iconPlay = document.getElementById('clip-icon-play');
+        const iconPause = document.getElementById('clip-icon-pause');
         const iconMuted = document.getElementById('clip-sound-icon-muted');
         const iconOn = document.getElementById('clip-sound-icon-on');
-        const label = document.getElementById('clip-sound-label');
+        const sndLabel = document.getElementById('clip-sound-label');
+        const progress = document.getElementById('clip-progress');
+        const thumb = document.getElementById('clip-thumb');
+        const scrubber = document.getElementById('clip-scrubber');
+        const currentEl = document.getElementById('clip-current');
+        const durationEl = document.getElementById('clip-duration');
+
+        const fmtTime = (s) => {
+          if (!isFinite(s) || s < 0) s = 0;
+          const m = Math.floor(s / 60);
+          const sec = Math.floor(s % 60).toString().padStart(2, '0');
+          return `${m}:${sec}`;
+        };
+
+        // --- sound toggle
         sndBtn.addEventListener('click', () => {
           clip.muted = !clip.muted;
           if (!clip.muted) {
@@ -1184,15 +1501,118 @@
             clip.play().catch(()=>{});
             iconMuted.classList.add('hidden');
             iconOn.classList.remove('hidden');
-            label.textContent = 'Tắt tiếng';
+            sndLabel.textContent = 'Tắt tiếng';
             sndBtn.setAttribute('aria-label', 'Tắt tiếng');
           } else {
             iconOn.classList.add('hidden');
             iconMuted.classList.remove('hidden');
-            label.textContent = 'Bật tiếng';
+            sndLabel.textContent = 'Bật tiếng';
             sndBtn.setAttribute('aria-label', 'Bật tiếng');
           }
         });
+
+        // --- play/pause
+        const togglePlay = () => {
+          if (clip.paused) { clip.play().catch(()=>{}); }
+          else { clip.pause(); }
+        };
+        playBtn.addEventListener('click', togglePlay);
+        clip.addEventListener('click', togglePlay);
+
+        const syncPlayState = () => {
+          if (clip.paused) {
+            iconPause.classList.add('hidden');
+            iconPlay.classList.remove('hidden');
+            centerBtn.style.opacity = '1';
+            centerBtn.style.pointerEvents = 'auto';
+          } else {
+            iconPlay.classList.add('hidden');
+            iconPause.classList.remove('hidden');
+            centerBtn.style.opacity = '0';
+            centerBtn.style.pointerEvents = 'none';
+          }
+        };
+        centerBtn.addEventListener('click', togglePlay);
+        clip.addEventListener('play', syncPlayState);
+        clip.addEventListener('pause', syncPlayState);
+
+        // --- linear scrubber (drag to seek)
+        let isDragging = false;
+        const updateUI = () => {
+          const dur = clip.duration || 0;
+          const pct = dur > 0 ? (clip.currentTime / dur) * 100 : 0;
+          progress.style.width = pct + '%';
+          thumb.style.left = pct + '%';
+          currentEl.textContent = fmtTime(clip.currentTime);
+        };
+        clip.addEventListener('loadedmetadata', () => {
+          durationEl.textContent = fmtTime(clip.duration);
+          updateUI();
+        });
+        clip.addEventListener('timeupdate', () => { if (!isDragging) updateUI(); });
+
+        const seekFromEvent = (e) => {
+          const rect = scrubber.getBoundingClientRect();
+          const clientX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+          const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+          const pct = rect.width > 0 ? x / rect.width : 0;
+          if (clip.duration) {
+            clip.currentTime = pct * clip.duration;
+            progress.style.width = (pct * 100) + '%';
+            thumb.style.left = (pct * 100) + '%';
+            currentEl.textContent = fmtTime(clip.currentTime);
+          }
+        };
+        const startDrag = (e) => {
+          isDragging = true;
+          thumb.style.transform = 'translate(-50%, -50%) scale(1.4)';
+          seekFromEvent(e);
+          e.preventDefault();
+        };
+        const moveDrag = (e) => { if (isDragging) seekFromEvent(e); };
+        const endDrag = () => {
+          if (!isDragging) return;
+          isDragging = false;
+          thumb.style.transform = 'translate(-50%, -50%) scale(1)';
+        };
+        scrubber.addEventListener('mousedown', startDrag);
+        window.addEventListener('mousemove', moveDrag);
+        window.addEventListener('mouseup', endDrag);
+        scrubber.addEventListener('touchstart', startDrag, { passive: false });
+        window.addEventListener('touchmove', moveDrag, { passive: false });
+        window.addEventListener('touchend', endDrag);
+        scrubber.addEventListener('keydown', (e) => {
+          if (!clip.duration) return;
+          const step = clip.duration / 30;
+          if (e.key === 'ArrowLeft') { clip.currentTime = Math.max(0, clip.currentTime - step); updateUI(); e.preventDefault(); }
+          else if (e.key === 'ArrowRight') { clip.currentTime = Math.min(clip.duration, clip.currentTime + step); updateUI(); e.preventDefault(); }
+          else if (e.key === ' ') { togglePlay(); e.preventDefault(); }
+        });
+
+        // --- auto-hide controls when video is playing & mouse idle
+        let hideTimer = null;
+        const showControls = () => {
+          controls.style.opacity = '1';
+          clearTimeout(hideTimer);
+          if (!clip.paused) {
+            hideTimer = setTimeout(() => { controls.style.opacity = '0'; }, 2400);
+          }
+        };
+        const keepControls = () => {
+          controls.style.opacity = '1';
+          clearTimeout(hideTimer);
+        };
+        card.addEventListener('mousemove', showControls);
+        card.addEventListener('mouseleave', () => {
+          if (!clip.paused && !isDragging) {
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => { controls.style.opacity = '0'; }, 600);
+          }
+        });
+        controls.addEventListener('mouseenter', keepControls);
+        clip.addEventListener('pause', () => { controls.style.opacity = '1'; clearTimeout(hideTimer); });
+        clip.addEventListener('play', () => { showControls(); });
+
         // Pause when not in viewport to save bandwidth
         const clipObs = new IntersectionObserver((entries) => {
           entries.forEach(e => {
