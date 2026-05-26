@@ -43,7 +43,7 @@
        ════════════════════════════════════════════ */
     :root {
       color-scheme: light;
-      --bg-base: #fbfaff;
+      --bg-base: #ffffff;
       --text-primary: #0a0913;
       --text-secondary: #3d3c4a;
       --text-muted: #7a7888;
@@ -67,8 +67,8 @@
       --vor-0: #ddd4ff;
       --vor-1: #f1ecff;
       --vor-2: #fbfaff;
-      --vor-opacity: 0.22;
-      --vor-vignette: rgba(251, 250, 255, 0.62);
+      --vor-opacity: 0;
+      --vor-vignette: rgba(255, 255, 255, 0);
 
       /* ────────────────────────────────────────────
          LIQUID GLASS TOKENS — central dial for tuning.
@@ -450,6 +450,26 @@
 
     /* Ensure content sits ABOVE the pseudo elements */
     .glass > *, .glass-sm > * { position: relative; z-index: 3; }
+
+    /* Flat mode per feedback: remove liquid glass look site-wide */
+    .glass,
+    .glass-sm,
+    .glass-nav,
+    .glass-pill,
+    .glass-solid {
+      background: #ffffff !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border: 1px solid rgba(10, 9, 19, 0.1) !important;
+      box-shadow: 0 8px 22px rgba(10, 9, 19, 0.06) !important;
+    }
+
+    .glass::before,
+    .glass-sm::before,
+    .glass-pill::before,
+    .glass-solid::before {
+      display: none !important;
+    }
 
     /* Subtle card hover — silky cubic-bezier, GPU-only transform */
     .card-hover {
@@ -1144,8 +1164,8 @@
     </section>
 
     <!-- CLASS MOMENT — placeholder section for a short fun clip (user will drop in later) -->
-    <section id="lophoc" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-20">
-      <div class="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-center">
+    <section id="lophoc" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative z-20">
+      <div class="grid lg:grid-cols-[1fr_1.25fr] gap-8 lg:gap-12 items-start">
         
         <div class="max-w-md">
           <div class="reveal-card label mb-5">Một mảnh trên lớp</div>
@@ -1153,14 +1173,14 @@
             Học nghiêm túc.<br>
             <span class="text-gradient">Vui&nbsp;thật&nbsp;sự.</span>
           </h2>
-          <p class="reveal-card body-lg mt-6" style="transition-delay: 180ms;">
-            Pzy tin rằng lớp học không khí thoải mái sẽ giúp học viên tự tin nói, dám sai và tiến bộ&nbsp;nhanh hơn. Một lát cắt ngắn ngủi trên&nbsp;lớp.
+          <p class="reveal-card body-lg mt-5" style="transition-delay: 180ms;">
+            Pzy tin rằng một lớp học thoải mái sẽ giúp học viên tự tin nói, dám sai và tiến bộ&nbsp;nhanh hơn. Đây là một lát cắt ngắn trong giờ&nbsp;học.
           </p>
         </div>
 
         <!-- Video slot — class clip -->
         <div class="reveal-card relative" style="transition-delay: 240ms;">
-          <div class="relative glass glare rounded-[2rem] p-3 sm:p-4 overflow-hidden">
+          <div class="relative rounded-[2rem] p-3 sm:p-4 overflow-hidden bg-white border" style="border-color: rgba(10, 9, 19, 0.1); box-shadow: 0 14px 34px rgba(10, 9, 19, 0.08);">
             <div id="clip-card" class="relative w-full rounded-[1.5rem] overflow-hidden group" style="aspect-ratio: 16 / 10; background: #1a1525; border: 1px solid var(--input-border);">
               
               <video id="class-clip" class="absolute inset-0 w-full h-full object-cover cursor-pointer" autoplay muted loop playsinline preload="auto" data-src="assets/class-clip.mp4" aria-label="Một mảnh trên lớp với cô Vy"></video>
